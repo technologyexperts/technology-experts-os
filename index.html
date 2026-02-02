@@ -7,25 +7,17 @@
 
   <style>
     :root{
-      --royal:#0a33ff;          /* azul rey */
-      --royal2:#0626c9;
+      --royal:#0a33ff;
       --ink:#0b1020;
       --muted:#6b7280;
       --card:#ffffff;
       --bd:#e7e7e7;
       --danger:#b00020;
-      --ok:#0f9d58;
     }
-
     *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: Arial, sans-serif;
-      background:#fff;
-      color:var(--ink);
-    }
+    body{ margin:0; font-family:Arial, sans-serif; background:#fff; color:var(--ink); }
 
-    /* ======= HOME (pantalla inicio) ======= */
+    /* ===== HOME ===== */
     .home{
       min-height:100vh;
       background: radial-gradient(1200px 600px at 20% 10%, #2f58ff 0%, var(--royal) 35%, #061a6a 100%);
@@ -42,27 +34,9 @@
       grid-template-columns:1fr;
       align-items:center;
     }
-    @media(min-width:860px){
-      .homeWrap{ grid-template-columns: 1.1fr 0.9fr; }
-    }
-
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .logoTitle{
-      font-weight:900;
-      font-size:32px;
-      line-height:1.1;
-      letter-spacing:0.2px;
-    }
-    .subtitle{
-      opacity:.92;
-      font-size:15px;
-      line-height:1.4;
-      max-width:52ch;
-    }
+    @media(min-width:860px){ .homeWrap{ grid-template-columns: 1.1fr 0.9fr; } }
+    .logoTitle{ font-weight:900; font-size:32px; line-height:1.1; letter-spacing:0.2px; }
+    .subtitle{ opacity:.92; font-size:15px; line-height:1.4; max-width:52ch; }
 
     .heroCard{
       background: rgba(255,255,255,.10);
@@ -71,232 +45,119 @@
       padding: 14px;
       backdrop-filter: blur(8px);
     }
-    .heroSvg{
-      width:100%;
-      height:auto;
-      display:block;
-      border-radius:18px;
-    }
-
     .homeButtons{
-      display:grid;
-      gap:12px;
-      margin-top:10px;
-      grid-template-columns:1fr;
+      display:grid; gap:12px; margin-top:10px; grid-template-columns:1fr;
     }
-    @media(min-width:520px){
-      .homeButtons{ grid-template-columns:1fr 1fr; }
-    }
-
+    @media(min-width:520px){ .homeButtons{ grid-template-columns:1fr 1fr; } }
     .bigBtn{
-      border:none;
-      border-radius:18px;
-      padding:16px 14px;
-      font-size:16px;
-      font-weight:900;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      border:none; border-radius:18px; padding:16px 14px;
+      font-size:16px; font-weight:900; cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
       transition: transform .08s ease;
     }
     .bigBtn:active{ transform: scale(0.99); }
-
-    .bigBtn.light{
-      background:#fff;
-      color:var(--ink);
-    }
+    .bigBtn.light{ background:#fff; color:var(--ink); }
     .bigBtn.dark{
-      background:rgba(255,255,255,.12);
-      color:#fff;
+      background:rgba(255,255,255,.12); color:#fff;
       border:1px solid rgba(255,255,255,.22);
     }
-
-    .chipRow{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
+    .chipRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
     .chip{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
+      font-size:12px; padding:6px 10px; border-radius:999px;
       background: rgba(255,255,255,.14);
       border: 1px solid rgba(255,255,255,.22);
       opacity:.95;
     }
+    .heroSvg{ width:100%; height:auto; display:block; border-radius:18px; }
 
-    /* ======= APP LAYOUT ======= */
-    .app{
-      display:none;
-      padding:16px;
-      max-width:980px;
-      margin:0 auto;
-    }
-    .topbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-bottom:10px;
-    }
+    /* ===== APP ===== */
+    .app{ display:none; padding:16px; max-width:980px; margin:0 auto; }
+    .topbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
     .btn{
-      border:none;
-      border-radius:14px;
-      padding:12px 12px;
-      font-weight:900;
-      cursor:pointer;
-      background:#111;
-      color:#fff;
-      flex:1;
-      min-width:160px;
+      border:none; border-radius:14px; padding:12px 12px;
+      font-weight:900; cursor:pointer;
+      background:#111; color:#fff; flex:1; min-width:160px;
     }
     .btn.light{ background:#f2f2f2; color:#111; border:1px solid #e0e0e0; }
     .btn.danger{ background:var(--danger); }
 
     .pill{
-      display:inline-block;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      border:1px solid #e6e6e6;
-      background:#f7f7f7;
+      display:inline-block; padding:6px 10px; border-radius:999px;
+      font-size:12px; border:1px solid #e6e6e6; background:#f7f7f7;
     }
     .pill.ok{ background:#e9f7ef; border-color:#c9efd8; }
     .pill.lock{ background:#fff3cd; border-color:#ffe69c; color:#664d03; }
 
-    .card{
-      background:var(--card);
-      border:1px solid var(--bd);
-      border-radius:18px;
-      padding:14px;
-      margin-top:12px;
-    }
-
+    .card{ background:var(--card); border:1px solid var(--bd); border-radius:18px; padding:14px; margin-top:12px; }
     h2{ margin: 10px 0 10px; }
     .muted{ color:var(--muted); font-size:13px; }
 
     input, textarea, select{
-      width:100%;
-      padding:12px;
-      font-size:16px;
-      border-radius:14px;
-      border:1px solid #d8d8d8;
-      margin:8px 0;
-      background:#fff;
+      width:100%; padding:12px; font-size:16px;
+      border-radius:14px; border:1px solid #d8d8d8;
+      margin:8px 0; background:#fff;
     }
     textarea{ min-height:90px; resize:vertical; }
 
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; }
     .row > *{ flex:1; min-width:170px; }
 
-    /* Firma */
-    .firma-wrap{
-      border:1px dashed #bdbdbd;
-      border-radius:18px;
-      padding:10px;
-      background:#fafafa;
-    }
-    canvas{
-      width:100%;
-      height:180px;
-      background:#fff;
-      border-radius:14px;
-      border:1px solid #ddd;
-      touch-action:none;
-      display:block;
-    }
-
-    .orden{
-      border:1px solid #ddd;
-      border-radius:16px;
-      padding:12px;
-      margin-top:10px;
-    }
-    .ordenActions{
-      margin-top:10px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .ordenActions button{
-      border:none;
-      border-radius:14px;
-      padding:10px 12px;
-      font-weight:900;
-      cursor:pointer;
-      background:#111;
-      color:#fff;
-    }
-    .ordenActions .danger{ background:var(--danger); }
-    .ordenActions .light{ background:#f2f2f2; color:#111; border:1px solid #e0e0e0; }
-
-    /* Tabs dentro de App */
-    .tabs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
+    .tabs{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
     .tab{
-      flex:1;
-      min-width:180px;
-      border:none;
-      border-radius:16px;
-      padding:12px 12px;
-      font-weight:900;
-      cursor:pointer;
-      background:#f2f2f2;
-      border:1px solid #e0e0e0;
+      flex:1; min-width:180px;
+      border:none; border-radius:16px; padding:12px 12px;
+      font-weight:900; cursor:pointer;
+      background:#f2f2f2; border:1px solid #e0e0e0;
     }
-    .tab.active{
-      background:#111;
-      color:#fff;
-      border-color:#111;
+    .tab.active{ background:#111; color:#fff; border-color:#111; }
+
+    /* Firma */
+    .firma-wrap{ border:1px dashed #bdbdbd; border-radius:18px; padding:10px; background:#fafafa; }
+    canvas{
+      width:100%; height:180px; background:#fff;
+      border-radius:14px; border:1px solid #ddd;
+      touch-action:none; display:block;
     }
+
+    .item{
+      border:1px solid #ddd; border-radius:16px; padding:12px; margin-top:10px;
+    }
+    .itemActions{ margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
+    .itemActions button{
+      border:none; border-radius:14px; padding:10px 12px;
+      font-weight:900; cursor:pointer; background:#111; color:#fff;
+    }
+    .itemActions .danger{ background:var(--danger); }
+    .itemActions .light{ background:#f2f2f2; color:#111; border:1px solid #e0e0e0; }
 
     /* Modal Admin */
     .modalBg{
       position:fixed; inset:0;
       background:rgba(0,0,0,0.45);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      z-index:9999;
+      display:none; align-items:center; justify-content:center;
+      padding:16px; z-index:9999;
     }
     .modal{
-      background:#fff;
-      width:min(520px, 100%);
-      border-radius:18px;
-      padding:14px;
-      border:1px solid #e5e5e5;
+      background:#fff; width:min(520px, 100%);
+      border-radius:18px; padding:14px; border:1px solid #e5e5e5;
     }
     .modal h3{ margin:6px 0 10px; }
     .warn{
-      background:#fff3cd;
-      border:1px solid #ffe69c;
-      padding:10px;
-      border-radius:14px;
-      color:#664d03;
-      margin-top:10px;
+      background:#fff3cd; border:1px solid #ffe69c;
+      padding:10px; border-radius:14px; color:#664d03; margin-top:10px;
+    }
+    .smallNote{
+      font-size:12px; color:#6b7280; margin-top:8px;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ======= HOME ======= -->
+  <!-- ===== HOME ===== -->
   <section class="home" id="home">
     <div class="homeWrap">
-
-      <div class="brand">
+      <div>
         <div class="logoTitle">Technology Expert’s</div>
         <div class="subtitle">
           Recepción de equipos + ventas. Moderno, rápido y sin depender de servidores externos.
@@ -304,27 +165,19 @@
         </div>
 
         <div class="homeButtons">
-          <button class="bigBtn light" onclick="entrarApp('orden')">
-            🧾 Orden de servicio
-            <span>›</span>
-          </button>
-
-          <button class="bigBtn dark" onclick="entrarApp('venta')">
-            💳 Ventas
-            <span>›</span>
-          </button>
+          <button class="bigBtn light" onclick="entrarApp('orden')">🧾 Orden de servicio <span>›</span></button>
+          <button class="bigBtn dark" onclick="entrarApp('venta')">💳 Ventas <span>›</span></button>
         </div>
 
         <div class="chipRow">
           <span class="chip">🔒 Admin PIN</span>
-          <span class="chip">✍️ Firma obligatoria</span>
+          <span class="chip">✍️ Firma obligatoria (solo orden)</span>
           <span class="chip">🧠 Autocompleta y aprende</span>
           <span class="chip">📱 Celular / Tablet / PC</span>
         </div>
       </div>
 
       <div class="heroCard">
-        <!-- SVG moderno (sin internet) -->
         <svg class="heroSvg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración tecnología">
           <defs>
             <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
@@ -336,38 +189,24 @@
               <stop offset="1" stop-color="#ffffff" stop-opacity="0.25"/>
             </linearGradient>
           </defs>
-
           <rect x="0" y="0" width="900" height="520" rx="26" fill="rgba(255,255,255,0.10)" />
           <circle cx="160" cy="140" r="120" fill="url(#g2)" opacity="0.9"/>
           <circle cx="700" cy="130" r="150" fill="url(#g1)" opacity="0.7"/>
           <circle cx="520" cy="400" r="170" fill="url(#g2)" opacity="0.55"/>
-
-          <!-- Laptop -->
           <rect x="210" y="180" width="470" height="240" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)"/>
           <rect x="240" y="205" width="410" height="165" rx="14" fill="rgba(0,0,0,0.18)" stroke="rgba(255,255,255,0.25)"/>
           <rect x="175" y="425" width="540" height="40" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.30)"/>
-
-          <!-- Phone -->
           <rect x="95" y="260" width="95" height="180" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)"/>
           <rect x="108" y="285" width="69" height="120" rx="12" fill="rgba(0,0,0,0.18)"/>
-
-          <!-- Icons -->
-          <g opacity="0.9">
-            <circle cx="300" cy="255" r="8" fill="#6ee7ff"/>
-            <circle cx="330" cy="255" r="8" fill="#fff"/>
-            <circle cx="360" cy="255" r="8" fill="#cfe0ff"/>
-          </g>
-
           <text x="240" y="390" fill="rgba(255,255,255,0.85)" font-size="18" font-family="Arial" font-weight="700">
             Órdenes • Ventas • Inventario (próximo)
           </text>
         </svg>
       </div>
-
     </div>
   </section>
 
-  <!-- ======= APP ======= -->
+  <!-- ===== APP ===== -->
   <section class="app" id="app">
     <div class="topbar">
       <button class="btn light" onclick="volverInicio()">← Inicio</button>
@@ -381,23 +220,21 @@
       <button class="tab" id="tabVenta" onclick="showPanel('venta')">💳 Ventas</button>
     </div>
 
-    <!-- ======= PANEL ORDEN ======= -->
+    <!-- ===== PANEL ORDEN ===== -->
     <section id="panelOrden">
       <div class="card">
         <h2>Orden de servicio</h2>
-        <div class="muted">Consecutivo inicia en <b>2100</b> y sube en orden ascendente.</div>
+        <div class="muted">Consecutivo inicia en <b>2100</b> y sube ascendente.</div>
 
         <h2>Datos del cliente</h2>
         <div class="row">
-          <input id="cliente" placeholder="Nombre del cliente" autocomplete="name">
-          <input id="cedula" placeholder="Cédula" inputmode="numeric">
+          <input id="o_cliente" placeholder="Nombre del cliente" autocomplete="name">
+          <input id="o_cedula" placeholder="Cédula" inputmode="numeric">
         </div>
         <div class="row">
-          <input id="telefono" placeholder="Celular" inputmode="tel" autocomplete="tel">
-
-          <!-- Correo con sugerencias -->
+          <input id="o_telefono" placeholder="Celular" inputmode="tel" autocomplete="tel">
           <div>
-            <input id="correo" type="email" placeholder="Correo electrónico" autocomplete="off" list="correoSugerencias">
+            <input id="o_correo" type="email" placeholder="Correo electrónico" autocomplete="off" list="correoSugerencias">
             <datalist id="correoSugerencias"></datalist>
           </div>
         </div>
@@ -405,16 +242,16 @@
         <h2>Equipo</h2>
         <div class="row">
           <div>
-            <input id="marca" placeholder="Marca del celular" list="listaMarcas">
+            <input id="o_marca" placeholder="Marca del equipo" list="listaMarcas">
             <datalist id="listaMarcas"></datalist>
           </div>
           <div>
-            <input id="modelo" placeholder="Modelo del celular" list="listaModelos">
+            <input id="o_modelo" placeholder="Modelo" list="listaModelos">
             <datalist id="listaModelos"></datalist>
           </div>
         </div>
 
-        <textarea id="falla" placeholder="Falla reportada"></textarea>
+        <textarea id="o_falla" placeholder="Falla reportada"></textarea>
 
         <h2>Firma del cliente (obligatoria)</h2>
         <div class="firma-wrap">
@@ -429,31 +266,83 @@
 
         <div class="row">
           <button class="btn light" onclick="nuevaOrden()">🆕 Nueva orden</button>
-          <button class="btn danger" onclick="borrarTodo()">🗑️ Borrar TODO (Admin)</button>
+          <button class="btn danger" onclick="borrarOrdenes()">🗑️ Borrar Órdenes (Admin)</button>
         </div>
       </div>
 
       <div class="card">
         <h2>Órdenes guardadas</h2>
-        <div id="lista"></div>
+        <div id="listaOrdenes"></div>
       </div>
     </section>
 
-    <!-- ======= PANEL VENTAS (BASE) ======= -->
+    <!-- ===== PANEL VENTAS ===== -->
     <section id="panelVenta" style="display:none;">
       <div class="card">
-        <h2>Ventas (pantalla base)</h2>
-        <div class="muted">
-          Aquí vamos a colocar: productos, búsqueda, IMEI1/IMEI2, términos, impresión y WhatsApp.
+        <h2>Ventas</h2>
+        <div class="muted">Consecutivo de ventas inicia en <b>304</b> (ascendente).</div>
+
+        <h2>Datos del cliente</h2>
+        <div class="row">
+          <input id="v_cliente" placeholder="Nombre del cliente">
+          <input id="v_cedula" placeholder="Cédula" inputmode="numeric">
         </div>
-        <div class="muted" style="margin-top:10px;">
-          Si quieres, el próximo paso es dejar Ventas completa como la orden (con Admin, consecutivo, etc.).
+        <div class="row">
+          <input id="v_telefono" placeholder="Celular" inputmode="tel">
+          <input id="v_correo" type="email" placeholder="Correo (opcional)" autocomplete="off" list="correoSugerencias">
         </div>
+
+        <h2>Venta</h2>
+        <div class="row">
+          <select id="v_categoria" onchange="onCategoriaVenta()">
+            <option value="Accesorios">Accesorios</option>
+            <option value="Celulares">Celulares (requiere IMEI)</option>
+            <option value="PC">PC</option>
+            <option value="Consolas">Consolas</option>
+          </select>
+          <input id="v_producto" placeholder="Producto / Descripción">
+        </div>
+
+        <div class="row">
+          <input id="v_cantidad" placeholder="Cantidad" inputmode="numeric" value="1">
+          <input id="v_total" placeholder="Total $" inputmode="numeric">
+        </div>
+
+        <!-- IMEI SOLO PARA CELULARES -->
+        <div id="bloqueImei" style="display:none;">
+          <h2>IMEI (solo venta de celulares)</h2>
+          <div class="row">
+            <input id="v_imei1" placeholder="IMEI 1 (obligatorio)" inputmode="numeric">
+            <input id="v_imei2" placeholder="IMEI 2 (opcional)" inputmode="numeric">
+          </div>
+          <div class="muted">
+            Término: No nos hacemos responsables si el cliente no registra los IMEI ante el operador que vaya a usar.
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="btn" onclick="guardarVenta()">💾 Guardar venta</button>
+          <button class="btn danger" onclick="borrarVentas()">🗑️ Borrar Ventas (Admin)</button>
+        </div>
+
+        <div class="row">
+          <button class="btn light" onclick="whatsappUltimaVenta()">📲 Compartir última venta por WhatsApp</button>
+          <button class="btn light" onclick="copiarUltimaVenta()">📋 Copiar última venta</button>
+        </div>
+
+        <div class="smallNote">
+          * Ventas NO pide firma. Solo Orden de servicio.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Ventas guardadas</h2>
+        <div id="listaVentas"></div>
       </div>
     </section>
   </section>
 
-  <!-- ======= MODAL ADMIN ======= -->
+  <!-- ===== MODAL ADMIN ===== -->
   <div class="modalBg" id="modalBg">
     <div class="modal">
       <h3 id="modalTitulo">Admin</h3>
@@ -474,11 +363,14 @@
       <div class="row" style="margin-top:10px;">
         <button class="btn light" onclick="cerrarModal()">Cancelar</button>
       </div>
+      <div class="smallNote">
+        Admin protege borrar/eliminar. En PC lo haremos con usuarios reales.
+      </div>
     </div>
   </div>
 
 <script>
-/* ========================= NAVEGACIÓN HOME/APP ========================= */
+/* ===== HOME / APP ===== */
 function entrarApp(tab){
   document.getElementById("home").style.display = "none";
   document.getElementById("app").style.display = "block";
@@ -496,32 +388,24 @@ function showPanel(which){
   document.getElementById("tabVenta").classList.toggle("active", !isOrden);
 }
 
-/* ================== STORAGE ÓRDENES ================== */
+/* ===== STORAGE ===== */
 let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
-let consecutivo = Number(localStorage.getItem("consecutivo")) || 2100;
+let ventas = JSON.parse(localStorage.getItem("ventas")) || [];
+let consecutivoOrden = Number(localStorage.getItem("consecutivoOrden")) || 2100;
+let consecutivoVenta = Number(localStorage.getItem("consecutivoVenta")) || 304;
 
-/* ================== ADMIN SECURITY (PIN) ================== */
+/* ===== ADMIN PIN ===== */
 const K_ADMIN_HASH = "te_admin_pin_hash_v1";
 const K_ADMIN_SALT = "te_admin_pin_salt_v1";
 const K_ADMIN_SESSION = "te_admin_session_until_v1";
-
 function nowMs(){ return Date.now(); }
 function adminActivo(){
   const until = Number(localStorage.getItem(K_ADMIN_SESSION) || 0);
   return until > nowMs();
 }
-function setAdminSesion(minutos){
-  const until = nowMs() + (minutos * 60 * 1000);
-  localStorage.setItem(K_ADMIN_SESSION, String(until));
-  refrescarAdminUI();
-}
-function limpiarSesionAdmin(){
-  localStorage.setItem(K_ADMIN_SESSION, "0");
-  refrescarAdminUI();
-}
-function tienePin(){
-  return !!localStorage.getItem(K_ADMIN_HASH) && !!localStorage.getItem(K_ADMIN_SALT);
-}
+function setAdminSesion(min){ localStorage.setItem(K_ADMIN_SESSION, String(nowMs() + min*60*1000)); refrescarAdminUI(); }
+function limpiarSesionAdmin(){ localStorage.setItem(K_ADMIN_SESSION, "0"); refrescarAdminUI(); }
+function tienePin(){ return !!localStorage.getItem(K_ADMIN_HASH) && !!localStorage.getItem(K_ADMIN_SALT); }
 function pinValidoFormato(pin){ return /^\d{6}$/.test(pin); }
 function randomSalt(){
   const a = new Uint8Array(16);
@@ -543,13 +427,11 @@ function refrescarAdminUI(){
   const btn = document.getElementById("btnAdmin");
   if(adminActivo()){
     estado.textContent = "✅ Admin activo";
-    estado.classList.remove("lock");
-    estado.classList.add("ok");
+    estado.classList.remove("lock"); estado.classList.add("ok");
     btn.textContent = "✅ Admin activo (reingresar)";
   } else {
     estado.textContent = "🔒 Bloqueado (Admin)";
-    estado.classList.remove("ok");
-    estado.classList.add("lock");
+    estado.classList.remove("ok"); estado.classList.add("lock");
     btn.textContent = "🔓 Entrar como Admin";
   }
 }
@@ -566,44 +448,37 @@ function abrirAdmin(){
 
   if(!tienePin()){
     titulo.textContent = "Crear PIN de Admin";
-    hint.textContent = "Este PIN protege eliminar/borrar todo. Debe ser de 6 dígitos.";
-    setPin.style.display = "";
-    login.style.display = "none";
+    hint.textContent = "Este PIN protege borrar/eliminar. Debe ser de 6 dígitos.";
+    setPin.style.display = ""; login.style.display = "none";
   } else {
     titulo.textContent = "Entrar como Admin";
     hint.textContent = "Ingresa tu PIN de 6 dígitos.";
-    setPin.style.display = "none";
-    login.style.display = "";
+    setPin.style.display = "none"; login.style.display = "";
   }
   modalBg.style.display = "flex";
 }
 function cerrarModal(){ document.getElementById("modalBg").style.display = "none"; }
-
 async function confirmarSetPin(){
   const p1 = document.getElementById("pinNuevo1").value.trim();
   const p2 = document.getElementById("pinNuevo2").value.trim();
-
-  if(!pinValidoFormato(p1)){ alert("El PIN debe tener exactamente 6 dígitos."); return; }
-  if(p1 !== p2){ alert("Los PIN no coinciden."); return; }
-
+  if(!pinValidoFormato(p1)) return alert("PIN: exactamente 6 dígitos.");
+  if(p1 !== p2) return alert("Los PIN no coinciden.");
   const salt = randomSalt();
   localStorage.setItem(K_ADMIN_SALT, salt);
-  const h = await sha256Hex(salt + ":" + p1);
-  localStorage.setItem(K_ADMIN_HASH, h);
-
+  localStorage.setItem(K_ADMIN_HASH, await sha256Hex(salt + ":" + p1));
   setAdminSesion(60);
   cerrarModal();
   alert("PIN creado y Admin activo ✅");
 }
 async function confirmarLogin(){
   const pin = document.getElementById("pinLogin").value.trim();
-  if(!pinValidoFormato(pin)){ alert("PIN inválido. Debe tener 6 dígitos."); return; }
+  if(!pinValidoFormato(pin)) return alert("PIN inválido (6 dígitos).");
   const expected = localStorage.getItem(K_ADMIN_HASH);
   const got = await hashPin(pin);
-  if(got !== expected){ alert("PIN incorrecto."); return; }
+  if(got !== expected) return alert("PIN incorrecto.");
   setAdminSesion(60);
   cerrarModal();
-  alert("Admin activo ✅ (60 minutos)");
+  alert("Admin activo ✅");
 }
 function cerrarAdmin(){ limpiarSesionAdmin(); alert("Bloqueado 🔒"); }
 async function requireAdmin(){
@@ -613,7 +488,7 @@ async function requireAdmin(){
   return false;
 }
 
-/* ================== FIRMA (POINTER EVENTS) ================== */
+/* ===== FIRMA (solo ORDEN) ===== */
 const canvas = document.getElementById("firma");
 const ctx = canvas.getContext("2d");
 let firmando = false;
@@ -632,27 +507,4 @@ function ajustarCanvas(){
 }
 function getPos(e){
   const r = canvas.getBoundingClientRect();
-  return { x: e.clientX - r.left, y: e.clientY - r.top };
-}
-canvas.addEventListener("pointerdown", (e)=>{
-  e.preventDefault();
-  firmando = true; hayFirma = true;
-  const p = getPos(e);
-  ctx.beginPath(); ctx.moveTo(p.x, p.y);
-},{passive:false});
-canvas.addEventListener("pointermove", (e)=>{
-  if(!firmando) return;
-  e.preventDefault();
-  const p = getPos(e);
-  ctx.lineTo(p.x, p.y); ctx.stroke();
-},{passive:false});
-function pararFirma(e){
-  if(!firmando) return;
-  e.preventDefault();
-  firmando = false;
-}
-canvas.addEventListener("pointerup", pararFirma, {passive:false});
-canvas.addEventListener("pointercancel", pararFirma, {passive:false});
-canvas.addEventListener("pointerleave", pararFirma, {passive:false});
-
-function 
+  return { x: e.c
