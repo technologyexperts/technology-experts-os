@@ -2,106 +2,616 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Technology Expert's - Orden de Servicio</title>
+  <title>Technology Expert's</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body { font-family: Arial, sans-serif; padding: 16px; background:#fff; }
-    h1 { margin-bottom: 6px; }
-    h2 { margin-top: 18px; }
-    .muted { color:#666; font-size:13px; }
-
-    input, textarea, button {
-      width:100%; padding:12px; margin:8px 0;
-      font-size:16px; border-radius:12px;
-      border:1px solid #d8d8d8; box-sizing:border-box;
+    :root{
+      --royal:#0a33ff;          /* azul rey */
+      --royal2:#0626c9;
+      --ink:#0b1020;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --bd:#e7e7e7;
+      --danger:#b00020;
+      --ok:#0f9d58;
     }
-    textarea { min-height:90px; resize:vertical; }
 
-    button { border:none; font-weight:bold; }
-    .btn-primary { background:#000; color:#fff; }
-    .btn-secondary { background:#666; color:#fff; }
-    .btn-danger { background:#b00020; color:#fff; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#fff;
+      color:var(--ink);
+    }
 
-    .card { border:1px solid #e5e5e5; border-radius:14px; padding:14px; margin-top:12px; }
+    /* ======= HOME (pantalla inicio) ======= */
+    .home{
+      min-height:100vh;
+      background: radial-gradient(1200px 600px at 20% 10%, #2f58ff 0%, var(--royal) 35%, #061a6a 100%);
+      color:#fff;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .homeWrap{
+      width:min(980px, 100%);
+      display:grid;
+      gap:16px;
+      grid-template-columns:1fr;
+      align-items:center;
+    }
+    @media(min-width:860px){
+      .homeWrap{ grid-template-columns: 1.1fr 0.9fr; }
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .logoTitle{
+      font-weight:900;
+      font-size:32px;
+      line-height:1.1;
+      letter-spacing:0.2px;
+    }
+    .subtitle{
+      opacity:.92;
+      font-size:15px;
+      line-height:1.4;
+      max-width:52ch;
+    }
+
+    .heroCard{
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      padding: 14px;
+      backdrop-filter: blur(8px);
+    }
+    .heroSvg{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius:18px;
+    }
+
+    .homeButtons{
+      display:grid;
+      gap:12px;
+      margin-top:10px;
+      grid-template-columns:1fr;
+    }
+    @media(min-width:520px){
+      .homeButtons{ grid-template-columns:1fr 1fr; }
+    }
+
+    .bigBtn{
+      border:none;
+      border-radius:18px;
+      padding:16px 14px;
+      font-size:16px;
+      font-weight:900;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      transition: transform .08s ease;
+    }
+    .bigBtn:active{ transform: scale(0.99); }
+
+    .bigBtn.light{
+      background:#fff;
+      color:var(--ink);
+    }
+    .bigBtn.dark{
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.22);
+    }
+
+    .chipRow{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .chip{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      opacity:.95;
+    }
+
+    /* ======= APP LAYOUT ======= */
+    .app{
+      display:none;
+      padding:16px;
+      max-width:980px;
+      margin:0 auto;
+    }
+    .topbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 12px;
+      font-weight:900;
+      cursor:pointer;
+      background:#111;
+      color:#fff;
+      flex:1;
+      min-width:160px;
+    }
+    .btn.light{ background:#f2f2f2; color:#111; border:1px solid #e0e0e0; }
+    .btn.danger{ background:var(--danger); }
+
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid #e6e6e6;
+      background:#f7f7f7;
+    }
+    .pill.ok{ background:#e9f7ef; border-color:#c9efd8; }
+    .pill.lock{ background:#fff3cd; border-color:#ffe69c; color:#664d03; }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--bd);
+      border-radius:18px;
+      padding:14px;
+      margin-top:12px;
+    }
+
+    h2{ margin: 10px 0 10px; }
+    .muted{ color:var(--muted); font-size:13px; }
+
+    input, textarea, select{
+      width:100%;
+      padding:12px;
+      font-size:16px;
+      border-radius:14px;
+      border:1px solid #d8d8d8;
+      margin:8px 0;
+      background:#fff;
+    }
+    textarea{ min-height:90px; resize:vertical; }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .row > *{ flex:1; min-width:170px; }
 
     /* Firma */
-    .firma-wrap { border:1px dashed #bdbdbd; border-radius:14px; padding:10px; background:#fafafa; }
-    canvas {
-      width:100%; height:180px; background:#fff;
-      border-radius:12px; border:1px solid #ddd;
+    .firma-wrap{
+      border:1px dashed #bdbdbd;
+      border-radius:18px;
+      padding:10px;
+      background:#fafafa;
+    }
+    canvas{
+      width:100%;
+      height:180px;
+      background:#fff;
+      border-radius:14px;
+      border:1px solid #ddd;
       touch-action:none;
       display:block;
     }
 
-    .row { display:flex; gap:10px; }
-    .row button { width:50%; }
+    .orden{
+      border:1px solid #ddd;
+      border-radius:16px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .ordenActions{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .ordenActions button{
+      border:none;
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+      background:#111;
+      color:#fff;
+    }
+    .ordenActions .danger{ background:var(--danger); }
+    .ordenActions .light{ background:#f2f2f2; color:#111; border:1px solid #e0e0e0; }
 
-    .orden { border:1px solid #ddd; border-radius:12px; padding:10px; margin-top:10px; }
-    .orden small { color:#666; }
-    .orden-actions { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
-    .orden-actions button { width:auto; padding:10px 12px; border-radius:12px; }
+    /* Tabs dentro de App */
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .tab{
+      flex:1;
+      min-width:180px;
+      border:none;
+      border-radius:16px;
+      padding:12px 12px;
+      font-weight:900;
+      cursor:pointer;
+      background:#f2f2f2;
+      border:1px solid #e0e0e0;
+    }
+    .tab.active{
+      background:#111;
+      color:#fff;
+      border-color:#111;
+    }
 
-    @media (max-width: 520px){
-      .row { flex-direction: column; }
-      .row button { width:100%; }
+    /* Modal Admin */
+    .modalBg{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,0.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index:9999;
+    }
+    .modal{
+      background:#fff;
+      width:min(520px, 100%);
+      border-radius:18px;
+      padding:14px;
+      border:1px solid #e5e5e5;
+    }
+    .modal h3{ margin:6px 0 10px; }
+    .warn{
+      background:#fff3cd;
+      border:1px solid #ffe69c;
+      padding:10px;
+      border-radius:14px;
+      color:#664d03;
+      margin-top:10px;
     }
   </style>
 </head>
 
 <body>
-  <h1>Technology Expert's</h1>
-  <div class="muted">Orden de servicio – funciona en celular, tablet y PC (por ahora guardado local)</div>
 
-  <div class="card">
-    <h2>Datos del cliente</h2>
+  <!-- ======= HOME ======= -->
+  <section class="home" id="home">
+    <div class="homeWrap">
 
-    <input id="cliente" placeholder="Nombre del cliente" autocomplete="name">
-    <input id="cedula" placeholder="Cédula" inputmode="numeric">
-    <input id="telefono" placeholder="Celular" inputmode="tel" autocomplete="tel">
+      <div class="brand">
+        <div class="logoTitle">Technology Expert’s</div>
+        <div class="subtitle">
+          Recepción de equipos + ventas. Moderno, rápido y sin depender de servidores externos.
+          (Por ahora guarda local en este dispositivo; luego lo pasamos a PC servidor).
+        </div>
 
-    <!-- CORREO CON AUTOCOMPLETADO + APRENDE DOMINIOS -->
-    <input id="correo" type="email" placeholder="Correo electrónico"
-           autocomplete="off" list="correoSugerencias">
-    <datalist id="correoSugerencias"></datalist>
+        <div class="homeButtons">
+          <button class="bigBtn light" onclick="entrarApp('orden')">
+            🧾 Orden de servicio
+            <span>›</span>
+          </button>
 
-    <h2>Equipo</h2>
+          <button class="bigBtn dark" onclick="entrarApp('venta')">
+            💳 Ventas
+            <span>›</span>
+          </button>
+        </div>
 
-    <!-- MARCA AUTOCOMPLETABLE + APRENDE -->
-    <input id="marca" placeholder="Marca del celular" list="listaMarcas">
-
-    <!-- MODELO: sugerencias DEPENDEN de la marca -->
-    <input id="modelo" placeholder="Modelo del celular" list="listaModelos">
-
-    <textarea id="falla" placeholder="Falla reportada"></textarea>
-
-    <h2>Firma del cliente (obligatoria)</h2>
-    <div class="firma-wrap">
-      <div class="muted">Firma con el dedo o mouse. Sin firma NO se guarda.</div>
-      <canvas id="firma"></canvas>
-
-      <div class="row">
-        <button class="btn-secondary" onclick="borrarFirma()">🧽 Borrar firma</button>
-        <button class="btn-primary" onclick="guardarOrden()">💾 Guardar orden</button>
+        <div class="chipRow">
+          <span class="chip">🔒 Admin PIN</span>
+          <span class="chip">✍️ Firma obligatoria</span>
+          <span class="chip">🧠 Autocompleta y aprende</span>
+          <span class="chip">📱 Celular / Tablet / PC</span>
+        </div>
       </div>
+
+      <div class="heroCard">
+        <!-- SVG moderno (sin internet) -->
+        <svg class="heroSvg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración tecnología">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+              <stop offset="1" stop-color="#cfe0ff" stop-opacity="0.55"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" x2="1" y1="1" y2="0">
+              <stop offset="0" stop-color="#6ee7ff" stop-opacity="0.55"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0.25"/>
+            </linearGradient>
+          </defs>
+
+          <rect x="0" y="0" width="900" height="520" rx="26" fill="rgba(255,255,255,0.10)" />
+          <circle cx="160" cy="140" r="120" fill="url(#g2)" opacity="0.9"/>
+          <circle cx="700" cy="130" r="150" fill="url(#g1)" opacity="0.7"/>
+          <circle cx="520" cy="400" r="170" fill="url(#g2)" opacity="0.55"/>
+
+          <!-- Laptop -->
+          <rect x="210" y="180" width="470" height="240" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)"/>
+          <rect x="240" y="205" width="410" height="165" rx="14" fill="rgba(0,0,0,0.18)" stroke="rgba(255,255,255,0.25)"/>
+          <rect x="175" y="425" width="540" height="40" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.30)"/>
+
+          <!-- Phone -->
+          <rect x="95" y="260" width="95" height="180" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)"/>
+          <rect x="108" y="285" width="69" height="120" rx="12" fill="rgba(0,0,0,0.18)"/>
+
+          <!-- Icons -->
+          <g opacity="0.9">
+            <circle cx="300" cy="255" r="8" fill="#6ee7ff"/>
+            <circle cx="330" cy="255" r="8" fill="#fff"/>
+            <circle cx="360" cy="255" r="8" fill="#cfe0ff"/>
+          </g>
+
+          <text x="240" y="390" fill="rgba(255,255,255,0.85)" font-size="18" font-family="Arial" font-weight="700">
+            Órdenes • Ventas • Inventario (próximo)
+          </text>
+        </svg>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======= APP ======= -->
+  <section class="app" id="app">
+    <div class="topbar">
+      <button class="btn light" onclick="volverInicio()">← Inicio</button>
+      <span id="adminEstado" class="pill lock">🔒 Bloqueado (Admin)</span>
+      <button class="btn light" id="btnAdmin" onclick="abrirAdmin()">🔓 Entrar como Admin</button>
+      <button class="btn light" onclick="cerrarAdmin()">🔒 Bloquear</button>
     </div>
 
-    <button class="btn-secondary" onclick="nuevaOrden()">🆕 Nueva orden</button>
-  </div>
+    <div class="tabs">
+      <button class="tab active" id="tabOrden" onclick="showPanel('orden')">🧾 Orden de servicio</button>
+      <button class="tab" id="tabVenta" onclick="showPanel('venta')">💳 Ventas</button>
+    </div>
 
-  <div class="card">
-    <h2>Órdenes guardadas</h2>
-    <div id="lista"></div>
-  </div>
+    <!-- ======= PANEL ORDEN ======= -->
+    <section id="panelOrden">
+      <div class="card">
+        <h2>Orden de servicio</h2>
+        <div class="muted">Consecutivo inicia en <b>2100</b> y sube en orden ascendente.</div>
 
-  <!-- DATALIST -->
-  <datalist id="listaMarcas"></datalist>
-  <datalist id="listaModelos"></datalist>
+        <h2>Datos del cliente</h2>
+        <div class="row">
+          <input id="cliente" placeholder="Nombre del cliente" autocomplete="name">
+          <input id="cedula" placeholder="Cédula" inputmode="numeric">
+        </div>
+        <div class="row">
+          <input id="telefono" placeholder="Celular" inputmode="tel" autocomplete="tel">
+
+          <!-- Correo con sugerencias -->
+          <div>
+            <input id="correo" type="email" placeholder="Correo electrónico" autocomplete="off" list="correoSugerencias">
+            <datalist id="correoSugerencias"></datalist>
+          </div>
+        </div>
+
+        <h2>Equipo</h2>
+        <div class="row">
+          <div>
+            <input id="marca" placeholder="Marca del celular" list="listaMarcas">
+            <datalist id="listaMarcas"></datalist>
+          </div>
+          <div>
+            <input id="modelo" placeholder="Modelo del celular" list="listaModelos">
+            <datalist id="listaModelos"></datalist>
+          </div>
+        </div>
+
+        <textarea id="falla" placeholder="Falla reportada"></textarea>
+
+        <h2>Firma del cliente (obligatoria)</h2>
+        <div class="firma-wrap">
+          <div class="muted">Firma con el dedo o mouse. Si no firma, NO se guarda.</div>
+          <canvas id="firma"></canvas>
+
+          <div class="row">
+            <button class="btn light" onclick="borrarFirma()">🧽 Borrar firma</button>
+            <button class="btn" onclick="guardarOrden()">💾 Guardar orden</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="btn light" onclick="nuevaOrden()">🆕 Nueva orden</button>
+          <button class="btn danger" onclick="borrarTodo()">🗑️ Borrar TODO (Admin)</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Órdenes guardadas</h2>
+        <div id="lista"></div>
+      </div>
+    </section>
+
+    <!-- ======= PANEL VENTAS (BASE) ======= -->
+    <section id="panelVenta" style="display:none;">
+      <div class="card">
+        <h2>Ventas (pantalla base)</h2>
+        <div class="muted">
+          Aquí vamos a colocar: productos, búsqueda, IMEI1/IMEI2, términos, impresión y WhatsApp.
+        </div>
+        <div class="muted" style="margin-top:10px;">
+          Si quieres, el próximo paso es dejar Ventas completa como la orden (con Admin, consecutivo, etc.).
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ======= MODAL ADMIN ======= -->
+  <div class="modalBg" id="modalBg">
+    <div class="modal">
+      <h3 id="modalTitulo">Admin</h3>
+      <div class="muted" id="modalHint"></div>
+
+      <div id="bloqueSetPin" style="display:none;">
+        <div class="warn">No hay PIN configurado. Crea uno (6 dígitos) y guárdalo bien.</div>
+        <input id="pinNuevo1" placeholder="Crear PIN (6 dígitos)" inputmode="numeric" maxlength="6">
+        <input id="pinNuevo2" placeholder="Repetir PIN" inputmode="numeric" maxlength="6">
+        <button class="btn" onclick="confirmarSetPin()">Guardar PIN</button>
+      </div>
+
+      <div id="bloqueLogin" style="display:none;">
+        <input id="pinLogin" placeholder="PIN Admin (6 dígitos)" inputmode="numeric" maxlength="6">
+        <button class="btn" onclick="confirmarLogin()">Entrar</button>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <button class="btn light" onclick="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
 <script>
-/* ================== STORAGE ================== */
+/* ========================= NAVEGACIÓN HOME/APP ========================= */
+function entrarApp(tab){
+  document.getElementById("home").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  showPanel(tab);
+}
+function volverInicio(){
+  document.getElementById("app").style.display = "none";
+  document.getElementById("home").style.display = "flex";
+}
+function showPanel(which){
+  const isOrden = which === "orden";
+  document.getElementById("panelOrden").style.display = isOrden ? "" : "none";
+  document.getElementById("panelVenta").style.display = isOrden ? "none" : "";
+  document.getElementById("tabOrden").classList.toggle("active", isOrden);
+  document.getElementById("tabVenta").classList.toggle("active", !isOrden);
+}
+
+/* ================== STORAGE ÓRDENES ================== */
 let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
 let consecutivo = Number(localStorage.getItem("consecutivo")) || 2100;
+
+/* ================== ADMIN SECURITY (PIN) ================== */
+const K_ADMIN_HASH = "te_admin_pin_hash_v1";
+const K_ADMIN_SALT = "te_admin_pin_salt_v1";
+const K_ADMIN_SESSION = "te_admin_session_until_v1";
+
+function nowMs(){ return Date.now(); }
+function adminActivo(){
+  const until = Number(localStorage.getItem(K_ADMIN_SESSION) || 0);
+  return until > nowMs();
+}
+function setAdminSesion(minutos){
+  const until = nowMs() + (minutos * 60 * 1000);
+  localStorage.setItem(K_ADMIN_SESSION, String(until));
+  refrescarAdminUI();
+}
+function limpiarSesionAdmin(){
+  localStorage.setItem(K_ADMIN_SESSION, "0");
+  refrescarAdminUI();
+}
+function tienePin(){
+  return !!localStorage.getItem(K_ADMIN_HASH) && !!localStorage.getItem(K_ADMIN_SALT);
+}
+function pinValidoFormato(pin){ return /^\d{6}$/.test(pin); }
+function randomSalt(){
+  const a = new Uint8Array(16);
+  crypto.getRandomValues(a);
+  return Array.from(a).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function sha256Hex(text){
+  const enc = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest("SHA-256", enc);
+  const arr = Array.from(new Uint8Array(buf));
+  return arr.map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function hashPin(pin){
+  const salt = localStorage.getItem(K_ADMIN_SALT) || "";
+  return sha256Hex(salt + ":" + pin);
+}
+function refrescarAdminUI(){
+  const estado = document.getElementById("adminEstado");
+  const btn = document.getElementById("btnAdmin");
+  if(adminActivo()){
+    estado.textContent = "✅ Admin activo";
+    estado.classList.remove("lock");
+    estado.classList.add("ok");
+    btn.textContent = "✅ Admin activo (reingresar)";
+  } else {
+    estado.textContent = "🔒 Bloqueado (Admin)";
+    estado.classList.remove("ok");
+    estado.classList.add("lock");
+    btn.textContent = "🔓 Entrar como Admin";
+  }
+}
+function abrirAdmin(){
+  const modalBg = document.getElementById("modalBg");
+  const setPin = document.getElementById("bloqueSetPin");
+  const login = document.getElementById("bloqueLogin");
+  const titulo = document.getElementById("modalTitulo");
+  const hint = document.getElementById("modalHint");
+
+  document.getElementById("pinNuevo1").value = "";
+  document.getElementById("pinNuevo2").value = "";
+  document.getElementById("pinLogin").value = "";
+
+  if(!tienePin()){
+    titulo.textContent = "Crear PIN de Admin";
+    hint.textContent = "Este PIN protege eliminar/borrar todo. Debe ser de 6 dígitos.";
+    setPin.style.display = "";
+    login.style.display = "none";
+  } else {
+    titulo.textContent = "Entrar como Admin";
+    hint.textContent = "Ingresa tu PIN de 6 dígitos.";
+    setPin.style.display = "none";
+    login.style.display = "";
+  }
+  modalBg.style.display = "flex";
+}
+function cerrarModal(){ document.getElementById("modalBg").style.display = "none"; }
+
+async function confirmarSetPin(){
+  const p1 = document.getElementById("pinNuevo1").value.trim();
+  const p2 = document.getElementById("pinNuevo2").value.trim();
+
+  if(!pinValidoFormato(p1)){ alert("El PIN debe tener exactamente 6 dígitos."); return; }
+  if(p1 !== p2){ alert("Los PIN no coinciden."); return; }
+
+  const salt = randomSalt();
+  localStorage.setItem(K_ADMIN_SALT, salt);
+  const h = await sha256Hex(salt + ":" + p1);
+  localStorage.setItem(K_ADMIN_HASH, h);
+
+  setAdminSesion(60);
+  cerrarModal();
+  alert("PIN creado y Admin activo ✅");
+}
+async function confirmarLogin(){
+  const pin = document.getElementById("pinLogin").value.trim();
+  if(!pinValidoFormato(pin)){ alert("PIN inválido. Debe tener 6 dígitos."); return; }
+  const expected = localStorage.getItem(K_ADMIN_HASH);
+  const got = await hashPin(pin);
+  if(got !== expected){ alert("PIN incorrecto."); return; }
+  setAdminSesion(60);
+  cerrarModal();
+  alert("Admin activo ✅ (60 minutos)");
+}
+function cerrarAdmin(){ limpiarSesionAdmin(); alert("Bloqueado 🔒"); }
+async function requireAdmin(){
+  if(adminActivo()) return true;
+  abrirAdmin();
+  alert("Acción protegida: entra como Admin.");
+  return false;
+}
 
 /* ================== FIRMA (POINTER EVENTS) ================== */
 const canvas = document.getElementById("firma");
@@ -109,42 +619,33 @@ const ctx = canvas.getContext("2d");
 let firmando = false;
 let hayFirma = false;
 
-function ajustarCanvas() {
+function ajustarCanvas(){
   const r = canvas.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
   canvas.width = Math.floor(r.width * dpr);
-  canvas.height = Math.floor(r.height * dpr);
+  canvas.height = Math.floor(180 * dpr);
   ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.lineWidth = 2;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
   ctx.strokeStyle = "#111";
 }
-window.addEventListener("load", () => { ajustarCanvas(); mostrar(); });
-window.addEventListener("resize", ajustarCanvas);
-
 function getPos(e){
   const r = canvas.getBoundingClientRect();
   return { x: e.clientX - r.left, y: e.clientY - r.top };
 }
-
-canvas.addEventListener("pointerdown", (e) => {
+canvas.addEventListener("pointerdown", (e)=>{
   e.preventDefault();
-  firmando = true;
-  hayFirma = true;
+  firmando = true; hayFirma = true;
   const p = getPos(e);
-  ctx.beginPath();
-  ctx.moveTo(p.x, p.y);
-}, {passive:false});
-
-canvas.addEventListener("pointermove", (e) => {
+  ctx.beginPath(); ctx.moveTo(p.x, p.y);
+},{passive:false});
+canvas.addEventListener("pointermove", (e)=>{
   if(!firmando) return;
   e.preventDefault();
   const p = getPos(e);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-}, {passive:false});
-
+  ctx.lineTo(p.x, p.y); ctx.stroke();
+},{passive:false});
 function pararFirma(e){
   if(!firmando) return;
   e.preventDefault();
@@ -154,281 +655,4 @@ canvas.addEventListener("pointerup", pararFirma, {passive:false});
 canvas.addEventListener("pointercancel", pararFirma, {passive:false});
 canvas.addEventListener("pointerleave", pararFirma, {passive:false});
 
-function borrarFirma() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  hayFirma = false;
-}
-
-/* ================== AUTOCOMPLETAR CORREO (GMAIL/HOTMAIL) + APRENDE ================== */
-const K_DOMINIOS = "te_dominios_correo";
-const DOMINIOS_BASE = ["gmail.com", "hotmail.com"]; // SOLO estos al inicio
-
-function cargar(key){
-  try { return JSON.parse(localStorage.getItem(key)) || []; }
-  catch { return []; }
-}
-function guardar(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
-
-function unicosLower(arr){
-  const map = new Map();
-  for(const x of arr){
-    const v = String(x||"").trim().toLowerCase();
-    if(!v) continue;
-    map.set(v, v);
-  }
-  return Array.from(map.values()).sort();
-}
-
-function dominiosCorreoActuales(){
-  const aprendidos = cargar(K_DOMINIOS);
-  return unicosLower([...DOMINIOS_BASE, ...aprendidos]);
-}
-
-function aprenderDominioCorreo(email){
-  const v = String(email||"").trim().toLowerCase();
-  if(!v.includes("@")) return;
-  const parts = v.split("@");
-  if(parts.length < 2) return;
-  const dom = parts[1].trim();
-  if(!dom) return;
-
-  const actuales = dominiosCorreoActuales();
-  if(actuales.includes(dom)) return;
-
-  const aprendidos = cargar(K_DOMINIOS);
-  guardar(K_DOMINIOS, unicosLower([...aprendidos, dom]));
-}
-
-const correoInput = document.getElementById("correo");
-const correoList = document.getElementById("correoSugerencias");
-
-correoInput.addEventListener("input", () => {
-  correoList.innerHTML = "";
-  const v = correoInput.value.trim();
-  if (!v) return;
-
-  const parts = v.split("@");
-  const user = parts[0] || "";
-  const domParcial = (parts[1] || "").toLowerCase();
-  if(!user) return;
-
-  const dominios = dominiosCorreoActuales();
-  for(const d of dominios){
-    if(parts.length === 1){
-      const o = document.createElement("option");
-      o.value = `${user}@${d}`;
-      correoList.appendChild(o);
-    } else {
-      if(d.startsWith(domParcial)){
-        const o = document.createElement("option");
-        o.value = `${user}@${d}`;
-        correoList.appendChild(o);
-      }
-    }
-  }
-});
-
-correoInput.addEventListener("blur", () => {
-  aprenderDominioCorreo(correoInput.value);
-});
-
-/* ================== MARCAS (MUCHAS) + APRENDE ================== */
-const K_MARCAS = "te_marcas";
-
-// Lista GRANDE de marcas (celulares + algunas tablets)
-const MARCAS_BASE = [
-  "Samsung","Apple","iPhone","iPad","Xiaomi","Redmi","POCO","Mi",
-  "Motorola","Huawei","Honor","Oppo","Vivo","Realme","OnePlus","Google Pixel",
-  "Nokia","Sony","LG","ZTE","Alcatel","TCL","Asus","Lenovo","HTC",
-  "Meizu","BlackBerry","Nothing","Tecno","Infinix","Itel","Sharp",
-  "Panasonic","Philips","Micromax","Lava","Karbonn","Gionee","Coolpad",
-  "Doogee","Ulefone","Cubot","Oukitel","Umidigi","Vernee","LeEco",
-  "Wiko","Blu","Cat","Energizer","Fairphone","Kyocera","HMD",
-  "Innjoo","Cherry Mobile","Celkon","Symphony","Xolo","QMobile",
-  "T-Mobile","Vodafone","Orange","Nubia","ROG Phone","Zenfone"
-];
-
-// Para modelos por marca:
-const K_MODELOS_POR_MARCA = "te_modelos_por_marca"; // objeto { "samsung": ["A12","A14"]... }
-
-function normalizarClave(s){
-  return String(s||"").trim().toLowerCase();
-}
-
-function unicosManteniendoCase(arr){
-  const map = new Map();
-  for(const x of arr){
-    const clean = String(x||"").trim();
-    if(!clean) continue;
-    map.set(normalizarClave(clean), clean);
-  }
-  return Array.from(map.values()).sort((a,b)=>a.localeCompare(b));
-}
-
-function refrescarMarcas(){
-  const aprendidas = cargar(K_MARCAS);
-  const marcas = unicosManteniendoCase([...MARCAS_BASE, ...aprendidas]);
-
-  document.getElementById("listaMarcas").innerHTML =
-    marcas.map(m=>`<option value="${escapeAttr(m)}">`).join("");
-}
-
-function aprenderMarca(marca){
-  const m = String(marca||"").trim();
-  if(!m) return;
-  const actuales = cargar(K_MARCAS);
-  guardar(K_MARCAS, unicosManteniendoCase([...actuales, m]));
-  refrescarMarcas();
-}
-
-/* ================== MODELOS POR MARCA (DEPENDE DE MARCA) ================== */
-function cargarModelosPorMarca(){
-  try { return JSON.parse(localStorage.getItem(K_MODELOS_POR_MARCA)) || {}; }
-  catch { return {}; }
-}
-function guardarModelosPorMarca(obj){
-  localStorage.setItem(K_MODELOS_POR_MARCA, JSON.stringify(obj));
-}
-
-function obtenerModelosDeMarca(marca){
-  const key = normalizarClave(marca);
-  const obj = cargarModelosPorMarca();
-  const arr = Array.isArray(obj[key]) ? obj[key] : [];
-  return unicosManteniendoCase(arr);
-}
-
-function refrescarModelosParaMarca(marcaActual){
-  const modelos = obtenerModelosDeMarca(marcaActual);
-  document.getElementById("listaModelos").innerHTML =
-    modelos.map(m=>`<option value="${escapeAttr(m)}">`).join("");
-}
-
-function aprenderModeloParaMarca(marca, modelo){
-  const m = String(marca||"").trim();
-  const mo = String(modelo||"").trim();
-  if(!m || !mo) return;
-
-  const key = normalizarClave(m);
-  const obj = cargarModelosPorMarca();
-  const arr = Array.isArray(obj[key]) ? obj[key] : [];
-  obj[key] = unicosManteniendoCase([...arr, mo]);
-  guardarModelosPorMarca(obj);
-}
-
-refrescarMarcas();
-// Por defecto: sin marca, lista modelos vacía
-refrescarModelosParaMarca("");
-
-/* Cuando cambie la marca, actualiza la lista de modelos */
-const marcaEl = document.getElementById("marca");
-const modeloEl = document.getElementById("modelo");
-
-marcaEl.addEventListener("input", () => {
-  refrescarModelosParaMarca(marcaEl.value);
-});
-
-/* ================== APP ================== */
-const clienteEl = document.getElementById("cliente");
-const cedulaEl = document.getElementById("cedula");
-const telefonoEl = document.getElementById("telefono");
-const correoEl = document.getElementById("correo");
-const fallaEl = document.getElementById("falla");
-const lista = document.getElementById("lista");
-
-function guardarOrden(){
-  const cliente = clienteEl.value.trim();
-  const cedula = cedulaEl.value.trim();
-  const telefono = telefonoEl.value.trim();
-  const correo = correoEl.value.trim();
-  const marca = marcaEl.value.trim();
-  const modelo = modeloEl.value.trim();
-  const falla = fallaEl.value.trim();
-
-  if (!cliente || !cedula || !telefono || !correo || !marca || !modelo || !falla) {
-    alert("Completa todos los campos");
-    return;
-  }
-  if (!hayFirma) {
-    alert("La firma es obligatoria");
-    return;
-  }
-
-  // Aprende: marca, modelo para esa marca, y dominio de correo
-  aprenderMarca(marca);
-  aprenderModeloParaMarca(marca, modelo);
-  aprenderDominioCorreo(correo);
-
-  // refresca modelos por si justo aprendió uno nuevo
-  refrescarModelosParaMarca(marca);
-
-  ordenes.push({
-    numero: consecutivo++,
-    cliente, cedula, telefono, correo,
-    marca, modelo, falla,
-    fecha: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("ordenes", JSON.stringify(ordenes));
-  localStorage.setItem("consecutivo", String(consecutivo));
-  mostrar();
-  nuevaOrden();
-  alert("Orden guardada ✅");
-}
-
-function nuevaOrden(){
-  clienteEl.value = "";
-  cedulaEl.value = "";
-  telefonoEl.value = "";
-  correoEl.value = "";
-  marcaEl.value = "";
-  modeloEl.value = "";
-  fallaEl.value = "";
-  borrarFirma();
-  refrescarModelosParaMarca("");
-  clienteEl.focus();
-}
-
-function eliminarOrden(numero){
-  if(!confirm("¿Borrar la orden #" + numero + "?")) return;
-  ordenes = ordenes.filter(o => o.numero !== numero);
-  localStorage.setItem("ordenes", JSON.stringify(ordenes));
-  mostrar();
-}
-
-function mostrar(){
-  if(!ordenes.length){
-    lista.innerHTML = `<div class="muted">No hay órdenes guardadas.</div>`;
-    return;
-  }
-
-  const sorted = [...ordenes].sort((a,b)=>a.numero-b.numero);
-  lista.innerHTML = sorted.map(o=>`
-    <div class="orden">
-      <b>Orden #${o.numero}</b><br>
-      <b>Cliente:</b> ${escapeHtml(o.cliente)}<br>
-      <b>Cédula:</b> ${escapeHtml(o.cedula)}<br>
-      <b>Tel:</b> ${escapeHtml(o.telefono)}<br>
-      <b>Email:</b> ${escapeHtml(o.correo)}<br><br>
-      <b>Equipo:</b> ${escapeHtml(o.marca)} ${escapeHtml(o.modelo)}<br>
-      <b>Falla:</b> ${escapeHtml(o.falla)}<br>
-      <small>${escapeHtml(o.fecha)}</small>
-
-      <div class="orden-actions">
-        <button class="btn-danger" onclick="eliminarOrden(${o.numero})">🗑️ Eliminar</button>
-      </div>
-    </div>
-  `).join("");
-}
-
-/* ================== ESCAPE ================== */
-function escapeHtml(s){
-  return String(s||"").replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[m]));
-}
-function escapeAttr(s){
-  return String(s||"").replace(/"/g, "&quot;");
-}
-</script>
-</body>
-</html>
+function 
