@@ -1,236 +1,434 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Technology Expert's</title>
+  <meta charset="UTF-8">
+  <title>Technology Expert's - Orden de Servicio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body { font-family: Arial, sans-serif; padding: 16px; background:#fff; }
-    h1 { margin: 0 0 8px; }
+    h1 { margin-bottom: 6px; }
     h2 { margin-top: 18px; }
-    h3 { margin: 14px 0 8px; }
-    .card { border:1px solid #e5e5e5; border-radius:14px; padding:14px; margin-top:12px; }
-    input, textarea { width:100%; box-sizing:border-box; padding:12px; margin:8px 0; font-size:16px; border:1px solid #d8d8d8; border-radius:12px; }
-    textarea { min-height: 90px; resize: vertical; }
-    button { width:100%; padding:14px; font-size:16px; border:none; border-radius:12px; margin-top:10px; }
+    .muted { color:#666; font-size:13px; }
+
+    input, textarea, button {
+      width:100%; padding:12px; margin:8px 0;
+      font-size:16px; border-radius:12px;
+      border:1px solid #d8d8d8; box-sizing:border-box;
+    }
+    textarea { min-height:90px; resize:vertical; }
+
+    button { border:none; font-weight:bold; }
     .btn-primary { background:#000; color:#fff; }
     .btn-secondary { background:#666; color:#fff; }
-    .row { display:flex; gap:10px; }
-    .row > button { width: 50%; }
-    .muted { color:#666; font-size: 13px; margin-top: 6px; }
+    .btn-danger { background:#b00020; color:#fff; }
+
+    .card { border:1px solid #e5e5e5; border-radius:14px; padding:14px; margin-top:12px; }
 
     /* Firma */
-    .firma-wrap { border:1px dashed #bfbfbf; border-radius:14px; padding:10px; background:#fafafa; }
-    #firmaCanvas { width:100%; height:180px; display:block; border-radius:12px; background:#fff; border:1px solid #e0e0e0; touch-action: none; }
-    .firma-hint { font-size: 13px; color:#666; margin: 0 0 8px; }
+    .firma-wrap { border:1px dashed #bdbdbd; border-radius:14px; padding:10px; background:#fafafa; }
+    canvas {
+      width:100%; height:180px; background:#fff;
+      border-radius:12px; border:1px solid #ddd;
+      touch-action:none;
+      display:block;
+    }
+
+    .row { display:flex; gap:10px; }
+    .row button { width:50%; }
+
+    .orden { border:1px solid #ddd; border-radius:12px; padding:10px; margin-top:10px; }
+    .orden small { color:#666; }
+    .orden-actions { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
+    .orden-actions button { width:auto; padding:10px 12px; border-radius:12px; }
+
+    @media (max-width: 520px){
+      .row { flex-direction: column; }
+      .row button { width:100%; }
+    }
   </style>
 </head>
 
 <body>
   <h1>Technology Expert's</h1>
-  <div class="muted">Orden de servicio (cel/tablet/PC). Guarda local (por ahora).</div>
+  <div class="muted">Orden de servicio – funciona en celular, tablet y PC (por ahora guardado local)</div>
 
   <div class="card">
-    <h2>Orden de Servicio</h2>
+    <h2>Datos del cliente</h2>
 
-    <h3>Datos del cliente</h3>
-    <input id="cliente" placeholder="Nombre del cliente" autocomplete="name" />
-    <input id="cedula" placeholder="Cédula" inputmode="numeric" />
-    <input id="telefono" placeholder="Celular" inputmode="tel" autocomplete="tel" />
-    <input id="correo" placeholder="Correo electrónico" inputmode="email" autocomplete="email" />
+    <input id="cliente" placeholder="Nombre del cliente" autocomplete="name">
+    <input id="cedula" placeholder="Cédula" inputmode="numeric">
+    <input id="telefono" placeholder="Celular" inputmode="tel" autocomplete="tel">
 
-    <h3>Equipo</h3>
-    <input id="marca" placeholder="Marca del celular" />
-    <input id="modelo" placeholder="Modelo del celular" />
+    <!-- CORREO CON AUTOCOMPLETADO + APRENDE DOMINIOS -->
+    <input id="correo" type="email" placeholder="Correo electrónico"
+           autocomplete="off" list="correoSugerencias">
+    <datalist id="correoSugerencias"></datalist>
+
+    <h2>Equipo</h2>
+
+    <!-- MARCA AUTOCOMPLETABLE + APRENDE -->
+    <input id="marca" placeholder="Marca del celular" list="listaMarcas">
+
+    <!-- MODELO: sugerencias DEPENDEN de la marca -->
+    <input id="modelo" placeholder="Modelo del celular" list="listaModelos">
+
     <textarea id="falla" placeholder="Falla reportada"></textarea>
 
-    <h3>Firma del cliente (obligatoria)</h3>
+    <h2>Firma del cliente (obligatoria)</h2>
     <div class="firma-wrap">
-      <p class="firma-hint">Firma con el dedo. Si no firmas, NO se guarda la orden.</p>
-      <canvas id="firmaCanvas"></canvas>
+      <div class="muted">Firma con el dedo o mouse. Sin firma NO se guarda.</div>
+      <canvas id="firma"></canvas>
 
       <div class="row">
         <button class="btn-secondary" onclick="borrarFirma()">🧽 Borrar firma</button>
-        <button class="btn-primary" onclick="guardar()">💾 Guardar orden</button>
+        <button class="btn-primary" onclick="guardarOrden()">💾 Guardar orden</button>
       </div>
     </div>
 
-    <button class="btn-secondary" onclick="nuevaOrden()">🆕 Nueva orden (limpiar campos)</button>
+    <button class="btn-secondary" onclick="nuevaOrden()">🆕 Nueva orden</button>
+  </div>
 
-    <h3>Órdenes guardadas</h3>
+  <div class="card">
+    <h2>Órdenes guardadas</h2>
     <div id="lista"></div>
   </div>
 
+  <!-- DATALIST -->
+  <datalist id="listaMarcas"></datalist>
+  <datalist id="listaModelos"></datalist>
+
 <script>
-  // ====== Storage ======
-  let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
-  let contador = Number(localStorage.getItem("contador")) || 2100;
+/* ================== STORAGE ================== */
+let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
+let consecutivo = Number(localStorage.getItem("consecutivo")) || 2100;
 
-  // ====== Firma (Canvas) - funciona en móvil y PC ======
-  const canvas = document.getElementById("firmaCanvas");
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+/* ================== FIRMA (POINTER EVENTS) ================== */
+const canvas = document.getElementById("firma");
+const ctx = canvas.getContext("2d");
+let firmando = false;
+let hayFirma = false;
 
-  let dibujando = false;
-  let hayFirma = false;
+function ajustarCanvas() {
+  const r = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.floor(r.width * dpr);
+  canvas.height = Math.floor(r.height * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#111";
+}
+window.addEventListener("load", () => { ajustarCanvas(); mostrar(); });
+window.addEventListener("resize", ajustarCanvas);
 
-  function ajustarCanvas() {
-    // Ajusta el tamaño REAL del canvas para que coincida con el tamaño visible
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
+function getPos(e){
+  const r = canvas.getBoundingClientRect();
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
 
-    canvas.width = Math.floor(rect.width * dpr);
-    canvas.height = Math.floor(rect.height * dpr);
+canvas.addEventListener("pointerdown", (e) => {
+  e.preventDefault();
+  firmando = true;
+  hayFirma = true;
+  const p = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(p.x, p.y);
+}, {passive:false});
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // escala para dibujar correcto
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
+canvas.addEventListener("pointermove", (e) => {
+  if(!firmando) return;
+  e.preventDefault();
+  const p = getPos(e);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+}, {passive:false});
+
+function pararFirma(e){
+  if(!firmando) return;
+  e.preventDefault();
+  firmando = false;
+}
+canvas.addEventListener("pointerup", pararFirma, {passive:false});
+canvas.addEventListener("pointercancel", pararFirma, {passive:false});
+canvas.addEventListener("pointerleave", pararFirma, {passive:false});
+
+function borrarFirma() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  hayFirma = false;
+}
+
+/* ================== AUTOCOMPLETAR CORREO (GMAIL/HOTMAIL) + APRENDE ================== */
+const K_DOMINIOS = "te_dominios_correo";
+const DOMINIOS_BASE = ["gmail.com", "hotmail.com"]; // SOLO estos al inicio
+
+function cargar(key){
+  try { return JSON.parse(localStorage.getItem(key)) || []; }
+  catch { return []; }
+}
+function guardar(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+function unicosLower(arr){
+  const map = new Map();
+  for(const x of arr){
+    const v = String(x||"").trim().toLowerCase();
+    if(!v) continue;
+    map.set(v, v);
+  }
+  return Array.from(map.values()).sort();
+}
+
+function dominiosCorreoActuales(){
+  const aprendidos = cargar(K_DOMINIOS);
+  return unicosLower([...DOMINIOS_BASE, ...aprendidos]);
+}
+
+function aprenderDominioCorreo(email){
+  const v = String(email||"").trim().toLowerCase();
+  if(!v.includes("@")) return;
+  const parts = v.split("@");
+  if(parts.length < 2) return;
+  const dom = parts[1].trim();
+  if(!dom) return;
+
+  const actuales = dominiosCorreoActuales();
+  if(actuales.includes(dom)) return;
+
+  const aprendidos = cargar(K_DOMINIOS);
+  guardar(K_DOMINIOS, unicosLower([...aprendidos, dom]));
+}
+
+const correoInput = document.getElementById("correo");
+const correoList = document.getElementById("correoSugerencias");
+
+correoInput.addEventListener("input", () => {
+  correoList.innerHTML = "";
+  const v = correoInput.value.trim();
+  if (!v) return;
+
+  const parts = v.split("@");
+  const user = parts[0] || "";
+  const domParcial = (parts[1] || "").toLowerCase();
+  if(!user) return;
+
+  const dominios = dominiosCorreoActuales();
+  for(const d of dominios){
+    if(parts.length === 1){
+      const o = document.createElement("option");
+      o.value = `${user}@${d}`;
+      correoList.appendChild(o);
+    } else {
+      if(d.startsWith(domParcial)){
+        const o = document.createElement("option");
+        o.value = `${user}@${d}`;
+        correoList.appendChild(o);
+      }
+    }
+  }
+});
+
+correoInput.addEventListener("blur", () => {
+  aprenderDominioCorreo(correoInput.value);
+});
+
+/* ================== MARCAS (MUCHAS) + APRENDE ================== */
+const K_MARCAS = "te_marcas";
+
+// Lista GRANDE de marcas (celulares + algunas tablets)
+const MARCAS_BASE = [
+  "Samsung","Apple","iPhone","iPad","Xiaomi","Redmi","POCO","Mi",
+  "Motorola","Huawei","Honor","Oppo","Vivo","Realme","OnePlus","Google Pixel",
+  "Nokia","Sony","LG","ZTE","Alcatel","TCL","Asus","Lenovo","HTC",
+  "Meizu","BlackBerry","Nothing","Tecno","Infinix","Itel","Sharp",
+  "Panasonic","Philips","Micromax","Lava","Karbonn","Gionee","Coolpad",
+  "Doogee","Ulefone","Cubot","Oukitel","Umidigi","Vernee","LeEco",
+  "Wiko","Blu","Cat","Energizer","Fairphone","Kyocera","HMD",
+  "Innjoo","Cherry Mobile","Celkon","Symphony","Xolo","QMobile",
+  "T-Mobile","Vodafone","Orange","Nubia","ROG Phone","Zenfone"
+];
+
+// Para modelos por marca:
+const K_MODELOS_POR_MARCA = "te_modelos_por_marca"; // objeto { "samsung": ["A12","A14"]... }
+
+function normalizarClave(s){
+  return String(s||"").trim().toLowerCase();
+}
+
+function unicosManteniendoCase(arr){
+  const map = new Map();
+  for(const x of arr){
+    const clean = String(x||"").trim();
+    if(!clean) continue;
+    map.set(normalizarClave(clean), clean);
+  }
+  return Array.from(map.values()).sort((a,b)=>a.localeCompare(b));
+}
+
+function refrescarMarcas(){
+  const aprendidas = cargar(K_MARCAS);
+  const marcas = unicosManteniendoCase([...MARCAS_BASE, ...aprendidas]);
+
+  document.getElementById("listaMarcas").innerHTML =
+    marcas.map(m=>`<option value="${escapeAttr(m)}">`).join("");
+}
+
+function aprenderMarca(marca){
+  const m = String(marca||"").trim();
+  if(!m) return;
+  const actuales = cargar(K_MARCAS);
+  guardar(K_MARCAS, unicosManteniendoCase([...actuales, m]));
+  refrescarMarcas();
+}
+
+/* ================== MODELOS POR MARCA (DEPENDE DE MARCA) ================== */
+function cargarModelosPorMarca(){
+  try { return JSON.parse(localStorage.getItem(K_MODELOS_POR_MARCA)) || {}; }
+  catch { return {}; }
+}
+function guardarModelosPorMarca(obj){
+  localStorage.setItem(K_MODELOS_POR_MARCA, JSON.stringify(obj));
+}
+
+function obtenerModelosDeMarca(marca){
+  const key = normalizarClave(marca);
+  const obj = cargarModelosPorMarca();
+  const arr = Array.isArray(obj[key]) ? obj[key] : [];
+  return unicosManteniendoCase(arr);
+}
+
+function refrescarModelosParaMarca(marcaActual){
+  const modelos = obtenerModelosDeMarca(marcaActual);
+  document.getElementById("listaModelos").innerHTML =
+    modelos.map(m=>`<option value="${escapeAttr(m)}">`).join("");
+}
+
+function aprenderModeloParaMarca(marca, modelo){
+  const m = String(marca||"").trim();
+  const mo = String(modelo||"").trim();
+  if(!m || !mo) return;
+
+  const key = normalizarClave(m);
+  const obj = cargarModelosPorMarca();
+  const arr = Array.isArray(obj[key]) ? obj[key] : [];
+  obj[key] = unicosManteniendoCase([...arr, mo]);
+  guardarModelosPorMarca(obj);
+}
+
+refrescarMarcas();
+// Por defecto: sin marca, lista modelos vacía
+refrescarModelosParaMarca("");
+
+/* Cuando cambie la marca, actualiza la lista de modelos */
+const marcaEl = document.getElementById("marca");
+const modeloEl = document.getElementById("modelo");
+
+marcaEl.addEventListener("input", () => {
+  refrescarModelosParaMarca(marcaEl.value);
+});
+
+/* ================== APP ================== */
+const clienteEl = document.getElementById("cliente");
+const cedulaEl = document.getElementById("cedula");
+const telefonoEl = document.getElementById("telefono");
+const correoEl = document.getElementById("correo");
+const fallaEl = document.getElementById("falla");
+const lista = document.getElementById("lista");
+
+function guardarOrden(){
+  const cliente = clienteEl.value.trim();
+  const cedula = cedulaEl.value.trim();
+  const telefono = telefonoEl.value.trim();
+  const correo = correoEl.value.trim();
+  const marca = marcaEl.value.trim();
+  const modelo = modeloEl.value.trim();
+  const falla = fallaEl.value.trim();
+
+  if (!cliente || !cedula || !telefono || !correo || !marca || !modelo || !falla) {
+    alert("Completa todos los campos");
+    return;
+  }
+  if (!hayFirma) {
+    alert("La firma es obligatoria");
+    return;
   }
 
-  function pos(e) {
-    const r = canvas.getBoundingClientRect();
-    return { x: e.clientX - r.left, y: e.clientY - r.top };
-  }
+  // Aprende: marca, modelo para esa marca, y dominio de correo
+  aprenderMarca(marca);
+  aprenderModeloParaMarca(marca, modelo);
+  aprenderDominioCorreo(correo);
 
-  canvas.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    dibujando = true;
-    const p = pos(e);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-  }, { passive: false });
+  // refresca modelos por si justo aprendió uno nuevo
+  refrescarModelosParaMarca(marca);
 
-  canvas.addEventListener("pointermove", (e) => {
-    if (!dibujando) return;
-    e.preventDefault();
-    const p = pos(e);
-    ctx.lineTo(p.x, p.y);
-    ctx.stroke();
-    hayFirma = true;
-  }, { passive: false });
-
-  function parar(e) {
-    if (!dibujando) return;
-    e.preventDefault();
-    dibujando = false;
-  }
-
-  canvas.addEventListener("pointerup", parar, { passive: false });
-  canvas.addEventListener("pointercancel", parar, { passive: false });
-  canvas.addEventListener("pointerleave", parar, { passive: false });
-
-  function borrarFirma() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    hayFirma = false;
-  }
-
-  function firmaBase64() {
-    // Si no hay firma, devuelve vacío (pero igual bloqueamos el guardado)
-    if (!hayFirma) return "";
-    return canvas.toDataURL("image/png");
-  }
-
-  // Ajustar canvas al cargar y al rotar pantalla
-  window.addEventListener("load", () => { ajustarCanvas(); mostrar(); });
-  window.addEventListener("resize", () => {
-    // Si quieres conservar lo dibujado al rotar, se puede mejorar.
-    // Por ahora lo re-ajusta y se borra la firma (más seguro).
-    ajustarCanvas();
-    borrarFirma();
+  ordenes.push({
+    numero: consecutivo++,
+    cliente, cedula, telefono, correo,
+    marca, modelo, falla,
+    fecha: new Date().toLocaleString()
   });
 
-  // ====== App ======
-  function validarCampos() {
-    const cliente = document.getElementById("cliente").value.trim();
-    const cedula = document.getElementById("cedula").value.trim();
-    const telefono = document.getElementById("telefono").value.trim();
-    const correo = document.getElementById("correo").value.trim();
-    const marca = document.getElementById("marca").value.trim();
-    const modelo = document.getElementById("modelo").value.trim();
-    const falla = document.getElementById("falla").value.trim();
+  localStorage.setItem("ordenes", JSON.stringify(ordenes));
+  localStorage.setItem("consecutivo", String(consecutivo));
+  mostrar();
+  nuevaOrden();
+  alert("Orden guardada ✅");
+}
 
-    if (!cliente || !cedula || !telefono || !correo || !marca || !modelo || !falla) {
-      alert("Completa todos los campos.");
-      return null;
-    }
-    if (!hayFirma) {
-      alert("La firma del cliente es obligatoria.");
-      return null;
-    }
-    return { cliente, cedula, telefono, correo, marca, modelo, falla };
+function nuevaOrden(){
+  clienteEl.value = "";
+  cedulaEl.value = "";
+  telefonoEl.value = "";
+  correoEl.value = "";
+  marcaEl.value = "";
+  modeloEl.value = "";
+  fallaEl.value = "";
+  borrarFirma();
+  refrescarModelosParaMarca("");
+  clienteEl.focus();
+}
+
+function eliminarOrden(numero){
+  if(!confirm("¿Borrar la orden #" + numero + "?")) return;
+  ordenes = ordenes.filter(o => o.numero !== numero);
+  localStorage.setItem("ordenes", JSON.stringify(ordenes));
+  mostrar();
+}
+
+function mostrar(){
+  if(!ordenes.length){
+    lista.innerHTML = `<div class="muted">No hay órdenes guardadas.</div>`;
+    return;
   }
 
-  function guardar() {
-    const datos = validarCampos();
-    if (!datos) return;
+  const sorted = [...ordenes].sort((a,b)=>a.numero-b.numero);
+  lista.innerHTML = sorted.map(o=>`
+    <div class="orden">
+      <b>Orden #${o.numero}</b><br>
+      <b>Cliente:</b> ${escapeHtml(o.cliente)}<br>
+      <b>Cédula:</b> ${escapeHtml(o.cedula)}<br>
+      <b>Tel:</b> ${escapeHtml(o.telefono)}<br>
+      <b>Email:</b> ${escapeHtml(o.correo)}<br><br>
+      <b>Equipo:</b> ${escapeHtml(o.marca)} ${escapeHtml(o.modelo)}<br>
+      <b>Falla:</b> ${escapeHtml(o.falla)}<br>
+      <small>${escapeHtml(o.fecha)}</small>
 
-    const orden = {
-      numero: contador,
-      ...datos,
-      firma: firmaBase64(),
-      fecha: new Date().toLocaleString()
-    };
-
-    ordenes.push(orden);
-    contador++;
-
-    // orden ascendente
-    ordenes.sort((a, b) => a.numero - b.numero);
-
-    localStorage.setItem("ordenes", JSON.stringify(ordenes));
-    localStorage.setItem("contador", String(contador));
-
-    mostrar();
-    nuevaOrden();
-    alert("Orden guardada ✅");
-  }
-
-  function nuevaOrden() {
-    document.getElementById("cliente").value = "";
-    document.getElementById("cedula").value = "";
-    document.getElementById("telefono").value = "";
-    document.getElementById("correo").value = "";
-    document.getElementById("marca").value = "";
-    document.getElementById("modelo").value = "";
-    document.getElementById("falla").value = "";
-    borrarFirma();
-    document.getElementById("cliente").focus();
-  }
-
-  function eliminarOrden(num) {
-    if (!confirm("¿Seguro que quieres borrar la orden #" + num + "?")) return;
-    ordenes = ordenes.filter(o => o.numero !== num);
-    localStorage.setItem("ordenes", JSON.stringify(ordenes));
-    mostrar();
-  }
-
-  function mostrar() {
-    const lista = document.getElementById("lista");
-    if (!ordenes.length) {
-      lista.innerHTML = "<div class='muted'>No hay órdenes guardadas.</div>";
-      return;
-    }
-
-    lista.innerHTML = ordenes.map(o => `
-      <div class="card">
-        <b>Orden #${o.numero}</b><br>
-        Cliente: ${escapeHtml(o.cliente)}<br>
-        Cédula: ${escapeHtml(o.cedula)}<br>
-        Tel: ${escapeHtml(o.telefono)}<br>
-        Email: ${escapeHtml(o.correo)}<br><br>
-        Marca: ${escapeHtml(o.marca)}<br>
-        Modelo: ${escapeHtml(o.modelo)}<br>
-        Falla: ${escapeHtml(o.falla)}<br>
-        <small>${escapeHtml(o.fecha)}</small><br><br>
-        <button class="btn-secondary" onclick="eliminarOrden(${o.numero})">🗑️ Borrar esta orden</button>
+      <div class="orden-actions">
+        <button class="btn-danger" onclick="eliminarOrden(${o.numero})">🗑️ Eliminar</button>
       </div>
-    `).join("");
-  }
+    </div>
+  `).join("");
+}
 
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
+/* ================== ESCAPE ================== */
+function escapeHtml(s){
+  return String(s||"").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[m]));
+}
+function escapeAttr(s){
+  return String(s||"").replace(/"/g, "&quot;");
+}
 </script>
 </body>
 </html>
