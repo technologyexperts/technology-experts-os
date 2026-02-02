@@ -2,524 +2,235 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Technology Expert's</title>
+
   <style>
-    :root{
-      --bg:#ffffff; --ink:#111; --muted:#666; --bd:#e3e3e3;
-      --primary:#111; --secondary:#666; --danger:#b00020; --soft:#f7f7f7;
-      --warnbg:#fff3cd; --warnbd:#ffe69c; --warnink:#664d03;
-    }
-    body{font-family:Arial,sans-serif;padding:16px;max-width:980px;margin:0 auto;background:var(--bg);color:var(--ink);}
-    h1{margin:0 0 10px;} h2{margin:18px 0 10px;} h3{margin:14px 0 8px;}
-    .muted{color:var(--muted);font-size:14px;}
-    .tabs{display:flex;gap:10px;margin:14px 0 12px;flex-wrap:wrap;}
-    .tab{border:1px solid var(--bd);padding:10px 12px;border-radius:10px;cursor:pointer;background:var(--soft);font-weight:800;}
-    .tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-    .card{border:1px solid var(--bd);border-radius:14px;padding:14px;margin-top:12px;background:#fff;}
-    .grid{display:grid;grid-template-columns:1fr;gap:10px;}
-    @media(min-width:760px){ .grid.cols2{grid-template-columns:1fr 1fr;} }
-    input,textarea,button,select{width:100%;padding:12px;font-size:16px;border:1px solid #d5d5d5;border-radius:12px;box-sizing:border-box;}
-    textarea{min-height:90px;resize:vertical;}
-    button{background:var(--primary);color:#fff;border:none;font-weight:900;cursor:pointer;}
-    button.secondary{background:var(--secondary);}
-    button.danger{background:var(--danger);}
-    button.light{background:#f0f0f0;color:var(--ink);border:1px solid var(--bd);}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-    .row > *{flex:1;min-width:160px;}
-    .orders{display:grid;gap:10px;margin-top:10px;}
-    .item{border:1px solid #e8e8e8;border-radius:14px;padding:12px;display:grid;gap:8px;}
-    .item header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;}
-    .pill{font-size:12px;padding:4px 10px;border-radius:999px;background:#f2f2f2;display:inline-block;}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;}
-    .actions button{width:auto;padding:10px 12px;border-radius:12px;}
-    .warn{background:var(--warnbg);border:1px solid var(--warnbd);padding:10px;border-radius:12px;color:var(--warnink);}
-    .sigWrap{border:1px dashed #bbb;border-radius:14px;padding:10px;background:#fafafa;}
-    canvas{width:100%;height:180px;border-radius:12px;background:#fff;border:1px solid #e6e6e6;touch-action:none;}
-    .checkline{display:flex;gap:10px;align-items:flex-start;}
-    .checkline input[type="checkbox"]{width:auto;margin-top:4px;}
-    .noPrint{ }
-    @media print{
-      .noPrint{display:none !important;}
-      body{padding:0;max-width:none;}
-      .card{border:1px solid #000;}
-      .item{border:1px solid #000;}
-    }
+    body { font-family: Arial, sans-serif; padding: 16px; background:#fff; }
+    h1 { margin: 0 0 8px; }
+    h2 { margin-top: 18px; }
+    h3 { margin: 14px 0 8px; }
+    .card { border:1px solid #e5e5e5; border-radius:14px; padding:14px; margin-top:12px; }
+    input, textarea { width:100%; box-sizing:border-box; padding:12px; margin:8px 0; font-size:16px; border:1px solid #d8d8d8; border-radius:12px; }
+    textarea { min-height: 90px; resize: vertical; }
+    button { width:100%; padding:14px; font-size:16px; border:none; border-radius:12px; margin-top:10px; }
+    .btn-primary { background:#000; color:#fff; }
+    .btn-secondary { background:#666; color:#fff; }
+    .row { display:flex; gap:10px; }
+    .row > button { width: 50%; }
+    .muted { color:#666; font-size: 13px; margin-top: 6px; }
+
+    /* Firma */
+    .firma-wrap { border:1px dashed #bfbfbf; border-radius:14px; padding:10px; background:#fafafa; }
+    #firmaCanvas { width:100%; height:180px; display:block; border-radius:12px; background:#fff; border:1px solid #e0e0e0; touch-action: none; }
+    .firma-hint { font-size: 13px; color:#666; margin: 0 0 8px; }
   </style>
 </head>
 
 <body>
   <h1>Technology Expert's</h1>
-  <div class="muted">Órdenes y Ventas (celular/tablet/PC). Exporta CSV para Excel y Backup JSON completo para la PC.</div>
+  <div class="muted">Orden de servicio (cel/tablet/PC). Guarda local (por ahora).</div>
 
-  <!-- Barra superior (backups, buscar) -->
-  <div class="card noPrint">
-    <div class="row">
-      <button class="light" onclick="exportCSV('orden')">⬇️ CSV Órdenes</button>
-      <button class="light" onclick="exportCSV('venta')">⬇️ CSV Ventas</button>
-      <button class="light" onclick="exportBackupJSON()">📦 Backup JSON (todo)</button>
+  <div class="card">
+    <h2>Orden de Servicio</h2>
 
-      <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importBackupJSON(event)">
-      <button class="light" onclick="document.getElementById('importFile').click()">📥 Importar Backup JSON</button>
+    <h3>Datos del cliente</h3>
+    <input id="cliente" placeholder="Nombre del cliente" autocomplete="name" />
+    <input id="cedula" placeholder="Cédula" inputmode="numeric" />
+    <input id="telefono" placeholder="Celular" inputmode="tel" autocomplete="tel" />
+    <input id="correo" placeholder="Correo electrónico" inputmode="email" autocomplete="email" />
+
+    <h3>Equipo</h3>
+    <input id="marca" placeholder="Marca del celular" />
+    <input id="modelo" placeholder="Modelo del celular" />
+    <textarea id="falla" placeholder="Falla reportada"></textarea>
+
+    <h3>Firma del cliente (obligatoria)</h3>
+    <div class="firma-wrap">
+      <p class="firma-hint">Firma con el dedo. Si no firmas, NO se guarda la orden.</p>
+      <canvas id="firmaCanvas"></canvas>
+
+      <div class="row">
+        <button class="btn-secondary" onclick="borrarFirma()">🧽 Borrar firma</button>
+        <button class="btn-primary" onclick="guardar()">💾 Guardar orden</button>
+      </div>
     </div>
 
-    <div style="margin-top:12px;">
-      <input id="buscar" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, modelo, falla, producto, IMEI..." oninput="renderAll()">
-      <div class="muted" style="margin-top:6px;">Tip: escribe “2100” o un IMEI y te lo filtra.</div>
-    </div>
+    <button class="btn-secondary" onclick="nuevaOrden()">🆕 Nueva orden (limpiar campos)</button>
+
+    <h3>Órdenes guardadas</h3>
+    <div id="lista"></div>
   </div>
 
-  <div class="tabs noPrint">
-    <div class="tab active" id="tabOrden" onclick="showTab('orden')">🧾 Orden de servicio</div>
-    <div class="tab" id="tabVenta" onclick="showTab('venta')">💳 Ventas</div>
-  </div>
+<script>
+  // ====== Storage ======
+  let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
+  let contador = Number(localStorage.getItem("contador")) || 2100;
 
-  <!-- ====================== ORDENES ====================== -->
-  <section id="panelOrden">
-    <div class="card noPrint">
-      <h2>Orden de Servicio</h2>
+  // ====== Firma (Canvas) - funciona en móvil y PC ======
+  const canvas = document.getElementById("firmaCanvas");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
-      <h3>Datos del cliente</h3>
-      <div class="grid cols2">
-        <input id="o_cliente" placeholder="Nombre del cliente">
-        <input id="o_cedula" placeholder="Cédula" inputmode="numeric">
-        <input id="o_telefono" placeholder="Celular" inputmode="tel">
-        <input id="o_correo" placeholder="Correo electrónico" inputmode="email">
+  let dibujando = false;
+  let hayFirma = false;
+
+  function ajustarCanvas() {
+    // Ajusta el tamaño REAL del canvas para que coincida con el tamaño visible
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(rect.height * dpr);
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // escala para dibujar correcto
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+  }
+
+  function pos(e) {
+    const r = canvas.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+
+  canvas.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    dibujando = true;
+    const p = pos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  }, { passive: false });
+
+  canvas.addEventListener("pointermove", (e) => {
+    if (!dibujando) return;
+    e.preventDefault();
+    const p = pos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    hayFirma = true;
+  }, { passive: false });
+
+  function parar(e) {
+    if (!dibujando) return;
+    e.preventDefault();
+    dibujando = false;
+  }
+
+  canvas.addEventListener("pointerup", parar, { passive: false });
+  canvas.addEventListener("pointercancel", parar, { passive: false });
+  canvas.addEventListener("pointerleave", parar, { passive: false });
+
+  function borrarFirma() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hayFirma = false;
+  }
+
+  function firmaBase64() {
+    // Si no hay firma, devuelve vacío (pero igual bloqueamos el guardado)
+    if (!hayFirma) return "";
+    return canvas.toDataURL("image/png");
+  }
+
+  // Ajustar canvas al cargar y al rotar pantalla
+  window.addEventListener("load", () => { ajustarCanvas(); mostrar(); });
+  window.addEventListener("resize", () => {
+    // Si quieres conservar lo dibujado al rotar, se puede mejorar.
+    // Por ahora lo re-ajusta y se borra la firma (más seguro).
+    ajustarCanvas();
+    borrarFirma();
+  });
+
+  // ====== App ======
+  function validarCampos() {
+    const cliente = document.getElementById("cliente").value.trim();
+    const cedula = document.getElementById("cedula").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+    const correo = document.getElementById("correo").value.trim();
+    const marca = document.getElementById("marca").value.trim();
+    const modelo = document.getElementById("modelo").value.trim();
+    const falla = document.getElementById("falla").value.trim();
+
+    if (!cliente || !cedula || !telefono || !correo || !marca || !modelo || !falla) {
+      alert("Completa todos los campos.");
+      return null;
+    }
+    if (!hayFirma) {
+      alert("La firma del cliente es obligatoria.");
+      return null;
+    }
+    return { cliente, cedula, telefono, correo, marca, modelo, falla };
+  }
+
+  function guardar() {
+    const datos = validarCampos();
+    if (!datos) return;
+
+    const orden = {
+      numero: contador,
+      ...datos,
+      firma: firmaBase64(),
+      fecha: new Date().toLocaleString()
+    };
+
+    ordenes.push(orden);
+    contador++;
+
+    // orden ascendente
+    ordenes.sort((a, b) => a.numero - b.numero);
+
+    localStorage.setItem("ordenes", JSON.stringify(ordenes));
+    localStorage.setItem("contador", String(contador));
+
+    mostrar();
+    nuevaOrden();
+    alert("Orden guardada ✅");
+  }
+
+  function nuevaOrden() {
+    document.getElementById("cliente").value = "";
+    document.getElementById("cedula").value = "";
+    document.getElementById("telefono").value = "";
+    document.getElementById("correo").value = "";
+    document.getElementById("marca").value = "";
+    document.getElementById("modelo").value = "";
+    document.getElementById("falla").value = "";
+    borrarFirma();
+    document.getElementById("cliente").focus();
+  }
+
+  function eliminarOrden(num) {
+    if (!confirm("¿Seguro que quieres borrar la orden #" + num + "?")) return;
+    ordenes = ordenes.filter(o => o.numero !== num);
+    localStorage.setItem("ordenes", JSON.stringify(ordenes));
+    mostrar();
+  }
+
+  function mostrar() {
+    const lista = document.getElementById("lista");
+    if (!ordenes.length) {
+      lista.innerHTML = "<div class='muted'>No hay órdenes guardadas.</div>";
+      return;
+    }
+
+    lista.innerHTML = ordenes.map(o => `
+      <div class="card">
+        <b>Orden #${o.numero}</b><br>
+        Cliente: ${escapeHtml(o.cliente)}<br>
+        Cédula: ${escapeHtml(o.cedula)}<br>
+        Tel: ${escapeHtml(o.telefono)}<br>
+        Email: ${escapeHtml(o.correo)}<br><br>
+        Marca: ${escapeHtml(o.marca)}<br>
+        Modelo: ${escapeHtml(o.modelo)}<br>
+        Falla: ${escapeHtml(o.falla)}<br>
+        <small>${escapeHtml(o.fecha)}</small><br><br>
+        <button class="btn-secondary" onclick="eliminarOrden(${o.numero})">🗑️ Borrar esta orden</button>
       </div>
+    `).join("");
+  }
 
-      <h3>Equipo</h3>
-      <div class="grid cols2">
-        <input id="o_marca" placeholder="Marca del celular">
-        <input id="o_modelo" placeholder="Modelo del celular">
-      </div>
-      <textarea id="o_falla" placeholder="Falla reportada"></textarea>
-
-      <h3>Firma del cliente (obligatoria)</h3>
-      <div class="sigWrap">
-        <div class="muted">Firma con el dedo. (Obligatoria para guardar.)</div>
-        <canvas id="o_firma"></canvas>
-        <div class="row" style="margin-top:10px;">
-          <button class="secondary" onclick="clearSignature()">🧽 Borrar firma</button>
-          <button onclick="guardarOrden()">💾 Guardar orden</button>
-        </div>
-      </div>
-
-      <div class="row" style="margin-top:10px;">
-        <button class="secondary" onclick="nuevaOrden()">🆕 Nueva orden (limpiar)</button>
-        <button class="danger" onclick="borrarTodo('orden')">🗑️ Borrar TODO Órdenes</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="row noPrint">
-        <h2 style="flex:2;margin:0;">Órdenes guardadas</h2>
-      </div>
-      <div id="listaOrdenes" class="orders"></div>
-    </div>
-  </section>
-
-  <!-- ====================== VENTAS ====================== -->
-  <section id="panelVenta" style="display:none;">
-    <div class="card noPrint">
-      <h2>Ventas</h2>
-
-      <div class="warn" style="margin-bottom:12px;">
-        Para <b>Venta de teléfono</b>: <b>IMEI 1 obligatorio</b>, <b>IMEI 2 opcional</b> y el <b>término</b> es obligatorio.
-      </div>
-
-      <h3>Tipo de venta</h3>
-      <select id="v_tipo" onchange="onTipoVentaChange()">
-        <option value="telefono">Venta de teléfono</option>
-        <option value="accesorio">Accesorio / Servicio</option>
-      </select>
-
-      <h3>Datos del cliente</h3>
-      <div class="grid cols2">
-        <input id="v_cliente" placeholder="Nombre del cliente">
-        <input id="v_cedula" placeholder="Cédula" inputmode="numeric">
-        <input id="v_telefono" placeholder="Celular" inputmode="tel">
-        <input id="v_correo" placeholder="Correo electrónico" inputmode="email">
-      </div>
-
-      <h3>Detalle</h3>
-      <div class="grid cols2">
-        <input id="v_producto" placeholder="Producto / Equipo / Servicio">
-        <input id="v_valor" placeholder="Valor" inputmode="decimal">
-      </div>
-
-      <!-- IMEI SOLO PARA VENTA DE TELEFONO -->
-      <div id="boxImei" style="margin-top:10px;">
-        <input id="v_imei" placeholder="IMEI 1 (obligatorio en venta de teléfono)" inputmode="numeric">
-        <input id="v_imei2" placeholder="IMEI 2 (opcional si trae 2 IMEI)" inputmode="numeric">
-        <div class="muted">Recomendado: 14–17 dígitos cada IMEI.</div>
-      </div>
-
-      <!-- TERMINO OBLIGATORIO SOLO PARA VENTA DE TELEFONO -->
-      <div id="boxTermino" style="margin-top:12px;">
-        <div class="checkline">
-          <input type="checkbox" id="v_termino">
-          <label for="v_termino">
-            Acepto: <b>Si no respondemos, NO registramos el/los IMEI (IMEI 1 y/o IMEI 2) ante el operador que lo van a usar.</b>
-          </label>
-        </div>
-      </div>
-
-      <div class="row" style="margin-top:12px;">
-        <button onclick="guardarVenta()">💾 Guardar venta</button>
-        <button class="secondary" onclick="nuevaVenta()">🆕 Nueva venta (limpiar)</button>
-        <button class="danger" onclick="borrarTodo('venta')">🗑️ Borrar TODO Ventas</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="row noPrint">
-        <h2 style="flex:2;margin:0;">Ventas guardadas</h2>
-      </div>
-      <div id="listaVentas" class="orders"></div>
-    </div>
-  </section>
-
-  <script>
-    // ========================= UTIL =========================
-    const $ = (id) => document.getElementById(id);
-
-    function escapeHtml(str) {
-      return String(str || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-    function formatFecha(iso){
-      try { return new Date(iso).toLocaleString(); } catch(e){ return iso; }
-    }
-    function validarEmail(email) {
-      if (!email) return true;
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-    function csvEscape(s) {
-      s = String(s ?? "");
-      if (s.includes('"') || s.includes(",") || s.includes("\n")) return `"${s.replace(/"/g,'""')}"`;
-      return s;
-    }
-    function textoIncluye(obj, q){
-      const t = JSON.stringify(obj).toLowerCase();
-      return t.includes(q);
-    }
-
-    // ========================= STORAGE KEYS =========================
-    const K_ORDENES = "te_ordenes";
-    const K_CONT_ORD = "te_contador_orden"; // orden ascendente
-    const K_VENTAS  = "te_ventas";
-    const K_CONT_VEN= "te_contador_venta"; // venta ascendente
-
-    // ========================= LOAD INITIAL =========================
-    let ordenes = JSON.parse(localStorage.getItem(K_ORDENES) || "[]");
-    let ventas  = JSON.parse(localStorage.getItem(K_VENTAS)  || "[]");
-    let contOrden = Number(localStorage.getItem(K_CONT_ORD) || 2100);
-    let contVenta = Number(localStorage.getItem(K_CONT_VEN) || 1000);
-
-    // ========================= TABS =========================
-    function showTab(which) {
-      const isOrden = which === 'orden';
-      $("panelOrden").style.display = isOrden ? "" : "none";
-      $("panelVenta").style.display = isOrden ? "none" : "";
-      $("tabOrden").classList.toggle("active", isOrden);
-      $("tabVenta").classList.toggle("active", !isOrden);
-    }
-
-    // ========================= FIRMA (ORDEN) =========================
-    const canvas = $("o_firma");
-    const ctx = canvas.getContext("2d");
-    let drawing = false;
-    let hasSignature = false;
-
-    function resizeCanvas(){
-      const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(180 * dpr);
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-      ctx.lineWidth = 2.2;
-      ctx.lineCap = "round";
-      ctx.strokeStyle = "#111";
-      clearSignature();
-    }
-
-    function getPos(e){
-      const rect = canvas.getBoundingClientRect();
-      const t = (e.touches && e.touches[0]) ? e.touches[0] : null;
-      const clientX = t ? t.clientX : e.clientX;
-      const clientY = t ? t.clientY : e.clientY;
-      return { x: clientX - rect.left, y: clientY - rect.top };
-    }
-
-    function startDraw(e){
-      drawing = true;
-      hasSignature = true;
-      const p = getPos(e);
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
-      e.preventDefault();
-    }
-    function moveDraw(e){
-      if(!drawing) return;
-      const p = getPos(e);
-      ctx.lineTo(p.x, p.y);
-      ctx.stroke();
-      e.preventDefault();
-    }
-    function endDraw(e){
-      drawing = false;
-      e.preventDefault();
-    }
-
-    canvas.addEventListener("mousedown", startDraw);
-    canvas.addEventListener("mousemove", moveDraw);
-    window.addEventListener("mouseup", endDraw);
-
-    canvas.addEventListener("touchstart", startDraw, {passive:false});
-    canvas.addEventListener("touchmove", moveDraw, {passive:false});
-    canvas.addEventListener("touchend", endDraw, {passive:false});
-
-    function clearSignature(){
-      hasSignature = false;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-    }
-
-    function signatureDataUrl(){
-      return canvas.toDataURL("image/png");
-    }
-
-    // Inicializar canvas bien
-    setTimeout(resizeCanvas, 60);
-    window.addEventListener("resize", () => setTimeout(resizeCanvas, 80));
-
-    // ========================= ORDENES =========================
-    function guardarOrden(){
-      const cliente = $("o_cliente").value.trim();
-      const cedula  = $("o_cedula").value.trim();
-      const telefono= $("o_telefono").value.trim();
-      const correo  = $("o_correo").value.trim();
-      const marca   = $("o_marca").value.trim();
-      const modelo  = $("o_modelo").value.trim();
-      const falla   = $("o_falla").value.trim();
-
-      if(!cliente || !cedula || !telefono || !correo || !marca || !modelo || !falla){
-        alert("Completa todos los campos de la orden.");
-        return;
-      }
-      if(!validarEmail(correo)){
-        alert("Correo inválido.");
-        return;
-      }
-      if(!hasSignature){
-        alert("La firma del cliente es obligatoria para guardar la orden.");
-        return;
-      }
-
-      const orden = {
-        tipo:"orden",
-        numero: contOrden,
-        cliente, cedula, telefono, correo,
-        marca, modelo, falla,
-        firma_png: signatureDataUrl(),
-        fechaISO: new Date().toISOString()
-      };
-
-      ordenes.push(orden);
-      contOrden++;
-      localStorage.setItem(K_ORDENES, JSON.stringify(ordenes));
-      localStorage.setItem(K_CONT_ORD, String(contOrden));
-
-      nuevaOrden();
-      renderAll();
-      alert("Orden guardada ✅");
-    }
-
-    function nuevaOrden(){
-      $("o_cliente").value = "";
-      $("o_cedula").value = "";
-      $("o_telefono").value = "";
-      $("o_correo").value = "";
-      $("o_marca").value = "";
-      $("o_modelo").value = "";
-      $("o_falla").value = "";
-      clearSignature();
-      $("o_cliente").focus();
-    }
-
-    // ========================= VENTAS =========================
-    function onTipoVentaChange(){
-      const isTel = $("v_tipo").value === "telefono";
-      $("boxImei").style.display = isTel ? "" : "none";
-      $("boxTermino").style.display = isTel ? "" : "none";
-    }
-
-    function validarImei(imei){
-      const only = String(imei||"").replace(/\D/g,"");
-      return only.length >= 14 && only.length <= 17;
-    }
-
-    function guardarVenta(){
-      const tipoVenta = $("v_tipo").value; // telefono/accesorio
-      const cliente = $("v_cliente").value.trim();
-      const cedula  = $("v_cedula").value.trim();
-      const telefono= $("v_telefono").value.trim();
-      const correo  = $("v_correo").value.trim();
-      const producto= $("v_producto").value.trim();
-      const valor   = $("v_valor").value.trim();
-
-      const isTel = tipoVenta === "telefono";
-      const imei1 = $("v_imei").value.trim();
-      const imei2 = $("v_imei2").value.trim();
-      const termino = $("v_termino").checked;
-
-      if(!cliente || !cedula || !telefono || !correo || !producto || !valor){
-        alert("Completa todos los campos de la venta.");
-        return;
-      }
-      if(!validarEmail(correo)){
-        alert("Correo inválido.");
-        return;
-      }
-
-      if(isTel){
-        if(!imei1){ alert("IMEI 1 es obligatorio en venta de teléfono."); return; }
-        if(!validarImei(imei1)){ alert("IMEI 1 inválido (14–17 dígitos)."); return; }
-        if(imei2 && !validarImei(imei2)){ alert("IMEI 2 inválido (14–17 dígitos)."); return; }
-        if(!termino){
-          alert("Debes aceptar el término: no registramos el/los IMEI ante el operador si no respondemos.");
-          return;
-        }
-      }
-
-      const venta = {
-        tipo:"venta",
-        numero: contVenta,
-        tipoVenta,
-        cliente, cedula, telefono, correo,
-        producto, valor,
-        imei1: isTel ? imei1 : "",
-        imei2: isTel ? imei2 : "",
-        termino_operadores: isTel ? true : false,
-        fechaISO: new Date().toISOString()
-      };
-
-      ventas.push(venta);
-      contVenta++;
-      localStorage.setItem(K_VENTAS, JSON.stringify(ventas));
-      localStorage.setItem(K_CONT_VEN, String(contVenta));
-
-      nuevaVenta();
-      renderAll();
-      alert("Venta guardada ✅");
-    }
-
-    function nuevaVenta(){
-      $("v_cliente").value = "";
-      $("v_cedula").value = "";
-      $("v_telefono").value = "";
-      $("v_correo").value = "";
-      $("v_producto").value = "";
-      $("v_valor").value = "";
-      $("v_imei").value = "";
-      $("v_imei2").value = "";
-      $("v_termino").checked = false;
-      $("v_cliente").focus();
-    }
-
-    // ========================= ELIMINAR / BORRAR TODO =========================
-    function eliminarUno(tipo, numero){
-      if(!confirm("¿Eliminar este registro?")) return;
-      if(tipo === "orden"){
-        ordenes = ordenes.filter(o => o.numero !== numero);
-        localStorage.setItem(K_ORDENES, JSON.stringify(ordenes));
-      } else {
-        ventas = ventas.filter(v => v.numero !== numero);
-        localStorage.setItem(K_VENTAS, JSON.stringify(ventas));
-      }
-      renderAll();
-    }
-
-    function borrarTodo(tipo){
-      if(!confirm("¿Seguro? Esto borra TODO y no se puede recuperar.")) return;
-      if(tipo === "orden"){
-        ordenes = [];
-        localStorage.removeItem(K_ORDENES);
-        // no reiniciamos contOrden (ascendente continuo)
-      } else {
-        ventas = [];
-        localStorage.removeItem(K_VENTAS);
-        // no reiniciamos contVenta (ascendente continuo)
-      }
-      renderAll();
-    }
-
-    // ========================= EXPORT CSV =========================
-    function exportCSV(tipo){
-      let rows = [];
-      let filename = "";
-      const q = ($("buscar").value || "").trim().toLowerCase();
-
-      if(tipo === "orden"){
-        filename = "ordenes.csv";
-        rows.push(["numero","cliente","cedula","telefono","correo","marca","modelo","falla","fechaISO"]);
-        const sorted = [...ordenes].sort((a,b)=>a.numero-b.numero);
-        for(const o of sorted){
-          if(q && !textoIncluye(o, q)) continue;
-          rows.push([o.numero,o.cliente,o.cedula,o.telefono,o.correo,o.marca,o.modelo,o.falla,o.fechaISO]);
-        }
-      } else {
-        filename = "ventas.csv";
-        rows.push(["numero","tipoVenta","cliente","cedula","telefono","correo","producto","valor","imei1","imei2","termino_operadores","fechaISO"]);
-        const sorted = [...ventas].sort((a,b)=>a.numero-b.numero);
-        for(const v of sorted){
-          if(q && !textoIncluye(v, q)) continue;
-          rows.push([v.numero,v.tipoVenta,v.cliente,v.cedula,v.telefono,v.correo,v.producto,v.valor,v.imei1||"",v.imei2||"",v.termino_operadores?"SI":"NO",v.fechaISO]);
-        }
-      }
-
-      const csv = rows.map(r => r.map(cell => csvEscape(cell)).join(",")).join("\n");
-      const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    // ========================= BACKUP JSON (COMPLETO) =========================
-    function exportBackupJSON(){
-      const payload = {
-        app: "Technology Experts",
-        exportadoISO: new Date().toISOString(),
-        contOrden,
-        contVenta,
-        ordenes,
-        ventas
-      };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `backup_te_${new Date().toISOString().slice(0,10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    async function importBackupJSON(event){
-      const file = event.target.files?.[0];
-      event.target.value = "";
-      if(!file) return;
-
-      try{
-        const text = await file.text();
-        const data = JSON.parse(text);
-        if(!data || (!Array.isArray(data.o
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+</script>
+</body>
+</html>
