@@ -2,535 +2,1140 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Technology Expert’s</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technology Expert's</title>
 
   <style>
     :root{
-      --royal:#0a33ff;
-      --royal2:#0626c9;
-      --bg:#0b1020;
-      --card:#ffffff;
-      --bd:#e7e7e7;
-      --muted:#6b7280;
-      --danger:#b00020;
-      --ok:#0f9d58;
-      --warn:#fff3cd;
-      --warnBd:#ffe69c;
-      --blue:#1b6cff; /* listo */
-      --yellow:#ffd54f; /* recibido */
-      --gray:#e9ecef;
+      --bg1:#0A2BFF;
+      --bg2:#061A7A;
+      --card: rgba(255,255,255,.12);
+      --card2: rgba(255,255,255,.18);
+      --white:#fff;
+      --muted: rgba(255,255,255,.85);
+      --muted2: rgba(255,255,255,.7);
+      --shadow: 0 18px 45px rgba(0,0,0,.25);
+      --radius: 22px;
     }
-    *{ box-sizing:border-box; }
-    body{ margin:0; font-family:Arial, sans-serif; background:#fff; color:#0b1020; }
-    a{ color:inherit; }
-
-    /* HOME */
-    .home{
-      min-height:100vh;
-      background: radial-gradient(1200px 600px at 20% 10%, #2f58ff 0%, var(--royal) 35%, #061a6a 100%);
-      color:#fff;
-      padding:18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.18), transparent 60%),
+                  radial-gradient(800px 500px at 85% 35%, rgba(255,255,255,.12), transparent 55%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+      color: var(--white);
+      min-height: 100vh;
     }
-    .homeWrap{
-      width:min(1040px, 100%);
+    .wrap{max-width: 980px; margin: 0 auto; padding: 26px 16px 70px;}
+    .brand{
+      margin-top: 26px;
+      padding: 18px 16px;
+    }
+    .brand h1{
+      margin:0;
+      font-size: 44px;
+      letter-spacing: .2px;
+      line-height: 1.05;
+    }
+    .brand p{margin:10px 0 0; color: var(--muted); font-size: 16px}
+    .panel{
+      margin-top: 18px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .panel-inner{padding: 18px}
+    .grid{
       display:grid;
-      gap:16px;
-      grid-template-columns:1fr;
-      align-items:center;
+      gap: 12px;
     }
-    @media(min-width:900px){ .homeWrap{ grid-template-columns:1.1fr 0.9fr; } }
-    .logoTitle{ font-weight:900; font-size:34px; letter-spacing:.2px; line-height:1.08; }
-    .subtitle{ opacity:.92; font-size:15px; line-height:1.45; max-width:56ch; }
-    .homeButtons{ display:grid; gap:12px; margin-top:12px; grid-template-columns:1fr; }
-    @media(min-width:520px){ .homeButtons{ grid-template-columns:1fr 1fr; } }
-    .bigBtn{
-      border:none;
-      border-radius:18px;
-      padding:16px 14px;
-      font-size:16px;
-      font-weight:900;
+    .btnBig{
+      width: 100%;
+      border:0;
       cursor:pointer;
+      color:#0a1536;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 16px 16px;
+      font-size: 18px;
+      font-weight: 750;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
-      transition:transform .08s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,.18);
     }
-    .bigBtn:active{ transform:scale(0.99); }
-    .bigBtn.light{ background:#fff; color:#0b1020; }
-    .bigBtn.dark{
-      background:rgba(255,255,255,.12);
+    .btnBig.secondary{
+      background: rgba(255,255,255,.16);
       color:#fff;
-      border:1px solid rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: none;
+      font-weight: 700;
     }
-    .chipRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
     .chip{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.22);
-    }
-    .heroCard{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:22px;
-      padding:14px;
-      backdrop-filter: blur(8px);
-    }
-    .heroSvg{ width:100%; height:auto; display:block; border-radius:18px; }
-
-    /* APP */
-    .app{ display:none; padding:16px; max-width:1100px; margin:0 auto; }
-    .topbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
-    .btn{
-      border:none; border-radius:14px; padding:12px 12px;
-      font-weight:900; cursor:pointer;
-      background:#111; color:#fff;
-      min-width:160px;
-    }
-    .btn.light{ background:#f2f2f2; color:#111; border:1px solid #e0e0e0; }
-    .btn.danger{ background:var(--danger); }
-    .pill{
-      display:inline-block;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      border:1px solid #e6e6e6;
-      background:#f7f7f7;
-    }
-    .pill.ok{ background:#e9f7ef; border-color:#c9efd8; }
-    .pill.lock{ background:var(--warn); border-color:var(--warnBd); color:#664d03; }
-
-    .tabs{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-    .tab{
-      flex:1; min-width:160px;
-      border:none; border-radius:16px;
-      padding:12px 12px;
-      font-weight:900;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.12);
+      color:#fff;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 650;
+      font-size: 14px;
       cursor:pointer;
-      background:#f2f2f2;
-      border:1px solid #e0e0e0;
+      user-select:none;
     }
-    .tab.active{ background:#111; color:#fff; border-color:#111; }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--bd);
-      border-radius:18px;
-      padding:14px;
-      margin-top:12px;
+    .chip:active{transform: scale(.98)}
+    .heroimg{
+      margin-top: 14px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 24px;
+      padding: 22px;
+      overflow:hidden;
+      position: relative;
     }
-    h2{ margin:10px 0 10px; }
-    .muted{ color:var(--muted); font-size:13px; }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; }
-    .row > *{ flex:1; min-width:180px; }
+    .bubble{
+      position:absolute; border-radius:999px; filter: blur(.2px);
+      opacity:.55;
+    }
+    .bubble.b1{width:190px;height:190px; left:10%; top:18%; background: rgba(255,255,255,.25);}
+    .bubble.b2{width:240px;height:240px; left:62%; top:6%; background: rgba(255,255,255,.22);}
+    .bubble.b3{width:210px;height:210px; left:48%; top:52%; background: rgba(255,255,255,.16);}
+    .mock{
+      position: relative;
+      margin: 40px auto 0;
+      width: min(520px, 100%);
+      height: 250px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(10,25,80,.25);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.06);
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding-bottom: 16px;
+      color: rgba(255,255,255,.85);
+      font-weight: 650;
+      text-align:center;
+      backdrop-filter: blur(6px);
+    }
 
+    /* ====== APP ====== */
+    .hidden{display:none !important}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .back{
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.12);
+      color:#fff;
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 750;
+    }
+    .title{
+      font-weight: 900;
+      letter-spacing:.2px;
+      font-size: 22px;
+    }
+    .box{
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    label{display:block; font-weight: 750; margin: 12px 0 6px}
     input, textarea, select{
       width:100%;
-      padding:12px;
-      font-size:16px;
-      border-radius:14px;
-      border:1px solid #d8d8d8;
-      margin:8px 0;
-      background:#fff;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.94);
+      color:#101828;
+      font-size: 16px;
+      outline: none;
     }
-    textarea{ min-height:90px; resize:vertical; }
-
-    /* Signature */
-    .firma-wrap{ border:1px dashed #bdbdbd; border-radius:18px; padding:10px; background:#fafafa; }
-    canvas.sig{
-      width:100%; height:180px;
-      background:#fff;
-      border-radius:14px;
-      border:1px solid #ddd;
-      touch-action:none;
-      display:block;
-    }
-
-    /* Lists */
-    .item{
-      border:1px solid #ddd;
-      border-radius:16px;
-      padding:12px;
-      margin-top:10px;
-    }
-    .itemActions{ margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
-    .itemActions button{
-      border:none;
-      border-radius:14px;
-      padding:10px 12px;
-      font-weight:900;
-      cursor:pointer;
-      background:#111;
-      color:#fff;
-    }
-    .itemActions .danger{ background:var(--danger); }
-    .itemActions .light{ background:#f2f2f2; color:#111; border:1px solid #e0e0e0; }
-
-    /* Status badge */
-    .badge{ display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:900; }
-    .b1{ background:var(--yellow); }
-    .b3{ background:rgba(27,108,255,.16); color:#0b3aa3; border:1px solid rgba(27,108,255,.25); }
-    .b2{ background:#ffe8cc; }
-    .b4{ background:#d3f9d8; }
-    .b9{ background:#ffd6d6; }
-
-    /* Inventory search list */
-    .suggestBox{
-      border:1px solid #e0e0e0;
-      border-radius:14px;
-      overflow:hidden;
-      background:#fff;
-      margin-top:-4px;
-    }
-    .suggestItem{
-      padding:10px 12px;
-      border-top:1px solid #eee;
+    textarea{min-height: 90px; resize: vertical}
+    .actions{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .primary{
+      border:0;
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: #0b1220;
+      color:#fff;
+      font-weight: 850;
+      cursor:pointer;
+      min-width: 170px;
+    }
+    .gray{
+      border:0;
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.28);
+      color:#0b1220;
+      font-weight: 850;
+      cursor:pointer;
+      min-width: 170px;
+    }
+    .danger{
+      border:0;
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: #b91c1c;
+      color:#fff;
+      font-weight: 900;
+      cursor:pointer;
+      min-width: 170px;
+    }
+    .note{color: var(--muted); font-size: 13px; margin-top: 6px}
+    .list{
+      margin-top: 14px;
+      display:grid;
+      gap: 10px;
+    }
+    .item{
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 12px 12px;
+    }
+    .item h4{margin: 0 0 8px; font-size: 18px}
+    .item .meta{color: rgba(255,255,255,.85); font-size: 14px; line-height: 1.35}
+    .item .small{color: rgba(255,255,255,.75); font-size: 12px; margin-top: 8px}
+    .item .itemBtns{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .mini{
+      border:1px solid rgba(255,255,255,.24);
+      background: rgba(255,255,255,.12);
+      color:#fff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-weight: 800;
       cursor:pointer;
     }
-    .suggestItem:first-child{ border-top:none; }
-    .suggestItem.active{ background:#f2f6ff; }
-    .sLeft{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .thumb{
-      width:40px; height:40px; border-radius:12px; background:#f2f2f2;
-      display:flex; align-items:center; justify-content:center;
-      overflow:hidden;
-      flex:0 0 auto;
+
+    /* Firma */
+    .sigWrap{
+      margin-top: 12px;
+      background: rgba(255,255,255,.08);
+      border: 1px dashed rgba(255,255,255,.35);
+      border-radius: 18px;
+      padding: 10px;
     }
-    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .sName{ font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:52vw; }
-    .sMeta{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .sPrice{ font-weight:900; }
-
-    .lowStock{ border:1px solid #ffe69c; background:#fff3cd; }
-    .dangerText{ color:var(--danger); font-weight:900; }
-
-    /* QR area */
-    .qrWrap{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; }
-    .qrBox{ border:1px solid #e0e0e0; border-radius:16px; padding:12px; background:#fff; }
-    #qrCanvas{ width:220px; height:220px; image-rendering:pixelated; }
-    video{ width:100%; border-radius:16px; border:1px solid #e0e0e0; background:#000; }
-
-    /* Print */
-    @media print{
-      body{ margin:0; }
-      .noPrint{ display:none !important; }
-      .printArea{ padding:12px; font-size:12px; }
-      .printArea h1{ font-size:16px; margin:0 0 6px; }
-      .printArea .line{ margin:4px 0; }
-      .printArea .small{ font-size:11px; color:#333; }
+    canvas{
+      width:100%;
+      height: 160px;
+      background: rgba(255,255,255,.96);
+      border-radius: 14px;
+      touch-action: none; /* IMPORTANT para que puedas dibujar en móvil */
+    }
+    .sigRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .toggleRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .chk{
+      display:flex; gap:10px; align-items:flex-start;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .chk input{width:auto; margin-top:3px}
+    .search{
+      margin-top: 12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .search input{flex: 1; min-width: 220px}
+    .pillBar{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;
+    }
+    .pill{
+      border-radius: 999px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.12);
+      cursor:pointer;
+      font-weight: 800;
+    }
+    .pill.active{
+      background:#fff;
+      color:#0b1220;
+      border-color:#fff;
     }
   </style>
 </head>
+
 <body>
+  <div class="wrap">
 
-<!-- HOME -->
-<section class="home" id="home">
-  <div class="homeWrap">
-    <div>
-      <div class="logoTitle">Technology Expert’s</div>
-      <div class="subtitle">
-        Órdenes de servicio + ventas + inventario + etiquetas QR. Sin servidores (por ahora). Admin con PIN.
+    <!-- ===== HOME ===== -->
+    <section id="home">
+      <div class="brand">
+        <h1>Technology Expert's</h1>
+        <p>Órdenes de servicio + ventas. Funciona en celular/tablet y luego exportas a PC (CSV/Backup JSON). Admin con PIN.</p>
       </div>
 
-      <div class="homeButtons">
-        <button class="bigBtn light" onclick="enterApp('orden')">🧾 Orden de servicio <span>›</span></button>
-        <button class="bigBtn dark" onclick="enterApp('ventas')">💳 Ventas <span>›</span></button>
-      </div>
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="grid">
+            <button class="btnBig" id="goOrden">
+              <span>🧾 Orden de servicio</span>
+              <span>›</span>
+            </button>
+            <button class="btnBig secondary" id="goVentas">
+              <span>💳 Ventas</span>
+              <span>›</span>
+            </button>
+          </div>
 
-      <div class="chipRow">
-        <span class="chip">🔒 Admin PIN</span>
-        <span class="chip">✍️ Firma obligatoria (orden)</span>
-        <span class="chip">📷 Fotos</span>
-        <span class="chip">📦 Inventario + alerta</span>
-        <span class="chip">🏷️ QR etiquetas</span>
-        <span class="chip">🧠 Autocompleta y aprende</span>
-      </div>
-    </div>
+          <div class="row">
+            <div class="chip" id="btnAdmin">🔐 Admin PIN</div>
+            <div class="chip" id="btnExport">⬇️ Exportar CSV</div>
+            <div class="chip" id="btnBackup">📦 Backup JSON</div>
+            <div class="chip" id="btnImport">📥 Importar Backup</div>
+          </div>
 
-    <div class="heroCard">
-      <svg class="heroSvg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración tecnología">
-        <defs>
-          <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
-            <stop offset="1" stop-color="#cfe0ff" stop-opacity="0.55"/>
-          </linearGradient>
-          <linearGradient id="g2" x1="0" x2="1" y1="1" y2="0">
-            <stop offset="0" stop-color="#6ee7ff" stop-opacity="0.55"/>
-            <stop offset="1" stop-color="#ffffff" stop-opacity="0.25"/>
-          </linearGradient>
-        </defs>
-        <rect x="0" y="0" width="900" height="520" rx="26" fill="rgba(255,255,255,0.10)" />
-        <circle cx="160" cy="140" r="120" fill="url(#g2)" opacity="0.9"/>
-        <circle cx="700" cy="130" r="150" fill="url(#g1)" opacity="0.7"/>
-        <circle cx="520" cy="400" r="170" fill="url(#g2)" opacity="0.55"/>
-        <rect x="210" y="180" width="470" height="240" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)"/>
-        <rect x="240" y="205" width="410" height="165" rx="14" fill="rgba(0,0,0,0.18)" stroke="rgba(255,255,255,0.25)"/>
-        <rect x="175" y="425" width="540" height="40" rx="18" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.30)"/>
-        <text x="240" y="390" fill="rgba(255,255,255,0.85)" font-size="18" font-family="Arial" font-weight="700">
-          Órdenes • Ventas • Inventario • QR • Backups
-        </text>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- APP -->
-<section class="app" id="app">
-  <div class="topbar noPrint">
-    <button class="btn light" onclick="goHome()">← Inicio</button>
-    <span id="adminState" class="pill lock">🔒 Bloqueado (Admin)</span>
-    <button class="btn light" id="btnAdmin" onclick="openAdmin()">🔓 Admin</button>
-    <button class="btn light" onclick="lockAdmin()">🔒 Bloquear</button>
-  </div>
-
-  <div class="tabs noPrint">
-    <button class="tab active" id="tabOrden" onclick="showTab('orden')">🧾 Orden</button>
-    <button class="tab" id="tabVentas" onclick="showTab('ventas')">💳 Ventas</button>
-    <button class="tab" id="tabInv" onclick="showTab('inventario')">📦 Inventario</button>
-    <button class="tab" id="tabQR" onclick="showTab('qr')">🏷️ QR</button>
-    <button class="tab" id="tabBackup" onclick="showTab('backup')">💾 Backup</button>
-  </div>
-
-  <!-- ORDEN -->
-  <section id="panelOrden">
-    <div class="card noPrint">
-      <h2>Orden de servicio</h2>
-      <div class="muted">Consecutivo: inicia en <b>2100</b>. Firma obligatoria. Fotos guardadas en la orden.</div>
-
-      <h2>Cliente</h2>
-      <div class="row">
-        <input id="o_cliente" placeholder="Nombre del cliente">
-        <input id="o_cedula" placeholder="Cédula" inputmode="numeric">
-      </div>
-      <div class="row">
-        <input id="o_telefono" placeholder="Celular" inputmode="tel">
-        <div>
-          <input id="o_correo" placeholder="Correo" type="email" autocomplete="off" list="correoSugs">
-          <datalist id="correoSugs"></datalist>
-        </div>
-      </div>
-
-      <h2>Equipo</h2>
-      <div class="row">
-        <select id="o_tipo" onchange="onTipoOrden()">
-          <option value="Celular">Celular</option>
-          <option value="PC">PC</option>
-          <option value="Consola">Consola</option>
-        </select>
-
-        <select id="o_subtipo" style="display:none;"></select>
-      </div>
-
-      <div class="row">
-        <input id="o_marca" placeholder="Marca" list="listaMarcas">
-        <datalist id="listaMarcas"></datalist>
-
-        <input id="o_modelo" placeholder="Modelo" list="listaModelos">
-        <datalist id="listaModelos"></datalist>
-      </div>
-
-      <div class="row">
-        <input id="o_imei1" placeholder="IMEI 1 (opcional si llega apagado)" inputmode="numeric">
-        <input id="o_imei2" placeholder="IMEI 2 (opcional)" inputmode="numeric">
-      </div>
-
-      <div class="row">
-        <input id="o_dano" placeholder="Daño destacado (fisura, cámara, face id, no carga, etc.)">
-        <input id="o_pin" placeholder="PIN / Patrón / Clave (si aplica)">
-      </div>
-
-      <textarea id="o_notas" placeholder="Notas adicionales"></textarea>
-
-      <h2>Checklist (puede omitirse si está “Apagado”)</h2>
-      <div class="row">
-        <label style="display:flex;gap:10px;align-items:center;margin:8px 0;">
-          <input type="checkbox" id="o_apagado" onchange="onApagado()" style="width:auto;transform:scale(1.2);">
-          <b>Apagado</b> (permite guardar sin validar checklist)
-        </label>
-      </div>
-      <div id="checklistBox" class="row"></div>
-
-      <h2>Estado</h2>
-      <div class="row">
-        <select id="o_estado">
-          <option value="1">1 Recibido</option>
-          <option value="2">2 En reparación</option>
-          <option value="3">3 Listo para entrega</option>
-          <option value="4">4 Entregado</option>
-          <option value="9">9 Abandonado</option>
-        </select>
-        <input id="o_fechaEstado" type="date">
-      </div>
-
-      <h2>Fotos (para garantía)</h2>
-      <input id="o_fotos" type="file" accept="image/*" multiple capture="environment">
-      <div class="muted">* Consejo: muchas fotos muy pesadas pueden llenar el almacenamiento del navegador.</div>
-
-      <h2>Firma (obligatoria)</h2>
-      <div class="firma-wrap">
-        <div class="muted">Firma con el dedo/mouse. Sin firma no guarda.</div>
-        <canvas class="sig" id="sig"></canvas>
-        <div class="row">
-          <button class="btn light" onclick="sigClear()">🧽 Borrar firma</button>
-          <button class="btn" onclick="saveOrder()">💾 Guardar orden</button>
-        </div>
-      </div>
-
-      <div class="row">
-        <button class="btn light" onclick="newOrder()">🆕 Nueva</button>
-        <button class="btn light" onclick="printLastOrder()">🖨️ Imprimir última orden</button>
-        <button class="btn danger" onclick="adminOnly(clearOrders)">🗑️ Borrar órdenes (Admin)</button>
-      </div>
-    </div>
-
-    <div class="card noPrint">
-      <h2>Órdenes</h2>
-      <div id="ordersList"></div>
-    </div>
-  </section>
-
-  <!-- VENTAS -->
-  <section id="panelVentas" style="display:none;">
-    <div class="card noPrint">
-      <h2>Ventas</h2>
-      <div class="muted">Consecutivo inicia en <b>304</b>. Sin firma.</div>
-
-      <h2>Cliente</h2>
-      <div class="row">
-        <input id="v_cliente" placeholder="Nombre cliente">
-        <input id="v_cedula" placeholder="Cédula" inputmode="numeric">
-      </div>
-      <div class="row">
-        <input id="v_telefono" placeholder="Celular" inputmode="tel">
-        <input id="v_correo" placeholder="Correo (opcional)" type="email" autocomplete="off" list="correoSugs">
-      </div>
-
-      <h2>Venta</h2>
-      <div class="row">
-        <select id="v_categoria" onchange="onSaleCategory()">
-          <option value="Accesorios">Accesorios</option>
-          <option value="Celulares">Celulares</option>
-          <option value="PC">PC</option>
-          <option value="Consolas">Consolas</option>
-        </select>
-        <select id="v_pago">
-          <option value="Efectivo">Efectivo</option>
-          <option value="Transferencia">Transferencia</option>
-          <option value="Tarjeta">Tarjeta</option>
-        </select>
-      </div>
-
-      <h2>Buscar producto (inventario)</h2>
-      <input id="prodSearch" placeholder="Escribe para buscar... (Enter para seleccionar)" oninput="updateSuggestions()" onkeydown="suggestKey(event)">
-      <div id="suggestions" class="suggestBox" style="display:none;"></div>
-
-      <div class="row">
-        <button class="btn light" onclick="openScanner()">📷 Leer QR (producto)</button>
-        <input id="scanManual" placeholder="Código QR manual (pegar)" onkeydown="if(event.key==='Enter'){addByQRManual();}">
-      </div>
-
-      <h2>Carrito</h2>
-      <div id="cart"></div>
-
-      <div class="row">
-        <input id="v_desc" placeholder="Descripción adicional (opcional)">
-        <input id="v_totalManual" placeholder="Total manual (opcional si no usas inventario)" inputmode="numeric">
-      </div>
-
-      <div id="imeiBox" style="display:none;">
-        <h2>IMEI (solo venta de celulares)</h2>
-        <div class="row">
-          <input id="v_imei1" placeholder="IMEI 1 (obligatorio)" inputmode="numeric">
-          <input id="v_imei2" placeholder="IMEI 2 (opcional)" inputmode="numeric">
-        </div>
-        <div class="muted">Término: no respondemos si el cliente no registra los IMEI ante el operador.</div>
-      </div>
-
-      <div class="row">
-        <button class="btn" onclick="finalizeSale()">✅ Finalizar venta</button>
-        <button class="btn light" onclick="printLastSale()">🖨️ Imprimir última venta</button>
-        <button class="btn light" onclick="waLastSale()">📲 WhatsApp última venta</button>
-        <button class="btn danger" onclick="adminOnly(clearSales)">🗑️ Borrar ventas (Admin)</button>
-      </div>
-    </div>
-
-    <div class="card noPrint">
-      <h2>Ventas guardadas</h2>
-      <div id="salesList"></div>
-    </div>
-  </section>
-
-  <!-- INVENTARIO -->
-  <section id="panelInv" style="display:none;">
-    <div class="card noPrint">
-      <h2>Inventario</h2>
-      <div class="muted">Costo solo Admin. Alerta visual cuando quede 1 unidad.</div>
-
-      <div class="row">
-        <input id="p_nombre" placeholder="Nombre producto (ej: Forro iPhone 11)">
-        <input id="p_precio" placeholder="Precio" inputmode="numeric">
-      </div>
-      <div class="row">
-        <input id="p_stock" placeholder="Stock" inputmode="numeric" value="1">
-        <input id="p_costo" placeholder="Costo (solo Admin)" inputmode="numeric">
-      </div>
-      <div class="row">
-        <select id="p_cat">
-          <option value="Celulares">Celulares</option>
-          <option value="PC">PC</option>
-          <option value="Consolas">Consolas</option>
-          <option value="Accesorios">Accesorios</option>
-        </select>
-        <input id="p_subcat" placeholder="Subcategoría (cables, cargadores, memorias, etc.)">
-      </div>
-      <input id="p_foto" type="file" accept="image/*" capture="environment">
-
-      <div class="row">
-        <button class="btn" onclick="saveProduct()">💾 Guardar producto</button>
-        <button class="btn light" onclick="newProduct()">🆕 Nuevo</button>
-        <button class="btn light" onclick="printLabel()">🏷️ Imprimir etiqueta (QR)</button>
-        <button class="btn danger" onclick="adminOnly(clearProducts)">🗑️ Borrar inventario (Admin)</button>
-      </div>
-
-      <div class="muted">Tip: para usarlo en ventas, crea productos aquí y luego búscalos en Ventas.</div>
-    </div>
-
-    <div class="card noPrint">
-      <h2>Lista de productos</h2>
-      <input id="invFilter" placeholder="Filtrar..." oninput="renderProducts()">
-      <div id="productsList"></div>
-    </div>
-  </section>
-
-  <!-- QR -->
-  <section id="panelQR" style="display:none;">
-    <div class="card noPrint">
-      <h2>QR</h2>
-      <div class="muted">Genera QR de producto (para etiqueta) y lee QR con cámara si el navegador soporta.</div>
-
-      <div class="row">
-        <input id="qr_text" placeholder="Texto/ID a codificar (ej: PROD:abc123)">
-        <button class="btn" onclick="makeQR()">Generar QR</button>
-      </div>
-
-      <div class="qrWrap">
-        <div class="qrBox">
-          <canvas id="qrCanvas" width="220" height="220"></canvas>
-          <div class="row" style="margin-top:10px;">
-            <button class="btn light" onclick="window.print()">🖨️ Imprimir</button>
-            <button class="btn light" onclick="copyQRText()">📋 Copiar texto</button>
+          <div class="heroimg">
+            <div class="bubble b1"></div>
+            <div class="bubble b2"></div>
+            <div class="bubble b3"></div>
+            <div class="mock">Órdenes • Ventas • Backups • Exportar CSV</div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="qrBox" style="flex:1; min-width:280px;">
-          <div clas
+    <!-- ===== ORDEN ===== -->
+    <section id="orden" class="hidden">
+      <div class="topbar">
+        <button class="back" id="back1">← Volver</button>
+        <div class="title">Orden de servicio</div>
+        <div style="width:90px;"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="box">
+            <div class="pillBar">
+              <div class="pill active" id="tabOrden">Orden</div>
+              <div class="pill" id="tabOrdenList">Listado</div>
+            </div>
+
+            <div id="ordenForm">
+              <h2 style="margin: 6px 0 10px;">Orden de Servicio</h2>
+
+              <label>Nombre del cliente</label>
+              <input id="o_cliente" placeholder="Nombre del cliente" autocomplete="name" />
+
+              <label>Cédula</label>
+              <input id="o_cedula" placeholder="Cédula" inputmode="numeric" />
+
+              <label>Celular</label>
+              <input id="o_tel" placeholder="Celular" inputmode="tel" autocomplete="tel" />
+
+              <label>Correo electrónico</label>
+              <input id="o_correo" placeholder="Correo electrónico" inputmode="email" autocomplete="email" list="emailDomains" />
+
+              <label>Marca del celular</label>
+              <input id="o_marca" placeholder="Marca (Samsung, Xiaomi...)" list="brandList" />
+
+              <label>Modelo del celular</label>
+              <input id="o_modelo" placeholder="Modelo del celular" />
+
+              <label>Falla reportada</label>
+              <textarea id="o_falla" placeholder="Falla reportada"></textarea>
+
+              <label>Firma del cliente (OBLIGATORIA)</label>
+              <div class="note">Firma con el dedo. Si no hay firma, NO deja guardar.</div>
+              <div class="sigWrap">
+                <canvas id="sigCanvas"></canvas>
+                <div class="sigRow">
+                  <button class="gray" id="sigClear">🧽 Borrar firma</button>
+                </div>
+              </div>
+
+              <div class="actions">
+                <button class="primary" id="o_guardar">💾 Guardar orden</button>
+                <button class="gray" id="o_nueva">🆕 Nueva orden (limpiar)</button>
+              </div>
+
+              <div class="note" style="margin-top:10px;">
+                Las órdenes quedan guardadas en este dispositivo (se exportan a PC con CSV o Backup JSON).
+              </div>
+            </div>
+
+            <div id="ordenList" class="hidden">
+              <h2 style="margin: 6px 0 10px;">Órdenes guardadas</h2>
+
+              <div class="search">
+                <input id="searchBox" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, modelo..." />
+                <button class="gray" id="btnClearSearch">Limpiar</button>
+              </div>
+
+              <div class="actions">
+                <button class="danger" id="o_borrarTodo">🗑️ Borrar TODAS las órdenes</button>
+              </div>
+
+              <div id="ordenesList" class="list"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VENTAS ===== -->
+    <section id="ventas" class="hidden">
+      <div class="topbar">
+        <button class="back" id="back2">← Volver</button>
+        <div class="title">Ventas</div>
+        <div style="width:90px;"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="box">
+            <div class="pillBar">
+              <div class="pill active" id="tabVenta">Venta</div>
+              <div class="pill" id="tabVentaList">Listado</div>
+            </div>
+
+            <div id="ventaForm">
+              <h2 style="margin: 6px 0 10px;">Venta de teléfono</h2>
+
+              <label>Nombre del cliente</label>
+              <input id="v_cliente" placeholder="Nombre del cliente" autocomplete="name"/>
+
+              <label>Cédula</label>
+              <input id="v_cedula" placeholder="Cédula" inputmode="numeric"/>
+
+              <label>Celular</label>
+              <input id="v_tel" placeholder="Celular" inputmode="tel" autocomplete="tel"/>
+
+              <label>Correo electrónico</label>
+              <input id="v_correo" placeholder="Correo electrónico" inputmode="email" autocomplete="email" list="emailDomains"/>
+
+              <label>Marca</label>
+              <input id="v_marca" placeholder="Marca (Samsung, iPhone...)" list="brandList"/>
+
+              <label>Modelo</label>
+              <input id="v_modelo" placeholder="Modelo"/>
+
+              <label>IMEI 1</label>
+              <input id="v_imei1" placeholder="IMEI 1" inputmode="numeric"/>
+
+              <label>IMEI 2 (si aplica)</label>
+              <input id="v_imei2" placeholder="IMEI 2 (opcional)" inputmode="numeric"/>
+
+              <label>Precio</label>
+              <input id="v_precio" placeholder="Precio" inputmode="numeric"/>
+
+              <div class="toggleRow">
+                <div class="chk">
+                  <input type="checkbox" id="v_terms" />
+                  <div>
+                    <div style="font-weight:900;">Términos y condiciones (OBLIGATORIO)</div>
+                    <div style="color:rgba(255,255,255,.82); font-size:13px; margin-top:4px;">
+                      El cliente entiende que <b>no nos hacemos responsables</b> si el operador no registra el/los IMEI.
+                      Si el equipo trae 2 IMEI, debe registrarlos ambos ante el operador que vaya a usar.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="actions">
+                <button class="primary" id="v_guardar">💾 Guardar venta</button>
+                <button class="gray" id="v_nueva">🆕 Nueva venta (limpiar)</button>
+              </div>
+
+              <div class="note" style="margin-top:10px;">
+                En ventas NO pedimos firma obligatoria (solo términos).
+              </div>
+            </div>
+
+            <div id="ventaList" class="hidden">
+              <h2 style="margin: 6px 0 10px;">Ventas guardadas</h2>
+
+              <div class="actions">
+                <button class="danger" id="v_borrarTodo">🗑️ Borrar TODAS las ventas</button>
+              </div>
+
+              <div id="ventasList" class="list"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATALISTS -->
+    <datalist id="emailDomains"></datalist>
+    <datalist id="brandList"></datalist>
+
+    <!-- Import file -->
+    <input id="importFile" type="file" accept="application/json" class="hidden" />
+
+  </div>
+
+<script>
+/* =======================
+   STORAGE
+======================= */
+const LS = {
+  orders: "te_orders",
+  sales: "te_sales",
+  orderCounter: "te_order_counter",
+  saleCounter: "te_sale_counter",
+  brands: "te_brands",
+  adminPin: "te_admin_pin"
+};
+
+function getArr(key){ try{return JSON.parse(localStorage.getItem(key)) || []}catch{return []} }
+function setArr(key, arr){ localStorage.setItem(key, JSON.stringify(arr)) }
+
+function getNum(key, def){ const n = Number(localStorage.getItem(key)); return Number.isFinite(n) && n>0 ? n : def; }
+function setNum(key, n){ localStorage.setItem(key, String(n)) }
+
+/* =======================
+   NAV (pantallas)
+======================= */
+const home = document.getElementById("home");
+const orden = document.getElementById("orden");
+const ventas = document.getElementById("ventas");
+
+function show(section){
+  [home, orden, ventas].forEach(s => s.classList.add("hidden"));
+  section.classList.remove("hidden");
+  window.scrollTo({top:0, behavior:"instant"});
+}
+
+document.getElementById("goOrden").onclick = () => show(orden);
+document.getElementById("goVentas").onclick = () => show(ventas);
+document.getElementById("back1").onclick = () => show(home);
+document.getElementById("back2").onclick = () => show(home);
+
+/* Tabs */
+const tabOrden = document.getElementById("tabOrden");
+const tabOrdenList = document.getElementById("tabOrdenList");
+const ordenForm = document.getElementById("ordenForm");
+const ordenList = document.getElementById("ordenList");
+
+function showOrdenTab(which){
+  if(which==="form"){
+    tabOrden.classList.add("active");
+    tabOrdenList.classList.remove("active");
+    ordenForm.classList.remove("hidden");
+    ordenList.classList.add("hidden");
+  }else{
+    tabOrden.classList.remove("active");
+    tabOrdenList.classList.add("active");
+    ordenForm.classList.add("hidden");
+    ordenList.classList.remove("hidden");
+    renderOrders();
+  }
+}
+tabOrden.onclick = () => showOrdenTab("form");
+tabOrdenList.onclick = () => showOrdenTab("list");
+
+const tabVenta = document.getElementById("tabVenta");
+const tabVentaList = document.getElementById("tabVentaList");
+const ventaForm = document.getElementById("ventaForm");
+const ventaList = document.getElementById("ventaList");
+
+function showVentaTab(which){
+  if(which==="form"){
+    tabVenta.classList.add("active");
+    tabVentaList.classList.remove("active");
+    ventaForm.classList.remove("hidden");
+    ventaList.classList.add("hidden");
+  }else{
+    tabVenta.classList.remove("active");
+    tabVentaList.classList.add("active");
+    ventaForm.classList.add("hidden");
+    ventaList.classList.remove("hidden");
+    renderSales();
+  }
+}
+tabVenta.onclick = () => showVentaTab("form");
+tabVentaList.onclick = () => showVentaTab("list");
+
+/* =======================
+   EMAIL SUGGESTIONS
+   (esto hace que el teclado sugiera correos más fácil)
+======================= */
+const emailDomains = [
+  "gmail.com","hotmail.com","outlook.com","icloud.com","yahoo.com",
+  "live.com","proton.me","protonmail.com"
+];
+function buildEmailDatalist(){
+  const dl = document.getElementById("emailDomains");
+  dl.innerHTML = "";
+  // opciones generales
+  emailDomains.forEach(d=>{
+    const opt=document.createElement("option");
+    opt.value = "@" + d;
+    dl.appendChild(opt);
+  });
+}
+buildEmailDatalist();
+
+/* =======================
+   BRAND AUTOCOMPLETE + "APRENDE"
+======================= */
+const defaultBrands = [
+  "Samsung","Xiaomi","Redmi","POCO","Realme","Huawei","Honor","Motorola","Nokia",
+  "Apple","iPhone","iPad","Tecno","Infinix","Itel","OPPO","Vivo","OnePlus",
+  "ZTE","Alcatel","Sony","LG","Google Pixel","Asus","Lenovo","TCL","Meizu",
+  "BlackBerry","HTC","Micromax","Blu","Cubot","Doogee","Ulefone","Umidigi",
+  "Nothing","Meitu","CAT","Fairphone","Sharp","Panasonic","Philips","Sagem",
+  "QMobile","Lava","Karbonn"
+];
+function getBrands(){
+  const learned = getArr(LS.brands);
+  const all = Array.from(new Set([...defaultBrands, ...learned]));
+  all.sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+  return all;
+}
+function setLearnedBrand(name){
+  const clean = (name||"").trim();
+  if(!clean) return;
+  const all = getBrands().map(x=>x.toLowerCase());
+  if(all.includes(clean.toLowerCase())) return;
+  const learned = getArr(LS.brands);
+  learned.push(clean);
+  setArr(LS.brands, learned);
+  buildBrandDatalist();
+}
+function buildBrandDatalist(){
+  const dl = document.getElementById("brandList");
+  dl.innerHTML = "";
+  getBrands().forEach(b=>{
+    const opt = document.createElement("option");
+    opt.value = b;
+    dl.appendChild(opt);
+  });
+}
+buildBrandDatalist();
+
+/* =======================
+   SIGNATURE (OBLIGATORIA en ORDEN)
+======================= */
+const canvas = document.getElementById("sigCanvas");
+const ctx = canvas.getContext("2d");
+let drawing = false;
+let hasSignature = false;
+
+function resizeCanvas(){
+  const rect = canvas.getBoundingClientRect();
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.floor(rect.width * ratio);
+  canvas.height = Math.floor(rect.height * ratio);
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#111827";
+}
+window.addEventListener("resize", resizeCanvas);
+setTimeout(resizeCanvas, 80);
+
+function getPos(e){
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches ? e.touches[0] : null;
+  const clientX = touch ? touch.clientX : e.clientX;
+  const clientY = touch ? touch.clientY : e.clientY;
+  return { x: clientX - rect.left, y: clientY - rect.top };
+}
+
+function startDraw(e){
+  e.preventDefault();
+  drawing = true;
+  hasSignature = true;
+  const p = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(p.x, p.y);
+}
+function moveDraw(e){
+  if(!drawing) return;
+  e.preventDefault();
+  const p = getPos(e);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+}
+function endDraw(e){
+  if(!drawing) return;
+  e.preventDefault();
+  drawing = false;
+}
+
+canvas.addEventListener("mousedown", startDraw);
+canvas.addEventListener("mousemove", moveDraw);
+window.addEventListener("mouseup", endDraw);
+
+canvas.addEventListener("touchstart", startDraw, {passive:false});
+canvas.addEventListener("touchmove", moveDraw, {passive:false});
+canvas.addEventListener("touchend", endDraw, {passive:false});
+
+document.getElementById("sigClear").onclick = () => {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  hasSignature = false;
+};
+
+/* =======================
+   ORDER FORM
+======================= */
+const o = {
+  cliente: document.getElementById("o_cliente"),
+  cedula: document.getElementById("o_cedula"),
+  tel: document.getElementById("o_tel"),
+  correo: document.getElementById("o_correo"),
+  marca: document.getElementById("o_marca"),
+  modelo: document.getElementById("o_modelo"),
+  falla: document.getElementById("o_falla"),
+};
+
+function cleanEmail(v){
+  const s = (v||"").trim();
+  // Si el usuario escribe "andres" y luego elige "@gmail.com", queda "andres@gmail.com"
+  return s;
+}
+
+function newOrderClear(){
+  Object.values(o).forEach(el => el.value = "");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  hasSignature = false;
+  o.cliente.focus();
+}
+
+document.getElementById("o_nueva").onclick = newOrderClear;
+
+function nextOrderNumber(){
+  const n = getNum(LS.orderCounter, 2100);
+  setNum(LS.orderCounter, n+1);
+  return n;
+}
+
+document.getElementById("o_guardar").onclick = () => {
+  // Validaciones
+  if(!o.cliente.value.trim() || !o.cedula.value.trim() || !o.tel.value.trim() ||
+     !o.correo.value.trim() || !o.marca.value.trim() || !o.modelo.value.trim() || !o.falla.value.trim()){
+    alert("Completa todos los campos de la orden.");
+    return;
+  }
+  if(!hasSignature){
+    alert("La firma es obligatoria para guardar la orden.");
+    return;
+  }
+
+  // Aprende marca si es nueva
+  setLearnedBrand(o.marca.value);
+
+  const orders = getArr(LS.orders);
+  const num = nextOrderNumber();
+
+  const signatureDataUrl = canvas.toDataURL("image/png");
+
+  orders.push({
+    numero: num,
+    tipo: "orden",
+    cliente: o.cliente.value.trim(),
+    cedula: o.cedula.value.trim(),
+    telefono: o.tel.value.trim(),
+    correo: cleanEmail(o.correo.value),
+    marca: o.marca.value.trim(),
+    modelo: o.modelo.value.trim(),
+    falla: o.falla.value.trim(),
+    firma: signatureDataUrl,
+    fechaISO: new Date().toISOString(),
+    fecha: new Date().toLocaleString()
+  });
+
+  // Orden ascendente por numero
+  orders.sort((a,b)=>a.numero-b.numero);
+  setArr(LS.orders, orders);
+
+  alert("✅ Orden guardada: #" + num);
+  newOrderClear();
+  showOrdenTab("list");
+};
+
+function renderOrders(){
+  const list = document.getElementById("ordenesList");
+  const q = (document.getElementById("searchBox").value || "").trim().toLowerCase();
+  const orders = getArr(LS.orders).sort((a,b)=>a.numero-b.numero);
+
+  const filtered = q ? orders.filter(x=>{
+    const blob = [
+      x.numero, x.cliente, x.cedula, x.telefono, x.correo, x.marca, x.modelo, x.falla
+    ].join(" ").toLowerCase();
+    return blob.includes(q);
+  }) : orders;
+
+  list.innerHTML = "";
+  if(filtered.length===0){
+    list.innerHTML = `<div class="note">No hay órdenes para mostrar.</div>`;
+    return;
+  }
+
+  filtered.forEach(ord=>{
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <h4>Orden #${ord.numero}</h4>
+      <div class="meta">
+        <b>Cliente:</b> ${escapeHtml(ord.cliente)}<br/>
+        <b>Cédula:</b> ${escapeHtml(ord.cedula)}<br/>
+        <b>Tel:</b> ${escapeHtml(ord.telefono)}<br/>
+        <b>Email:</b> ${escapeHtml(ord.correo)}<br/><br/>
+        <b>Marca:</b> ${escapeHtml(ord.marca)}<br/>
+        <b>Modelo:</b> ${escapeHtml(ord.modelo)}<br/>
+        <b>Falla:</b> ${escapeHtml(ord.falla)}
+      </div>
+      <div class="small">${escapeHtml(ord.fecha || "")}</div>
+      <div class="itemBtns">
+        <button class="mini" data-viewsig="${ord.numero}">🖊 Ver firma</button>
+        <button class="mini" data-delord="${ord.numero}">🗑 Borrar</button>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  // eventos
+  list.querySelectorAll("[data-delord]").forEach(btn=>{
+    btn.onclick = () => deleteOrder(Number(btn.getAttribute("data-delord")));
+  });
+  list.querySelectorAll("[data-viewsig]").forEach(btn=>{
+    btn.onclick = () => viewSignature(Number(btn.getAttribute("data-viewsig")));
+  });
+}
+
+function deleteOrder(num){
+  if(!confirm("¿Borrar la orden #" + num + "?")) return;
+  let orders = getArr(LS.orders);
+  orders = orders.filter(x=>x.numero !== num);
+  setArr(LS.orders, orders);
+  renderOrders();
+}
+
+function viewSignature(num){
+  const orders = getArr(LS.orders);
+  const ord = orders.find(x=>x.numero===num);
+  if(!ord || !ord.firma){
+    alert("No hay firma guardada.");
+    return;
+  }
+  // abrir firma en nueva pestaña (en móvil te deja verla)
+  const w = window.open();
+  w.document.write(`<title>Firma Orden #${num}</title><img style="width:100%;max-width:700px" src="${ord.firma}"/>`);
+  w.document.close();
+}
+
+document.getElementById("o_borrarTodo").onclick = () => {
+  if(!confirm("¿Seguro? Esto borra TODAS las órdenes del dispositivo.")) return;
+  setArr(LS.orders, []);
+  renderOrders();
+};
+
+document.getElementById("searchBox").addEventListener("input", renderOrders);
+document.getElementById("btnClearSearch").onclick = ()=>{
+  document.getElementById("searchBox").value="";
+  renderOrders();
+};
+
+/* =======================
+   SALES FORM
+======================= */
+const v = {
+  cliente: document.getElementById("v_cliente"),
+  cedula: document.getElementById("v_cedula"),
+  tel: document.getElementById("v_tel"),
+  correo: document.getElementById("v_correo"),
+  marca: document.getElementById("v_marca"),
+  modelo: document.getElementById("v_modelo"),
+  imei1: document.getElementById("v_imei1"),
+  imei2: document.getElementById("v_imei2"),
+  precio: document.getElementById("v_precio"),
+  terms: document.getElementById("v_terms")
+};
+
+function newSaleClear(){
+  v.cliente.value="";
+  v.cedula.value="";
+  v.tel.value="";
+  v.correo.value="";
+  v.marca.value="";
+  v.modelo.value="";
+  v.imei1.value="";
+  v.imei2.value="";
+  v.precio.value="";
+  v.terms.checked=false;
+  v.cliente.focus();
+}
+document.getElementById("v_nueva").onclick = newSaleClear;
+
+function nextSaleNumber(){
+  const n = getNum(LS.saleCounter, 5000);
+  setNum(LS.saleCounter, n+1);
+  return n;
+}
+
+document.getElementById("v_guardar").onclick = () => {
+  if(!v.cliente.value.trim() || !v.cedula.value.trim() || !v.tel.value.trim() ||
+     !v.correo.value.trim() || !v.marca.value.trim() || !v.modelo.value.trim() ||
+     !v.imei1.value.trim() || !v.precio.value.trim()){
+    alert("Completa todos los campos obligatorios de la venta (IMEI 1 es obligatorio).");
+    return;
+  }
+  if(!v.terms.checked){
+    alert("Debes aceptar los términos y condiciones para guardar la venta.");
+    return;
+  }
+
+  setLearnedBrand(v.marca.value);
+
+  const sales = getArr(LS.sales);
+  const num = nextSaleNumber();
+
+  sales.push({
+    numero: num,
+    tipo: "venta",
+    cliente: v.cliente.value.trim(),
+    cedula: v.cedula.value.trim(),
+    telefono: v.tel.value.trim(),
+    correo: cleanEmail(v.correo.value),
+    marca: v.marca.value.trim(),
+    modelo: v.modelo.value.trim(),
+    imei1: v.imei1.value.trim(),
+    imei2: v.imei2.value.trim(),
+    precio: v.precio.value.trim(),
+    terms: true,
+    fechaISO: new Date().toISOString(),
+    fecha: new Date().toLocaleString()
+  });
+
+  sales.sort((a,b)=>a.numero-b.numero);
+  setArr(LS.sales, sales);
+
+  alert("✅ Venta guardada: #" + num);
+  newSaleClear();
+  showVentaTab("list");
+};
+
+function renderSales(){
+  const list = document.getElementById("ventasList");
+  const sales = getArr(LS.sales).sort((a,b)=>a.numero-b.numero);
+
+  list.innerHTML = "";
+  if(sales.length===0){
+    list.innerHTML = `<div class="note">No hay ventas para mostrar.</div>`;
+    return;
+  }
+
+  sales.forEach(s=>{
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <h4>Venta #${s.numero}</h4>
+      <div class="meta">
+        <b>Cliente:</b> ${escapeHtml(s.cliente)}<br/>
+        <b>Cédula:</b> ${escapeHtml(s.cedula)}<br/>
+        <b>Tel:</b> ${escapeHtml(s.telefono)}<br/>
+        <b>Email:</b> ${escapeHtml(s.correo)}<br/><br/>
+        <b>Marca:</b> ${escapeHtml(s.marca)}<br/>
+        <b>Modelo:</b> ${escapeHtml(s.modelo)}<br/>
+        <b>IMEI 1:</b> ${escapeHtml(s.imei1)}<br/>
+        <b>IMEI 2:</b> ${escapeHtml(s.imei2 || "-")}<br/>
+        <b>Precio:</b> ${escapeHtml(s.precio)}
+      </div>
+      <div class="small">${escapeHtml(s.fecha || "")}</div>
+      <div class="itemBtns">
+        <button class="mini" data-delsale="${s.numero}">🗑 Borrar</button>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+
+  list.querySelectorAll("[data-delsale]").forEach(btn=>{
+    btn.onclick = () => deleteSale(Number(btn.getAttribute("data-delsale")));
+  });
+}
+
+function deleteSale(num){
+  if(!confirm("¿Borrar la venta #" + num + "?")) return;
+  let sales = getArr(LS.sales);
+  sales = sales.filter(x=>x.numero !== num);
+  setArr(LS.sales, sales);
+  renderSales();
+}
+
+document.getElementById("v_borrarTodo").onclick = ()=>{
+  if(!confirm("¿Seguro? Esto borra TODAS las ventas del dispositivo.")) return;
+  setArr(LS.sales, []);
+  renderSales();
+};
+  /* =======================
+   ADMIN PIN (simple)
+======================= */
+document.getElementById("btnAdmin").onclick = ()=>{
+  const current = localStorage.getItem(LS.adminPin);
+  if(!current){
+    const pin = prompt("Crea un PIN de admin (4-8 dígitos):");
+    if(!pin) return;
+    localStorage.setItem(LS.adminPin, pin.trim());
+    alert("✅ PIN creado.");
+    return;
+  }
+  const pin = prompt("Ingresa PIN admin:");
+  if(pin === null) return;
+  if(pin.trim() !== current){
+    alert("PIN incorrecto.");
+    return;
+  }
+  const action = prompt("Admin: escribe 1 para cambiar PIN, 2 para borrar TODO (órdenes+ventas), 3 para reset marcas aprendidas");
+  if(action==="1"){
+    const np = prompt("Nuevo PIN:");
+    if(!np) return;
+    localStorage.setItem(LS.adminPin, np.trim());
+    alert("✅ PIN cambiado.");
+  } else if(action==="2"){
+    if(confirm("¿Seguro? Borrará órdenes y ventas del dispositivo.")){
+      setArr(LS.orders, []);
+      setArr(LS.sales, []);
+      alert("Listo.");
+      renderOrders();
+      renderSales();
+    }
+  } else if(action==="3"){
+    if(confirm("¿Borrar marcas aprendidas?")){
+      setArr(LS.brands, []);
+      buildBrandDatalist();
+      alert("Listo.");
+    }
+  }
+};
+
+/* =======================
+   EXPORT CSV + BACKUP JSON + IMPORT
+======================= */
+document.getElementById("btnExport").onclick = ()=>{
+  const orders = getArr(LS.orders).sort((a,b)=>a.numero-b.numero);
+  const sales  = getArr(LS.sales).sort((a,b)=>a.numero-b.numero);
+
+  const csvOrders = toCSV(orders, [
+    "numero","cliente","cedula","telefono","correo","marca","modelo","falla","fechaISO","fecha"
+  ]);
+  const csvSales = toCSV(sales, [
+    "numero","cliente","cedula","telefono","correo","marca","modelo","imei1","imei2","precio","terms","fechaISO","fecha"
+  ]);
+
+  downloadText("ordenes.csv", csvOrders);
+  downloadText("ventas.csv", csvSales);
+  alert("✅ Descargué 2 archivos: ordenes.csv y ventas.csv (en PC es más fácil).");
+};
+
+document.getElementById("btnBackup").onclick = ()=>{
+  const payload = {
+    app: "TechnologyExperts",
+    exportedAt: new Date().toISOString(),
+    orderCounter: getNum(LS.orderCounter,2100),
+    saleCounter: getNum(LS.saleCounter,5000),
+    brands: getArr(LS.brands),
+    orders: getArr(LS.orders),
+    sales: getArr(LS.sales)
+  };
+  downloadText("backup_technologyexperts.json", JSON.stringify(payload, null, 2));
+  alert("✅ Backup JSON descargado.");
+};
+
+document.getElementById("btnImport").onclick = ()=>{
+  document.getElementById("importFile").click();
+};
+document.getElementById("importFile").addEventListener("change", async (e)=>{
+  const file = e.target.files?.[0];
+  if(!file) return;
+  const text = await file.text();
+  try{
+    const data = JSON.parse(text);
+    if(!data || typeof data !== "object") throw new Error("Formato inválido");
+    if(!confirm("¿Importar backup? Esto REEMPLAZA los datos actuales en este dispositivo.")) return;
+
+    setArr(LS.orders, Array.isArray(data.orders)?data.orders:[]);
+    setArr(LS.sales, Array.isArray(data.sales)?data.sales:[]);
+    setArr(LS.brands, Array.isArray(data.brands)?data.brands:[]);
+    setNum(LS.orderCounter, Number(data.orderCounter)||2100);
+    setNum(LS.saleCounter, Number(data.saleCounter)||5000);
+
+    buildBrandDatalist();
+    renderOrders();
+    renderSales();
+    alert("✅ Importación lista.");
+  }catch(err){
+    alert("No pude importar ese archivo. Asegúrate que sea el backup JSON de esta app.");
+  }finally{
+    e.target.value = "";
+  }
+});
+
+/* =======================
+   HELPERS
+======================= */
+function escapeHtml(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function toCSV(arr, fields){
+  const header = fields.join(",");
+  const lines = arr.map(obj=>{
+    return fields.map(f=>{
+      let v = obj?.[f];
+      if(v===undefined || v===null) v="";
+      v = String(v).replaceAll('"','""');
+      return `"${v}"`;
+    }).join(",");
+  });
+  return [header, ...lines].join("\n");
+}
+
+function downloadText(filename, text){
+  const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1200);
+}
+
+/* Inicial render si alguien entra directo */
+renderOrders();
+renderSales();
+</script>
+
+</body>
+</html>
