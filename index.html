@@ -26,6 +26,7 @@
 
     .secundario {
       background: #666;
+      margin-top: 8px;
     }
 
     .orden {
@@ -33,95 +34,114 @@
       padding: 10px;
       margin-top: 10px;
     }
+
+    .borrar {
+      background: #c00;
+      color: white;
+      margin-top: 8px;
+    }
   </style>
 </head>
 
 <body>
 
-  <h2>Orden de Servicio</h2>
+<h2>Orden de Servicio</h2>
 
-  <h3>Datos del cliente</h3>
-  <input id="cliente" placeholder="Nombre del cliente">
-  <input id="cedula" placeholder="Cédula">
-  <input id="telefono" placeholder="Celular">
-  <input id="correo" placeholder="Correo electrónico">
+<h3>Datos del cliente</h3>
+<input id="cliente" placeholder="Nombre del cliente">
+<input id="cedula" placeholder="Cédula">
+<input id="telefono" placeholder="Celular">
+<input id="correo" placeholder="Correo electrónico">
 
-  <h3>Equipo</h3>
-  <input id="marca" placeholder="Marca del celular">
-  <input id="modelo" placeholder="Modelo del celular">
-  <textarea id="falla" placeholder="Falla reportada"></textarea>
+<h3>Equipo</h3>
+<input id="marca" placeholder="Marca del celular">
+<input id="modelo" placeholder="Modelo del celular">
+<textarea id="falla" placeholder="Falla reportada"></textarea>
 
-  <button onclick="guardar()">Guardar orden</button>
-  <button class="secundario" onclick="nuevaOrden()">Nueva orden</button>
+<button onclick="guardar()">Guardar orden</button>
+<button class="secundario" onclick="nuevaOrden()">Nueva orden</button>
 
-  <h3>Órdenes guardadas</h3>
-  <div id="lista"></div>
+<h3>Órdenes guardadas</h3>
+<div id="lista"></div>
 
 <script>
-  let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
-  let contador = Number(localStorage.getItem("contador")) || 2100;
+let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
+let contador = Number(localStorage.getItem("contador")) || 2100;
 
-  function guardar() {
-    if (
-      !cliente.value || !cedula.value || !telefono.value ||
-      !correo.value || !marca.value || !modelo.value || !falla.value
-    ) {
-      alert("Completa todos los campos");
-      return;
-    }
-
-    const orden = {
-      numero: contador,
-      cliente: cliente.value,
-      cedula: cedula.value,
-      telefono: telefono.value,
-      correo: correo.value,
-      marca: marca.value,
-      modelo: modelo.value,
-      falla: falla.value,
-      fecha: new Date().toLocaleString()
-    };
-
-    ordenes.push(orden);
-    contador++;
-
-    localStorage.setItem("ordenes", JSON.stringify(ordenes));
-    localStorage.setItem("contador", contador);
-
-    mostrar();
+function guardar() {
+  if (
+    !cliente.value || !cedula.value || !telefono.value ||
+    !correo.value || !marca.value || !modelo.value || !falla.value
+  ) {
+    alert("Completa todos los campos");
+    return;
   }
 
-  function nuevaOrden() {
-    cliente.value = "";
-    cedula.value = "";
-    telefono.value = "";
-    correo.value = "";
-    marca.value = "";
-    modelo.value = "";
-    falla.value = "";
-    cliente.focus();
-  }
+  const orden = {
+    numero: contador,
+    cliente: cliente.value,
+    cedula: cedula.value,
+    telefono: telefono.value,
+    correo: correo.value,
+    marca: marca.value,
+    modelo: modelo.value,
+    falla: falla.value,
+    fecha: new Date().toLocaleString()
+  };
 
-  function mostrar() {
-    lista.innerHTML = "";
-    ordenes.forEach(o => {
-      lista.innerHTML += `
-        <div class="orden">
-          <b>Orden #${o.numero}</b><br>
-          Cliente: ${o.cliente}<br>
-          Cédula: ${o.cedula}<br>
-          Tel: ${o.telefono}<br>
-          Email: ${o.correo}<br><br>
-          Marca: ${o.marca}<br>
-          Modelo: ${o.modelo}<br>
-          Falla: ${o.falla}<br>
-          <small>${o.fecha}</small>
-        </div>
-      `;
-    });
-  }
+  ordenes.push(orden);
+  contador++;
+
+  localStorage.setItem("ordenes", JSON.stringify(ordenes));
+  localStorage.setItem("contador", contador);
 
   mostrar();
+}
+
+function nuevaOrden() {
+  cliente.value = "";
+  cedula.value = "";
+  telefono.value = "";
+  correo.value = "";
+  marca.value = "";
+  modelo.value = "";
+  falla.value = "";
+  cliente.focus();
+}
+
+function mostrar() {
+  lista.innerHTML = "";
+
+  ordenes.forEach((o, i) => {
+    lista.innerHTML += `
+      <div class="orden">
+        <b>Orden #${o.numero}</b><br>
+        Cliente: ${o.cliente}<br>
+        Cédula: ${o.cedula}<br>
+        Tel: ${o.telefono}<br>
+        Email: ${o.correo}<br><br>
+
+        Marca: ${o.marca}<br>
+        Modelo: ${o.modelo}<br>
+        Falla: ${o.falla}<br>
+        <small>${o.fecha}</small><br>
+
+        <button class="borrar" onclick="borrarOrden(${i})">
+          Borrar orden
+        </button>
+      </div>
+    `;
+  });
+}
+
+function borrarOrden(i) {
+  if (!confirm("¿Seguro que deseas borrar esta orden?")) return;
+  ordenes.splice(i, 1);
+  localStorage.setItem("ordenes", JSON.stringify(ordenes));
+  mostrar();
+}
+
+mostrar();
 </script>
 
 </body>
