@@ -1,14 +1,72 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Technology Expert’s</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <p style="font-family: system-ui; padding: 20px;">
-      App de Technology Expert’s – instalación en progreso…
-    </p>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Technology Expert’s</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, textarea, button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: black;
+      color: white;
+      border: none;
+    }
+    .orden {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Orden de Servicio</h2>
+
+<input id="cliente" placeholder="Nombre del cliente">
+<input id="equipo" placeholder="Equipo / Modelo">
+<textarea id="falla" placeholder="Falla reportada"></textarea>
+
+<button onclick="guardar()">Guardar orden</button>
+
+<h3>Órdenes guardadas</h3>
+<div id="lista"></div>
+
+<script>
+let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
+
+function guardar() {
+  const orden = {
+    cliente: cliente.value,
+    equipo: equipo.value,
+    falla: falla.value,
+    fecha: new Date().toLocaleString()
+  };
+  ordenes.push(orden);
+  localStorage.setItem("ordenes", JSON.stringify(ordenes));
+  mostrar();
+}
+
+function mostrar() {
+  lista.innerHTML = "";
+  ordenes.forEach(o => {
+    lista.innerHTML += `
+      <div class="orden">
+        <b>${o.cliente}</b><br>
+        ${o.equipo}<br>
+        ${o.falla}<br>
+        <small>${o.fecha}</small>
+      </div>`;
+  });
+}
+
+mostrar();
+</script>
+
+</body>
 </html>
