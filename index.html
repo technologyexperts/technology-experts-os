@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Technology Expert’s</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Technology Expert´s</title>
 
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
+
     input, textarea, button {
       width: 100%;
       margin: 6px 0;
       padding: 10px;
       font-size: 16px;
     }
+
     button {
       background: black;
       color: white;
       border: none;
     }
+
+    .secundario {
+      background: #666;
+    }
+
     .orden {
       border: 1px solid #ccc;
       padding: 10px;
@@ -31,86 +38,90 @@
 
 <body>
 
-<h2>Orden de Servicio</h2>
+  <h2>Orden de Servicio</h2>
 
-<h4>Datos del cliente</h4>
-<input id="cliente" placeholder="Nombre del cliente">
-<input id="cedula" placeholder="Cédula">
-<input id="telefono" placeholder="Celular">
-<input id="correo" placeholder="Correo electrónico">
+  <h3>Datos del cliente</h3>
+  <input id="cliente" placeholder="Nombre del cliente">
+  <input id="cedula" placeholder="Cédula">
+  <input id="telefono" placeholder="Celular">
+  <input id="correo" placeholder="Correo electrónico">
 
-<h4>Equipo</h4>
-<input id="marca" placeholder="Marca del celular">
-<input id="modelo" placeholder="Modelo del celular">
-<textarea id="falla" placeholder="Falla reportada"></textarea>
+  <h3>Equipo</h3>
+  <input id="marca" placeholder="Marca del celular">
+  <input id="modelo" placeholder="Modelo del celular">
+  <textarea id="falla" placeholder="Falla reportada"></textarea>
 
-<button onclick="guardar()">Guardar orden</button>
+  <button onclick="guardar()">Guardar orden</button>
+  <button class="secundario" onclick="nuevaOrden()">Nueva orden</button>
 
-<h3>Órdenes guardadas</h3>
-<div id="lista"></div>
+  <h3>Órdenes guardadas</h3>
+  <div id="lista"></div>
 
 <script>
-let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
-let contador = Number(localStorage.getItem("contador")) || 2100;
+  let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
+  let contador = Number(localStorage.getItem("contador")) || 2100;
 
-function guardar() {
-  if (
-    !cliente.value || !cedula.value || !telefono.value ||
-    !correo.value || !marca.value || !modelo.value || !falla.value
-  ) {
-    alert("Completa todos los campos");
-    return;
+  function guardar() {
+    if (
+      !cliente.value || !cedula.value || !telefono.value ||
+      !correo.value || !marca.value || !modelo.value || !falla.value
+    ) {
+      alert("Completa todos los campos");
+      return;
+    }
+
+    const orden = {
+      numero: contador,
+      cliente: cliente.value,
+      cedula: cedula.value,
+      telefono: telefono.value,
+      correo: correo.value,
+      marca: marca.value,
+      modelo: modelo.value,
+      falla: falla.value,
+      fecha: new Date().toLocaleString()
+    };
+
+    ordenes.push(orden);
+    contador++;
+
+    localStorage.setItem("ordenes", JSON.stringify(ordenes));
+    localStorage.setItem("contador", contador);
+
+    mostrar();
   }
 
-  const orden = {
-    numero: contador,
-    cliente: cliente.value,
-    cedula: cedula.value,
-    telefono: telefono.value,
-    correo: correo.value,
-    marca: marca.value,
-    modelo: modelo.value,
-    falla: falla.value,
-    fecha: new Date().toLocaleString()
-  };
+  function nuevaOrden() {
+    cliente.value = "";
+    cedula.value = "";
+    telefono.value = "";
+    correo.value = "";
+    marca.value = "";
+    modelo.value = "";
+    falla.value = "";
+    cliente.focus();
+  }
 
-  ordenes.push(orden);
-  contador++;
-
-  localStorage.setItem("ordenes", JSON.stringify(ordenes));
-  localStorage.setItem("contador", contador);
-
-  cliente.value = "";
-  cedula.value = "";
-  telefono.value = "";
-  correo.value = "";
-  marca.value = "";
-  modelo.value = "";
-  falla.value = "";
+  function mostrar() {
+    lista.innerHTML = "";
+    ordenes.forEach(o => {
+      lista.innerHTML += `
+        <div class="orden">
+          <b>Orden #${o.numero}</b><br>
+          Cliente: ${o.cliente}<br>
+          Cédula: ${o.cedula}<br>
+          Tel: ${o.telefono}<br>
+          Email: ${o.correo}<br><br>
+          Marca: ${o.marca}<br>
+          Modelo: ${o.modelo}<br>
+          Falla: ${o.falla}<br>
+          <small>${o.fecha}</small>
+        </div>
+      `;
+    });
+  }
 
   mostrar();
-}
-
-function mostrar() {
-  lista.innerHTML = "";
-  ordenes.forEach(o => {
-    lista.innerHTML += `
-      <div class="orden">
-        <b>Orden #${o.numero}</b><br>
-        Cliente: ${o.cliente}<br>
-        Cédula: ${o.cedula}<br>
-        Tel: ${o.telefono}<br>
-        Email: ${o.correo}<br><br>
-        Marca: ${o.marca}<br>
-        Modelo: ${o.modelo}<br>
-        Falla: ${o.falla}<br>
-        <small>${o.fecha}</small>
-      </div>
-    `;
-  });
-}
-
-mostrar();
 </script>
 
 </body>
