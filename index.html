@@ -3,146 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Technology Expert´s</title>
+  <title>Technology Expert´s - Orden de Servicio</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
+    :root { --b:#111; --g:#666; --r:#c00; --bd:#ddd; }
+    body { font-family: Arial, sans-serif; padding: 16px; max-width: 900px; margin: 0 auto; }
+    h2 { margin: 6px 0 14px; }
+    h3 { margin-top: 18px; margin-bottom: 8px; }
+    label { font-weight: 700; display:block; margin: 10px 0 6px; }
+    input, textarea, button, select {
+      width: 100%; margin: 6px 0; padding: 10px; font-size: 16px; box-sizing: border-box;
+      border: 1px solid var(--bd); border-radius: 8px;
     }
-
-    input, textarea, button {
-      width: 100%;
-      margin: 6px 0;
-      padding: 10px;
-      font-size: 16px;
+    textarea { min-height: 80px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 720px){ .row { grid-template-columns: 1fr; } }
+    .btn { background: var(--b); color: #fff; border: none; }
+    .btn.sec { background: var(--g); }
+    .btn.danger { background: var(--r); }
+    .btn.small { padding: 8px 10px; font-size: 14px; }
+    .card {
+      border: 1px solid var(--bd); padding: 12px; border-radius: 12px; margin-top: 10px;
+      background: #fff;
     }
+    .muted { color:#666; font-size: 14px; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    @media (max-width: 720px){ .actions { grid-template-columns: 1fr; } }
 
-    button {
-      background: black;
-      color: white;
-      border: none;
-    }
+    /* Firma */
+    .sigWrap { border:1px solid var(--bd); border-radius: 12px; padding: 10px; }
+    canvas { width: 100%; height: 160px; border: 1px dashed #bbb; border-radius: 10px; touch-action: none; }
+    .sigBtns { display:flex; gap:10px; margin-top: 10px; }
+    .sigBtns button { width: 50%; }
 
-    .secundario {
-      background: #666;
-      margin-top: 8px;
-    }
+    /* Barra superior */
+    .topbar { display:grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
+    .pill { padding: 10px; border: 1px solid var(--bd); border-radius: 12px; background: #fafafa; }
+    .pill strong { display:block; margin-bottom: 6px; }
+    .miniRow { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width: 900px){ .miniRow { grid-template-columns: 1fr; } }
 
-    .orden {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-top: 10px;
-    }
-
-    .borrar {
-      background: #c00;
-      color: white;
-      margin-top: 8px;
+    /* Impresión */
+    @media print {
+      body { padding: 0; max-width: none; }
+      .noPrint { display: none !important; }
+      .card { border: 1px solid #000; }
     }
   </style>
 </head>
 
 <body>
 
+<div class="topbar noPrint">
+  <div class="pill">
+    <strong>Acciones rápidas</strong>
+    <div class="miniRow">
+      <button class="btn sec" onclick="exportarJSON()">📦 Exportar backup (.json)</button>
+      <label style="margin:0;">
+        <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importarJSON(event)">
+        <button class="btn sec" type="button" onclick="document.getElementById('importFile').click()">📥 Importar backup (.json)</button>
+      </label>
+      <button class="btn danger" onclick="borrarTodo()">🧨 Borrar TODAS las órdenes</button>
+    </div>
+    <div class="muted" style="margin-top:8px;">
+      Consejo: usa Exportar cada día para tener copia.
+    </div>
+  </div>
+
+  <div class="pill">
+    <strong>Buscar órdenes</strong>
+    <input id="buscador" placeholder="Buscar por #orden, nombre, cédula, tel, email, marca, modelo, falla..." oninput="render()">
+  </div>
+</div>
+
 <h2>Orden de Servicio</h2>
 
-<h3>Datos del cliente</h3>
-<input id="cliente" placeholder="Nombre del cliente">
-<input id="cedula" placeholder="Cédula">
-<input id="telefono" placeholder="Celular">
-<input id="correo" placeholder="Correo electrónico">
+<div class="noPrint">
+  <h3>Datos del cliente</h3>
+  <div class="row">
+    <input id="cliente" placeholder="Nombre del cliente">
+    <input id="cedula" placeholder="Cédula">
+  </div>
+  <div class="row">
+    <input id="telefono" placeholder="Celular">
+    <input id="correo" placeholder="Correo electrónico">
+  </div>
 
-<h3>Equipo</h3>
-<input id="marca" placeholder="Marca del celular">
-<input id="modelo" placeholder="Modelo del celular">
-<textarea id="falla" placeholder="Falla reportada"></textarea>
+  <h3>Equipo</h3>
+  <div class="row">
+    <input id="marca" placeholder="Marca del celular">
+    <input id="modelo" placeholder="Modelo del celular">
+  </div>
+  <textarea id="falla" placeholder="Falla reportada"></textarea>
 
-<button onclick="guardar()">Guardar orden</button>
-<button class="secundario" onclick="nuevaOrden()">Nueva orden</button>
+  <h3>Firma del cliente</h3>
+  <div class="sigWrap">
+    <div class="muted">Firma con el dedo. (No se guarda si está en blanco.)</div>
+    <canvas id="sig"></canvas>
+    <div class="sigBtns">
+      <button class="btn sec" onclick="limpiarFirma()" type="button">🧽 Borrar firma</button>
+      <button class="btn" onclick="guardar()" type="button">💾 Guardar orden</button>
+    </div>
+  </div>
 
-<h3>Órdenes guardadas</h3>
-<div id="lista"></div>
-
-<script>
-let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
-let contador = Number(localStorage.getItem("contador")) || 2100;
-
-function guardar() {
-  if (
-    !cliente.value || !cedula.value || !telefono.value ||
-    !correo.value || !marca.value || !modelo.value || !falla.value
-  ) {
-    alert("Completa todos los campos");
-    return;
-  }
-
-  const orden = {
-    numero: contador,
-    cliente: cliente.value,
-    cedula: cedula.value,
-    telefono: telefono.value,
-    correo: correo.value,
-    marca: marca.value,
-    modelo: modelo.value,
-    falla: falla.value,
-    fecha: new Date().toLocaleString()
-  };
-
-  ordenes.push(orden);
-  contador++;
-
-  localStorage.setItem("ordenes", JSON.stringify(ordenes));
-  localStorage.setItem("contador", contador);
-
-  mostrar();
-}
-
-function nuevaOrden() {
-  cliente.value = "";
-  cedula.value = "";
-  telefono.value = "";
-  correo.value = "";
-  marca.value = "";
-  modelo.value = "";
-  falla.value = "";
-  cliente.focus();
-}
-
-function mostrar() {
-  lista.innerHTML = "";
-
-  ordenes.forEach((o, i) => {
-    lista.innerHTML += `
-      <div class="orden">
-        <b>Orden #${o.numero}</b><br>
-        Cliente: ${o.cliente}<br>
-        Cédula: ${o.cedula}<br>
-        Tel: ${o.telefono}<br>
-        Email: ${o.correo}<br><br>
-
-        Marca: ${o.marca}<br>
-        Modelo: ${o.modelo}<br>
-        Falla: ${o.falla}<br>
-        <small>${o.fecha}</small><br>
-
-        <button class="borrar" onclick="borrarOrden(${i})">
-          Borrar orden
-        </button>
-      </div>
-    `;
-  });
-}
-
-function borrarOrden(i) {
-  if (!confirm("¿Seguro que deseas borrar esta orden?")) return;
-  ordenes.splice(i, 1);
-  localStorage.setItem("ordenes", JSON.stringify(ordenes));
-  mostrar();
-}
-
-mostrar();
-</script>
-
-</body>
-</html>
+  <div class="actions">
+    <button class="btn sec" onclick="nuevaOrden()" type="button">🆕 Nueva orden (limpiar campos)</button>
+    <button class="btn sec" onclick="window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'})" type
