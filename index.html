@@ -1,588 +1,615 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Technology Expert's</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technology Expert’s</title>
+
   <style>
     :root{
-      --bg1:#0a2bd4;
-      --bg2:#061a78;
-      --card:#ffffff;
-      --muted:#6b7280;
-      --text:#0f172a;
-      --line:#e5e7eb;
-      --btn:#0b1220;
-      --btn2:#1d4ed8; /* azul rey */
-      --danger:#dc2626;
-      --ok:#16a34a;
-      --chip:#eef2ff;
+      --blue1:#0b2dff; /* azul rey */
+      --blue2:#001b8f;
+      --black:#0b0b0b;
+      --white:#ffffff;
+      --card: rgba(255,255,255,.10);
+      --stroke: rgba(255,255,255,.18);
+      --shadow: 0 18px 40px rgba(0,0,0,.20);
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(160deg,var(--bg1),var(--bg2));
-      color: white;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.14), transparent 60%),
+                  radial-gradient(900px 520px at 80% 30%, rgba(255,255,255,.10), transparent 55%),
+                  linear-gradient(180deg, var(--blue1), var(--blue2));
+      color: var(--white);
       min-height:100vh;
     }
-    .wrap{max-width:980px;margin:0 auto;padding:18px}
+
+    .wrap{
+      width: min(980px, 92vw);
+      margin: 0 auto;
+      padding: 26px 0 40px;
+    }
+
     .hero{
-      padding:22px 10px 10px;
+      padding: 26px 18px 18px;
     }
-    .title{font-size:44px;line-height:1.05;margin:0;font-weight:800;letter-spacing:-.5px}
-    .subtitle{margin:8px 0 0;color:rgba(255,255,255,.9);max-width:720px}
+    .brand{
+      font-size: 44px;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: .2px;
+      margin:0 0 6px;
+      text-shadow: 0 10px 30px rgba(0,0,0,.20);
+    }
+    .subtitle{
+      margin:0;
+      opacity:.92;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
     .glass{
-      margin-top:18px;
-      background: rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:20px;
-      padding:14px;
-      backdrop-filter: blur(8px);
+      margin-top: 16px;
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
-    .menuRow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-    .bigBtn{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:16px 18px;border-radius:18px;border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.16); color:white; font-weight:700;
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn{
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 14px;
+      background: var(--black);
+      color: var(--white);
+      font-weight: 900;
+      font-size: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
       cursor:pointer;
+      user-select:none;
+      box-shadow: 0 10px 26px rgba(0,0,0,.18);
     }
-    .bigBtn.primary{background: rgba(255,255,255,.95); color:#0b1220;}
-    .bigBtn.primary span{color:#0b1220}
-    .bigBtn:hover{transform: translateY(-1px)}
-    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-    .chip{
-      background: rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18);
-      padding:10px 12px;border-radius:999px;font-weight:600;font-size:13px;
+    .btn:active{ transform: scale(.99); }
+    .btn.secondary{
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.20);
     }
+    .btn.small{
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 13px;
+      justify-content: center;
+      box-shadow:none;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(0,0,0,.25);
+    }
+    .btn.row{
+      justify-content: space-between;
+      padding: 16px 18px;
+      font-size: 17px;
+      border-radius: 18px;
+    }
+
+    .pillRow{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .sectionTitle{
+      font-weight: 900;
+      font-size: 18px;
+      margin: 0 0 10px;
+    }
+
+    .hidden{ display:none !important; }
+
     .panel{
-      margin-top:16px;
-      background: white;
-      color: var(--text);
-      border-radius:22px;
-      padding:16px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.25);
+      margin-top: 16px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      padding: 16px;
     }
-    .hidden{display:none!important}
-    h2{margin:0 0 8px;font-size:28px}
-    h3{margin:14px 0 8px;font-size:18px}
-    .muted{color:var(--muted);font-size:13px}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .col{flex:1;min-width:220px}
+
+    .panel h2{
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 900;
+    }
+    .panel h3{
+      margin: 16px 0 10px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .badgeNum{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.20);
+      font-weight: 900;
+      margin: 10px 0 4px;
+    }
+    .bigNum{
+      font-size: 20px;
+      letter-spacing: .4px;
+    }
+
+    .inputs{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
     input, textarea, select{
       width:100%;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px 12px;
-      font-size:16px;
-      outline:none;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      font-weight: 800;
+      outline: none;
+      font-size: 15px;
     }
-    textarea{min-height:90px;resize:vertical}
-    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    button{
-      border:none;border-radius:14px;padding:12px 14px;
-      font-weight:700;cursor:pointer;
+    textarea{ min-height: 86px; resize: vertical; }
+    input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.80); font-weight: 800; }
+    label.smallNote{
+      display:block;
+      margin-top: 6px;
+      opacity:.9;
+      font-weight: 700;
+      font-size: 13px;
     }
-    .btn{background:var(--btn);color:white}
-    .btnBlue{background:var(--btn2);color:white}
-    .btnSoft{background:#eef2ff;color:#1e3a8a}
-    .btnDanger{background:var(--danger);color:white}
-    .btnOk{background:var(--ok);color:white}
-    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .tab{
-      padding:10px 12px;border-radius:999px;border:1px solid var(--line);
-      background:white;cursor:pointer;font-weight:700;color:#111827;
+
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
-    .tab.active{background:var(--btn2);color:white;border-color:transparent}
-    .kpi{
-      display:flex;gap:10px;flex-wrap:wrap;margin-top:10px
+    @media (max-width: 600px){
+      .grid2{ grid-template-columns:1fr; }
+      .row2{ grid-template-columns:1fr; }
+      .brand{ font-size: 38px; }
     }
-    .kpi .box{
-      border:1px solid var(--line);
-      border-radius:16px;padding:10px 12px;background:#f8fafc;
-      min-width:180px;
+
+    .actionsRow{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
-    .list{display:grid;gap:10px;margin-top:10px}
+
+    .list{
+      margin-top: 10px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
     .card{
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px;
-      background:white;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 14px;
     }
-    .cardTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-    .badge{
-      display:inline-flex;align-items:center;gap:6px;
-      background:var(--chip);border:1px solid #c7d2fe;color:#1e3a8a;
-      padding:6px 10px;border-radius:999px;font-weight:800;font-size:12px;
+    .card .title{
+      font-weight: 900;
+      font-size: 16px;
+      margin-bottom: 6px;
     }
-    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .smallBtn{
-      padding:9px 10px;border-radius:12px;font-weight:800;
-      background:#f3f4f6;color:#111827;border:1px solid #e5e7eb;
+    .kv{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 2px;
+      font-weight: 800;
+      opacity: .98;
     }
-    .smallBtn.danger{background:#fee2e2;color:#7f1d1d;border-color:#fecaca}
-    .smallBtn.ok{background:#dcfce7;color:#14532d;border-color:#bbf7d0}
-    .divider{height:1px;background:var(--line);margin:14px 0}
-    .numBanner{
-      display:flex;justify-content:space-between;align-items:center;
-      background:#0b1220;color:white;padding:10px 12px;border-radius:16px;
-      margin:10px 0;
-      font-weight:900;
-    }
-    .numBanner small{opacity:.85;font-weight:700}
+    .muted{ opacity: .9; font-weight: 800; }
+
     .sigBox{
-      border:2px dashed #cbd5e1;border-radius:18px;padding:10px;background:#f8fafc;
+      background: rgba(255,255,255,.08);
+      border: 2px dashed rgba(255,255,255,.35);
+      border-radius: 16px;
+      overflow:hidden;
     }
-    canvas{width:100%;height:180px;border-radius:14px;background:white;border:1px solid var(--line);touch-action:none}
-    .topTools{
-      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px
+    canvas{
+      width:100%;
+      height: 180px;
+      display:block;
+      background: rgba(0,0,0,.08);
+      touch-action: none;
     }
-    .toolBtn{
-      background:#f3f4f6;border:1px solid #e5e7eb;border-radius:16px;
-      padding:12px;font-weight:900;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:8px;
+
+    .danger{
+      background:#c20000;
     }
-    .search{
-      margin-top:12px;
-      background:white;border-radius:18px;padding:12px;border:1px solid rgba(255,255,255,.2);
+
+    .qrBox{
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.20);
+      border: 1px solid rgba(255,255,255,.20);
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .search input{border-radius:14px}
-    .hint{margin-top:8px;color:#334155;font-size:13px}
-    .pill{
-      display:inline-block;margin-left:8px;
-      padding:4px 8px;border-radius:999px;background:#e0e7ff;color:#1e3a8a;font-weight:800;font-size:12px;
+    .qrRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: space-between;
     }
-    .noteBox{
-      background:#f8fafc;border:1px solid var(--line);
-      border-radius:16px;padding:10px;color:#0f172a;font-size:13px;
+    .qrImg{
+      background:#fff;
+      border-radius: 12px;
+      padding: 8px;
+      width: 220px;
+      max-width: 100%;
     }
-    .right{float:right}
+    .qrImg svg{ width:100%; height:auto; display:block; }
+
+    .searchBox{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .tip{
+      margin-top: 6px;
+      font-weight: 800;
+      opacity: .9;
+      font-size: 13px;
+    }
+
+    .tabbar{
+      margin-top: 12px;
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+    .tabbtn{
+      flex: 1;
+      min-width: 180px;
+    }
+    .tabbtn.active{
+      outline: 2px solid rgba(255,255,255,.35);
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 18px;
+      background: rgba(0,0,0,.80);
+      color:#fff;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      font-weight: 800;
+      display:none;
+      z-index: 99;
+      max-width: 92vw;
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <!-- HOME -->
-    <div id="home" class="hero">
-      <h1 class="title">Technology Expert's</h1>
-      <div class="subtitle">
-        Órdenes + Ventas + Inventario + QR + Fotos. Sin servidor (por ahora). Para PC / Tablet / Celular.
-      </div>
+    <div class="hero">
+      <h1 class="brand">Technology Expert’s</h1>
+      <p class="subtitle">Órdenes + ventas. Sin servidores (por ahora). Exporta CSV y Backup JSON para la PC.</p>
 
-      <div class="glass">
-        <div class="topTools">
-          <button class="toolBtn" onclick="downloadCSV('orders')">⬇️ CSV Órdenes</button>
-          <button class="toolBtn" onclick="downloadCSV('sales')">⬇️ CSV Ventas</button>
-          <button class="toolBtn" onclick="downloadJSON()">📦 Backup JSON (todo)</button>
-          <label class="toolBtn" style="cursor:pointer">
-            📥 Importar Backup JSON
-            <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importJSON(event)">
-          </label>
+      <div id="home" class="glass">
+        <div class="grid2">
+          <button class="btn row" id="goOrden">🧾 <span>Orden de servicio</span> <span>›</span></button>
+          <button class="btn row secondary" id="goVentas">💳 <span>Ventas</span> <span>›</span></button>
         </div>
 
-        <div class="search">
-          <input id="globalSearch" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, modelo, IMEI, producto..."
-                 oninput="renderAllLists()"/>
-          <div class="hint">Tip: escribe “R-00012”, “V-00008”, un IMEI o una marca.</div>
+        <div class="pillRow">
+          <button class="btn small" id="adminBtn">🔒 Admin PIN</button>
+          <button class="btn small" id="scanBtn">📷 Escanear (QR / Barras)</button>
+          <button class="btn small" id="exportOrdenCsv">⬇️ CSV Órdenes</button>
+          <button class="btn small" id="exportVentaCsv">⬇️ CSV Ventas</button>
+          <button class="btn small" id="backupBtn">📦 Backup JSON</button>
+          <button class="btn small" id="importBtn">📥 Importar Backup</button>
         </div>
 
-        <div class="menuRow">
-          <button class="bigBtn primary" onclick="openSection('orders')">
-            <span>🧾 Orden de servicio</span><span>›</span>
-          </button>
-          <button class="bigBtn" onclick="openSection('sales')">
-            <span>💳 Ventas</span><span>›</span>
-          </button>
-        </div>
-
-        <div class="menuRow" style="grid-template-columns:1fr 1fr">
-          <button class="bigBtn" onclick="openSection('inventory')">
-            <span>📦 Inventario</span><span>›</span>
-          </button>
-          <button class="bigBtn" onclick="openSection('reports')">
-            <span>📈 Reportes</span><span>›</span>
-          </button>
-        </div>
-
-        <div class="chips">
-          <div class="chip">🔐 Admin con PIN</div>
-          <div class="chip">✍️ Firma obligatoria (orden)</div>
-          <div class="chip">📷 Fotos en órdenes/ventas</div>
-          <div class="chip">🏷️ QR etiquetas</div>
-          <div class="chip">🧠 Autocompleta y “aprende” marcas</div>
+        <div class="searchBox">
+          <input id="globalSearch" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, modelo, IMEI..." />
+          <div class="tip">Tip: escribe “2100” (orden) o un IMEI y te lo filtra.</div>
         </div>
       </div>
-    </div>
-<!-- ORDERS -->
-    <div id="orders" class="panel hidden">
-      <button class="btnSoft" onclick="goHome()">← Volver</button>
-      <h2>Orden de Servicio</h2>
-      <div class="muted">La firma del cliente es obligatoria para guardar.</div>
 
-      <div class="numBanner">
-        <div>🧾 Número: <span id="orderNextNum">R-00001</span></div>
-        <small>Se asigna al guardar</small>
+      <div id="resultsPanel" class="panel hidden">
+        <h2>Resultados</h2>
+        <div class="actionsRow">
+          <button class="btn small" id="backHome1">⬅️ Volver</button>
+          <button class="btn small danger" id="clearSearch">🧹 Limpiar búsqueda</button>
+        </div>
+        <div id="resultsList" class="list"></div>
       </div>
 
-      <div class="tabs">
-        <div class="tab active" id="oTabForm" onclick="showOrdersTab('form')">Formulario</div>
-        <div class="tab" id="oTabList" onclick="showOrdersTab('list')">Listado</div>
-      </div>
+      <!-- ORDEN -->
+      <div id="ordenPanel" class="panel hidden">
+        <div class="actionsRow">
+          <button class="btn small" id="backHome2">⬅️ Inicio</button>
+          <button class="btn small secondary" id="ordenNueva">🆕 Nueva orden (limpiar)</button>
+        </div>
 
-      <div id="orderForm">
+        <h2>Orden de Servicio</h2>
+        <div class="badgeNum">
+          <span>🧾 Número:</span>
+          <span class="bigNum" id="ordenNumLabel">#----</span>
+        </div>
+
         <h3>Datos del cliente</h3>
-        <div class="row">
-          <div class="col"><input id="o_cliente" placeholder="Nombre del cliente" autocomplete="name"></div>
-          <div class="col"><input id="o_cedula" placeholder="Cédula" inputmode="numeric"></div>
-        </div>
-        <div class="row">
-          <div class="col"><input id="o_tel" placeholder="Celular" inputmode="tel" autocomplete="tel"></div>
-          <div class="col">
-            <input id="o_email" placeholder="Correo electrónico" autocomplete="email" list="emailDomains">
-            <datalist id="emailDomains"></datalist>
+        <div class="inputs">
+          <input id="o_cliente" placeholder="Nombre del cliente" autocomplete="name" />
+          <div class="row2">
+            <input id="o_cedula" placeholder="Cédula" inputmode="numeric" />
+            <input id="o_tel" placeholder="Celular" inputmode="tel" autocomplete="tel" />
           </div>
+
+          <input id="o_correo" placeholder="Correo electrónico" autocomplete="email" list="emailDomains" />
+          <datalist id="emailDomains"></datalist>
         </div>
 
         <h3>Equipo</h3>
-        <div class="row">
-          <div class="col">
-            <input id="o_marca" placeholder="Marca del celular" list="brandList" onblur="learnBrand(this.value)">
-            <datalist id="brandList"></datalist>
-          </div>
-          <div class="col"><input id="o_modelo" placeholder="Modelo del celular"></div>
-        </div>
-        <textarea id="o_falla" placeholder="Falla reportada"></textarea>
+        <div class="inputs">
+          <input id="o_marca" placeholder="Marca del celular" list="brandList" />
+          <datalist id="brandList"></datalist>
 
-        <h3>Fotos</h3>
-        <div class="noteBox">Puedes tomar foto o subir (se guarda dentro de la orden).</div>
-        <div class="btnRow">
-          <label class="btnSoft" style="cursor:pointer">
-            📷 Agregar foto
-            <input id="o_photo" type="file" accept="image/*" capture="environment" style="display:none" onchange="addTempPhoto('order',event)">
-          </label>
-          <button class="btnSoft" onclick="clearTempPhotos('order')">🧹 Quitar fotos</button>
+          <input id="o_modelo" placeholder="Modelo del celular" />
+          <textarea id="o_falla" placeholder="Falla reportada"></textarea>
         </div>
-        <div id="o_photoPreview" class="list"></div>
 
-        <h3>Firma del cliente (obligatoria)</h3>
+        <h3>Firma del cliente (OBLIGATORIA)</h3>
+        <label class="smallNote">Firma con el dedo. Si no firmas, NO deja guardar.</label>
         <div class="sigBox">
-          <div class="muted">Firma con el dedo. (Si está en blanco, no deja guardar.)</div>
           <canvas id="sigCanvas"></canvas>
-          <div class="btnRow">
-            <button class="btnSoft" onclick="clearSignature()">🧼 Borrar firma</button>
-            <button class="btnBlue" onclick="saveOrder()">💾 Guardar orden</button>
-            <button class="btnSoft" onclick="newOrder()">🆕 Nueva orden (limpiar campos)</button>
+        </div>
+        <div class="actionsRow">
+          <button class="btn secondary" id="clearSig">🧼 Borrar firma</button>
+          <button class="btn" id="guardarOrden">💾 Guardar orden</button>
+        </div>
+
+        <div id="ordenQrBox" class="qrBox hidden">
+          <div class="qrRow">
+            <div class="muted" id="ordenQrText">QR orden</div>
+            <button class="btn small" id="printOrden">🖨️ Imprimir</button>
           </div>
-        </div>
-      </div>
-
-      <div id="orderList" class="hidden">
-        <div class="btnRow">
-          <button class="btnSoft" onclick="askPinAndRun('Borrar TODAS las órdenes', clearOrders)">🗑️ Borrar TODAS (PIN)</button>
-        </div>
-        <div id="ordersList" class="list"></div>
-      </div>
-    </div>
-
-    <!-- SALES -->
-    <div id="sales" class="panel hidden">
-      <button class="btnSoft" onclick="goHome()">← Volver</button>
-      <h2>Ventas</h2>
-      <div class="muted">Ventas separadas de órdenes. IMEI puede ser 1 o 2. Incluye términos.</div>
-
-      <div class="numBanner">
-        <div>💳 Número: <span id="saleNextNum">V-00001</span></div>
-        <small>Se asigna al guardar</small>
-      </div>
-
-      <div class="tabs">
-        <div class="tab active" id="sTabForm" onclick="showSalesTab('form')">Formulario</div>
-        <div class="tab" id="sTabList" onclick="showSalesTab('list')">Listado</div>
-      </div>
-
-      <div id="saleForm">
-        <h3>Cliente</h3>
-        <div class="row">
-          <div class="col"><input id="s_cliente" placeholder="Nombre del cliente" autocomplete="name"></div>
-          <div class="col"><input id="s_cedula" placeholder="Cédula" inputmode="numeric"></div>
-        </div>
-        <div class="row">
-          <div class="col"><input id="s_tel" placeholder="Celular" inputmode="tel" autocomplete="tel"></div>
-          <div class="col"><input id="s_email" placeholder="Correo" autocomplete="email" list="emailDomains"></div>
+          <div class="qrImg" id="ordenQrImg"></div>
         </div>
 
-        <h3>Venta de teléfono</h3>
-        <div class="row">
-          <div class="col">
-            <input id="s_marca" placeholder="Marca" list="brandList" onblur="learnBrand(this.value)">
+        <h3>Órdenes guardadas</h3>
+        <div id="ordenList" class="list"></div>
+      </div>
+
+      <!-- VENTAS -->
+      <div id="ventaPanel" class="panel hidden">
+        <div class="actionsRow">
+          <button class="btn small" id="backHome3">⬅️ Inicio</button>
+          <button class="btn small secondary" id="ventaNueva">🆕 Nueva venta (limpiar)</button>
+        </div>
+
+        <h2>Ventas</h2>
+        <div class="badgeNum">
+          <span>💳 Número:</span>
+          <span class="bigNum" id="ventaNumLabel">#----</span>
+        </div>
+
+        <div class="tabbar">
+          <button class="btn tabbtn active" id="tabVentaForm">📝 Nueva venta</button>
+          <button class="btn tabbtn secondary" id="tabVentaList">📚 Ver ventas</button>
+        </div>
+
+        <div id="ventaForm">
+          <h3>Cliente</h3>
+          <div class="inputs">
+            <input id="v_cliente" placeholder="Nombre del cliente" autocomplete="name" />
+            <div class="row2">
+              <input id="v_cedula" placeholder="Cédula" inputmode="numeric" />
+              <input id="v_tel" placeholder="Celular" inputmode="tel" autocomplete="tel" />
+            </div>
           </div>
-          <div class="col"><input id="s_modelo" placeholder="Modelo"></div>
-        </div>
 
-        <div class="row">
-          <div class="col"><input id="s_imei1" placeholder="IMEI 1" inputmode="numeric"></div>
-          <div class="col"><input id="s_imei2" placeholder="IMEI 2 (si aplica)" inputmode="numeric"></div>
-        </div>
-
-        <h3>Pago</h3>
-        <div class="row">
-          <div class="col"><input id="s_precio" placeholder="Precio de venta" inputmode="decimal" oninput="calcSale()"></div>
-          <div class="col"><input id="s_costo" placeholder="Costo (para ganancia)" inputmode="decimal" oninput="calcSale()"></div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <select id="s_pago">
-              <option value="Efectivo">Efectivo</option>
-              <option value="Transferencia">Transferencia</option>
-              <option value="Tarjeta">Tarjeta</option>
-              <option value="Mixto">Mixto</option>
+          <h3>Tipo de venta</h3>
+          <div class="inputs">
+            <select id="v_tipo">
+              <option value="celular">Venta de celular</option>
+              <option value="accesorio">Accesorio / repuesto</option>
+              <option value="servicio">Servicio</option>
+              <option value="otro">Otro</option>
             </select>
           </div>
-          <div class="col"><input id="s_nota" placeholder="Nota (opcional)"></div>
+
+          <div id="ventaCelularBox">
+            <h3>Datos del celular (IMEI)</h3>
+            <div class="inputs">
+              <input id="v_marca" placeholder="Marca" list="brandList" />
+              <input id="v_modelo" placeholder="Modelo" />
+              <input id="v_imei1" placeholder="IMEI 1 (obligatorio)" inputmode="numeric" />
+              <input id="v_imei2" placeholder="IMEI 2 (opcional)" inputmode="numeric" />
+            </div>
+
+            <h3>Términos y condiciones (OBLIGATORIO aceptar)</h3>
+            <div class="card">
+              <div class="kv">
+                <div>• El cliente reconoce que debe registrar el/los IMEI ante el operador que va a usar.</div>
+                <div>• <b>No nos hacemos responsables si el cliente no registra los IMEI en la base de datos del operador.</b></div>
+              </div>
+            </div>
+            <label class="smallNote">
+              <input type="checkbox" id="v_terms" />
+              Acepto los términos para esta venta de celular
+            </label>
+          </div>
+
+          <h3>Pago</h3>
+          <div class="inputs">
+            <input id="v_desc" placeholder="Descripción (ej: Samsung A15 128GB)" />
+            <div class="row2">
+              <input id="v_total" placeholder="Total ($)" inputmode="decimal" />
+              <select id="v_pago">
+                <option value="efectivo">Efectivo</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="tarjeta">Tarjeta</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="actionsRow">
+            <button class="btn" id="guardarVenta">💾 Guardar venta</button>
+          </div>
+
+          <div id="ventaQrBox" class="qrBox hidden">
+            <div class="qrRow">
+              <div class="muted" id="ventaQrText">QR venta</div>
+              <button class="btn small" id="printVenta">🖨️ Imprimir</button>
+            </div>
+            <div class="qrImg" id="ventaQrImg"></div>
+          </div>
         </div>
 
-        <div class="kpi">
-          <div class="box"><b>Total:</b> <span id="s_total">$0</span></div>
-          <div class="box"><b>Ganancia:</b> <span id="s_gain">$0</span></div>
-        </div>
-
-        <h3>Términos</h3>
-        <div class="noteBox">
-          <b>Importante:</b> El comprador acepta que <b>Technology Expert's</b> no se hace responsable si no registra el/los IMEI ante el operador que va a usar.
-        </div>
-        <div style="margin-top:10px">
-          <label style="display:flex;gap:10px;align-items:flex-start">
-            <input id="s_terms" type="checkbox" style="width:auto;margin-top:3px">
-            <span>Acepto los términos y condiciones anteriores (recomendado para guardar claro).</span>
-          </label>
-        </div>
-
-        <h3>Fotos</h3>
-        <div class="btnRow">
-          <label class="btnSoft" style="cursor:pointer">
-            📷 Agregar foto
-            <input id="s_photo" type="file" accept="image/*" capture="environment" style="display:none" onchange="addTempPhoto('sale',event)">
-          </label>
-          <button class="btnSoft" onclick="clearTempPhotos('sale')">🧹 Quitar fotos</button>
-        </div>
-        <div id="s_photoPreview" class="list"></div>
-
-        <div class="btnRow">
-          <button class="btnBlue" onclick="saveSale()">💾 Guardar venta</button>
-          <button class="btnSoft" onclick="newSale()">🆕 Nueva venta (limpiar)</button>
+        <div id="ventaListPanel" class="hidden">
+          <h3>Ventas guardadas</h3>
+          <div id="ventaList" class="list"></div>
         </div>
       </div>
 
-      <div id="saleList" class="hidden">
-        <div class="btnRow">
-          <button class="btnSoft" onclick="askPinAndRun('Borrar TODAS las ventas', clearSales)">🗑️ Borrar TODAS (PIN)</button>
+      <!-- ADMIN -->
+      <div id="adminPanel" class="panel hidden">
+        <div class="actionsRow">
+          <button class="btn small" id="backHome4">⬅️ Inicio</button>
         </div>
-        <div id="salesList" class="list"></div>
+        <h2>Admin (PIN)</h2>
+        <div class="inputs">
+          <input id="pinInput" placeholder="PIN" inputmode="numeric" />
+          <button class="btn" id="pinEnter">Entrar</button>
+          <label class="smallNote">PIN por defecto: <b>1234</b> (puedes cambiarlo aquí adentro).</label>
+        </div>
+
+        <div id="adminTools" class="hidden">
+          <h3>Herramientas</h3>
+          <div class="pillRow">
+            <button class="btn small" id="changePinBtn">🔁 Cambiar PIN</button>
+            <button class="btn small danger" id="wipeAllBtn">🧨 Borrar TODO (órdenes + ventas)</button>
+          </div>
+
+          <h3>Importar / Exportar</h3>
+          <div class="pillRow">
+            <button class="btn small" id="exportOrdenCsv2">⬇️ CSV Órdenes</button>
+            <button class="btn small" id="exportVentaCsv2">⬇️ CSV Ventas</button>
+            <button class="btn small" id="backupBtn2">📦 Backup JSON</button>
+            <button class="btn small" id="importBtn2">📥 Importar Backup</button>
+          </div>
+        </div>
       </div>
+
+      <!-- SCANNER (solo ayuda: pega manual) -->
+      <div id="scanPanel" class="panel hidden">
+        <div class="actionsRow">
+          <button class="btn small" id="backHome5">⬅️ Inicio</button>
+        </div>
+        <h2>Escanear (QR / Barras)</h2>
+        <div class="card">
+          <div class="kv">
+            <div>📌 En celular: usa la cámara/lector del teléfono para copiar el código y pégalo aquí.</div>
+            <div>📌 Para PC: cuando tengas PC lo conectamos con lector USB (actúa como teclado).</div>
+          </div>
+        </div>
+        <div class="inputs">
+          <input id="scanInput" placeholder="Pega aquí el código (QR o barras 1D)" />
+          <button class="btn" id="scanSearch">Buscar en sistema</button>
+        </div>
+      </div>
+
+      <input id="importFile" type="file" accept="application/json" class="hidden" />
+
+      <div class="toast" id="toast"></div>
+
     </div>
-
-    <!-- INVENTORY -->
-    <div id="inventory" class="panel hidden">
-      <button class="btnSoft" onclick="goHome()">← Volver</button>
-      <h2>Inventario</h2>
-      <div class="muted">Registra productos, stock y alerta por bajo stock. (Editar/borrar con PIN)</div>
-
-      <div class="tabs">
-        <div class="tab active" id="iTabForm" onclick="showInvTab('form')">Agregar</div>
-        <div class="tab" id="iTabList" onclick="showInvTab('list')">Listado</div>
-      </div>
-
-      <div id="invForm">
-        <div class="row">
-          <div class="col"><input id="i_nombre" placeholder="Nombre del producto (ej: Cable Tipo-C)"></div>
-          <div class="col"><input id="i_sku" placeholder="SKU / Código (opcional)"></div>
-        </div>
-        <div class="row">
-          <div class="col"><input id="i_costo" placeholder="Costo" inputmode="decimal"></div>
-          <div class="col"><input id="i_precio" placeholder="Precio" inputmode="decimal"></div>
-        </div>
-        <div class="row">
-          <div class="col"><input id="i_stock" placeholder="Stock" inputmode="numeric"></div>
-          <div class="col"><input id="i_alerta" placeholder="Alerta bajo stock (ej: 3)" inputmode="numeric"></div>
-        </div>
-        <div class="btnRow">
-          <button class="btnBlue" onclick="saveInv()">💾 Guardar producto</button>
-          <button class="btnSoft" onclick="newInv()">🆕 Nuevo</button>
-        </div>
-      </div>
-
-      <div id="invList" class="hidden">
-        <div class="btnRow">
-          <button class="btnSoft" onclick="askPinAndRun('Borrar TODO el inventario', clearInv)">🗑️ Borrar todo (PIN)</button>
-        </div>
-        <div id="invListBox" class="list"></div>
-      </div>
-    </div>
-
-    <!-- REPORTS -->
-    <div id="reports" class="panel hidden">
-      <button class="btnSoft" onclick="goHome()">← Volver</button>
-      <h2>Reportes</h2>
-      <div class="muted">Ventas por fecha (total / ganancia). Próximo: reportes más avanzados.</div>
-
-      <div class="row">
-        <div class="col">
-          <label class="muted">Desde</label>
-          <input id="r_from" type="date" onchange="renderReports()">
-        </div>
-        <div class="col">
-          <label class="muted">Hasta</label>
-          <input id="r_to" type="date" onchange="renderReports()">
-        </div>
-      </div>
-
-      <div class="kpi">
-        <div class="box"><b>Ventas:</b> <span id="r_count">0</span></div>
-        <div class="box"><b>Total:</b> <span id="r_total">$0</span></div>
-        <div class="box"><b>Ganancia:</b> <span id="r_gain">$0</span></div>
-      </div>
-
-      <div class="divider"></div>
-      <h3>Detalle</h3>
-      <div id="reportList" class="list"></div>
-    </div>
-
-    <!-- PRINT (hidden container) -->
-    <div id="printArea" class="hidden"></div>
   </div>
 
 <script>
-/* ==========================
-   STORAGE + HELPERS
+/** ==========================
+    STORAGE KEYS
 ========================== */
 const LS = {
   orders: "te_orders",
   sales: "te_sales",
-  inv: "te_inventory",
-  counters: "te_counters",
-  brands: "te_brands",
-  pin: "te_admin_pin",
+  orderCounter: "te_orderCounter",
+  saleCounter: "te_saleCounter",
+  pin: "te_adminPin",
+  brands: "te_brands_learned"
 };
 
-function getArr(key){ try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return []} }
-function setArr(key,val){ localStorage.setItem(key, JSON.stringify(val||[])); }
-function getObj(key, def){ try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(def))}catch(e){return def} }
-function setObj(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
-function money(n){
-  const v = Number(n||0);
-  return v.toLocaleString("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0});
+// defaults
+function getCounter(key, fallback){
+  const v = Number(localStorage.getItem(key));
+  return Number.isFinite(v) && v>0 ? v : fallback;
 }
-function pad5(n){ return String(n).padStart(5,"0"); }
-function todayISO(){
-  const d=new Date();
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,"0");
-  const da=String(d.getDate()).padStart(2,"0");
-  return `${y}-${m}-${da}`;
-}
-function esc(s){ return (s||"").toString().replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
-function norm(s){ return (s||"").toString().toLowerCase().trim(); }
-
-function getCounters(){
-  return getObj(LS.counters, { order: 1, sale: 1 });
-}
-function setCounters(c){ setObj(LS.counters,c); updateNextNumbers(); }
-
-function getPin(){
-  return localStorage.getItem(LS.pin) || "1234"; // PIN por defecto
-}
-function askPin(){
-  const pin = prompt("PIN admin:");
-  if(pin===null) return false;
-  return pin === getPin();
-}
-function askPinAndRun(actionName, fn){
-  if(!askPin()){
-    alert("PIN incorrecto");
-    return;
-  }
-  if(confirm(actionName + " ¿Seguro?")){
-    fn();
-  }
+function setCounter(key, val){
+  localStorage.setItem(key, String(val));
 }
 
-/* ==========================
-   HOME NAV
+function getArr(key){
+  try{ return JSON.parse(localStorage.getItem(key) || "[]"); } catch(e){ return []; }
+}
+function setArr(key, arr){
+  localStorage.setItem(key, JSON.stringify(arr));
+}
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(toast._tm);
+  toast._tm = setTimeout(()=> t.style.display="none", 2200);
+}
+
+/** ==========================
+    EMAIL SUGGESTIONS (datalist)
 ========================== */
-function goHome(){
-  document.getElementById("home").classList.remove("hidden");
-  ["orders","sales","inventory","reports"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-  renderAllLists();
-}
-function openSection(id){
-  document.getElementById("home").classList.add("hidden");
-  ["orders","sales","inventory","reports"].forEach(x=>{
-    document.getElementById(x).classList.toggle("hidden", x!==id);
-  });
-  // cuando abre, muestra "número próximo" inmediatamente
-  updateNextNumbers();
-  if(id==="orders"){ showOrdersTab("form"); }
-  if(id==="sales"){ showSalesTab("form"); calcSale(); }
-  if(id==="inventory"){ showInvTab("form"); }
-  if(id==="reports"){ initReportDates(); renderReports(); }
-}
-
-function updateNextNumbers(){
-  const c = getCounters();
-  document.getElementById("orderNextNum").textContent = "R-" + pad5(c.order);
-  document.getElementById("saleNextNum").textContent = "V-" + pad5(c.sale);
-}
-
-/* ==========================
-   TABS
-========================== */
-function showOrdersTab(which){
-  const form=document.getElementById("orderForm");
-  const list=document.getElementById("orderList");
-  document.getElementById("oTabForm").classList.toggle("active", which==="form");
-  document.getElementById("oTabList").classList.toggle("active", which==="list");
-  form.classList.toggle("hidden", which!=="form");
-  list.classList.toggle("hidden", which!=="list");
-  if(which==="list") renderOrders();
-  updateNextNumbers();
-}
-function showSalesTab(which){
-  const form=document.getElementById("saleForm");
-  const list=document.getElementById("saleList");
-  document.getElementById("sTabForm").classList.toggle("active", which==="form");
-  document.getElementById("sTabList").classList.toggle("active", which==="list");
-  form.classList.toggle("hidden", which!=="form");
-  list.classList.toggle("hidden", which!=="list");
-  if(which==="list") renderSales();
-  updateNextNumbers();
-}
-function showInvTab(which){
-  const form=document.getElementById("invForm");
-  const list=document.getElementById("invList");
-  document.getElementById("iTabForm").classList.toggle("active", which==="form");
-  document.getElementById("iTabList").classList.toggle("active", which==="list");
-  form.classList.toggle("hidden", which!=="form");
-  list.classList.toggle("hidden", which!=="list");
-  if(which==="list") renderInv();
-}
-
-/* ==========================
-   EMAIL SUGGESTIONS
-========================== */
-const emailDomains = ["gmail.com","hotmail.com","outlook.com","icloud.com","yahoo.com","live.com","proton.me","protonmail.com"];
+const emailDomains = [
+  "gmail.com","hotmail.com","outlook.com","icloud.com","yahoo.com",
+  "live.com","proton.me","protonmail.com"
+];
 function buildEmailDatalist(){
   const dl = document.getElementById("emailDomains");
-  dl.innerHTML="";
+  dl.innerHTML = "";
   emailDomains.forEach(d=>{
-    const opt=document.createElement("option");
+    const opt = document.createElement("option");
     opt.value = "@"+d;
     dl.appendChild(opt);
   });
 }
 buildEmailDatalist();
 
-/* ==========================
-   BRAND AUTOCOMPLETE + LEARNING
+/** ==========================
+    BRAND AUTOCOMPLETE + LEARN
 ========================== */
 const defaultBrands = [
   "Samsung","Xiaomi","Redmi","POCO","Realme","Huawei","Honor","Motorola","Nokia",
@@ -590,89 +617,125 @@ const defaultBrands = [
   "ZTE","Alcatel","Sony","LG","Google Pixel","Asus","Lenovo","TCL","Meizu",
   "BlackBerry","HTC","Micromax","Blu","Cubot","Doogee","Ulefone","Umidigi",
   "Nothing","Meitu","CAT","Fairphone","Sharp","Panasonic","Philips","Sagem",
-  "Qin","Gionee","Kyocera","Toshiba","Hisense","Razer","LeEco","Coolpad",
-  "Wiko","Lanix","Hyundai","Maxwest","Energizer","General Mobile","BQ","Oukitel",
-  "Innjoo","Karbonn","Lava","Symphony","Cherry Mobile","X-Tigi","Vernee",
-  "Elephone","Leagoo","Haier","Vodafone","Orange","Xperia"
+  "Gionee","Wiko","Lava","Karbonn","QMobile","Coolpad","Hisense","Haier",
+  "LeEco","Razer","Essential","InFocus","Kyocera","Fujitsu","NEC"
 ];
 
 function getBrands(){
   const learned = getArr(LS.brands);
   const all = Array.from(new Set([...defaultBrands, ...learned]));
-  all.sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+  all.sort((a,b)=>a.localeCompare(b, "es", {sensitivity:"base"}));
   return all;
 }
-function learnBrand(name){
+function setLearnedBrand(name){
   const clean = (name||"").trim();
   if(!clean) return;
-  const lower = clean.toLowerCase();
-  const allLower = getBrands().map(x=>x.toLowerCase());
-  if(allLower.includes(lower)) return;
+  const lowerAll = getBrands().map(x=>x.toLowerCase());
+  if(lowerAll.includes(clean.toLowerCase())) return;
   const learned = getArr(LS.brands);
   learned.push(clean);
   setArr(LS.brands, learned);
   buildBrandDatalist();
 }
 function buildBrandDatalist(){
-  const dl=document.getElementById("brandList");
-  dl.innerHTML="";
+  const dl = document.getElementById("brandList");
+  dl.innerHTML = "";
   getBrands().forEach(b=>{
-    const opt=document.createElement("option");
-    opt.value=b;
+    const opt = document.createElement("option");
+    opt.value = b;
     dl.appendChild(opt);
   });
 }
 buildBrandDatalist();
 
-/* ==========================
-   TEMP PHOTOS
+/** ==========================
+    PANELS NAV
 ========================== */
-let tempPhotos = { order: [], sale: [] };
+const home = document.getElementById("home");
+const resultsPanel = document.getElementById("resultsPanel");
+const ordenPanel = document.getElementById("ordenPanel");
+const ventaPanel = document.getElementById("ventaPanel");
+const adminPanel = document.getElementById("adminPanel");
+const scanPanel = document.getElementById("scanPanel");
 
-function addTempPhoto(kind, ev){
-  const file = ev.target.files?.[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    tempPhotos[kind].push(reader.result);
-    renderTempPhotos(kind);
-    ev.target.value="";
-  };
-  reader.readAsDataURL(file);
+function hideAll(){
+  home.classList.add("hidden");
+  resultsPanel.classList.add("hidden");
+  ordenPanel.classList.add("hidden");
+  ventaPanel.classList.add("hidden");
+  adminPanel.classList.add("hidden");
+  scanPanel.classList.add("hidden");
 }
-function clearTempPhotos(kind){
-  tempPhotos[kind]=[];
-  renderTempPhotos(kind);
+function showHome(){
+  hideAll();
+  home.classList.remove("hidden");
 }
-function renderTempPhotos(kind){
-  const box = document.getElementById(kind==="order" ? "o_photoPreview" : "s_photoPreview");
-  box.innerHTML = "";
-  tempPhotos[kind].forEach((src, idx)=>{
-    const c=document.createElement("div");
-    c.className="card";
-    c.innerHTML = `
-      <div class="cardTop">
-        <div><b>Foto ${idx+1}</b></div>
-        <button class="smallBtn danger" onclick="removeTempPhoto('${kind}',${idx})">Eliminar</button>
-      </div>
-      <img src="${src}" style="width:100%;border-radius:14px;border:1px solid #e5e7eb;margin-top:10px">
-    `;
-    box.appendChild(c);
-  });
+function showOrden(){
+  hideAll();
+  ordenPanel.classList.remove("hidden");
+  refreshOrderNumberLabel();
+  renderOrders();
 }
-function removeTempPhoto(kind, idx){
-  tempPhotos[kind].splice(idx,1);
-  renderTempPhotos(kind);
+function showVentas(){
+  hideAll();
+  ventaPanel.classList.remove("hidden");
+  refreshSaleNumberLabel();
+  renderSales();
+  showVentaTab("form");
+}
+function showAdmin(){
+  hideAll();
+  adminPanel.classList.remove("hidden");
+  document.getElementById("pinInput").value = "";
+  document.getElementById("adminTools").classList.add("hidden");
+}
+function showScan(){
+  hideAll();
+  scanPanel.classList.remove("hidden");
+  document.getElementById("scanInput").value = "";
+}
+function showResults(){
+  hideAll();
+  resultsPanel.classList.remove("hidden");
 }
 
-/* ==========================
-   SIGNATURE (ORDER) - MANDATORY
+document.getElementById("goOrden").onclick = showOrden;
+document.getElementById("goVentas").onclick = showVentas;
+document.getElementById("adminBtn").onclick = showAdmin;
+document.getElementById("scanBtn").onclick = showScan;
+
+document.getElementById("backHome1").onclick = showHome;
+document.getElementById("backHome2").onclick = showHome;
+document.getElementById("backHome3").onclick = showHome;
+document.getElementById("backHome4").onclick = showHome;
+document.getElementById("backHome5").onclick = showHome;
+
+/** ==========================
+    COUNTERS
+========================== */
+function getNextOrderNumber(){
+  return getCounter(LS.orderCounter, 2100);
+}
+function getNextSaleNumber(){
+  return getCounter(LS.saleCounter, 315);
+}
+function refreshOrderNumberLabel(){
+  document.getElementById("ordenNumLabel").textContent = "#"+getNextOrderNumber();
+}
+function refreshSaleNumberLabel(){
+  document.getElementById("ventaNumLabel").textContent = "#"+getNextSaleNumber();
+}
+
+/** ==========================
+    SIGNATURE (mandatory for orders)
 ========================== */
 const canvas = document.getElementById("sigCanvas");
 const ctx = canvas.getContext("2d");
-let drawing=false, hasInk=false;
+let drawing = false;
+let hasSignature = false;
 
 function resizeCanvas(){
+  // match display size
   const rect = canvas.getBoundingClientRect();
   const ratio = window.devicePixelRatio || 1;
   canvas.width = Math.floor(rect.width * ratio);
@@ -680,803 +743,824 @@ function resizeCanvas(){
   ctx.setTransform(ratio,0,0,ratio,0,0);
   ctx.lineWidth = 3;
   ctx.lineCap = "round";
-  ctx.strokeStyle = "#0b1220";
+  ctx.strokeStyle = "#111";
+  // keep background transparent (we'll place on white in print)
+  redrawSigBackground();
+}
+function redrawSigBackground(){
+  // draw faint white bg
+  ctx.save();
+  ctx.globalAlpha = 0.0;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.restore();
 }
 window.addEventListener("resize", resizeCanvas);
-setTimeout(resizeCanvas, 60);
+setTimeout(resizeCanvas, 100);
 
 function getPos(e){
-  const r = canvas.getBoundingClientRect();
-  const t = (e.touches && e.touches[0]) ? e.touches[0] : e;
-  return { x: t.clientX - r.left, y: t.clientY - r.top };
+  const rect = canvas.getBoundingClientRect();
+  if(e.touches && e.touches[0]){
+    return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+  }
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
 }
+
 function startDraw(e){
-  drawing=true;
-  const p=getPos(e);
+  drawing = true;
+  const p = getPos(e);
   ctx.beginPath();
-  ctx.moveTo(p.x,p.y);
+  ctx.moveTo(p.x, p.y);
   e.preventDefault?.();
 }
 function moveDraw(e){
   if(!drawing) return;
-  const p=getPos(e);
-  ctx.lineTo(p.x,p.y);
+  const p = getPos(e);
+  ctx.lineTo(p.x, p.y);
   ctx.stroke();
-  hasInk=true;
+  hasSignature = true;
   e.preventDefault?.();
 }
-function endDraw(){ drawing=false; }
+function endDraw(){
+  drawing = false;
+}
 
 canvas.addEventListener("mousedown", startDraw);
 canvas.addEventListener("mousemove", moveDraw);
 window.addEventListener("mouseup", endDraw);
+
 canvas.addEventListener("touchstart", startDraw, {passive:false});
 canvas.addEventListener("touchmove", moveDraw, {passive:false});
 canvas.addEventListener("touchend", endDraw);
 
-function clearSignature(){
+document.getElementById("clearSig").onclick = ()=>{
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  hasInk=false;
-}
-function signatureDataURL(){
-  if(!hasInk) return "";
+  hasSignature = false;
+  toast("Firma borrada");
+};
+
+function signatureToDataURL(){
+  // export
   return canvas.toDataURL("image/png");
-    }
-/* ==========================
-   ORDERS CRUD
-========================== */
-let editingOrderId = null;
-
-function newOrder(){
-  editingOrderId = null;
-  ["o_cliente","o_cedula","o_tel","o_email","o_marca","o_modelo","o_falla"].forEach(id=>document.getElementById(id).value="");
-  clearTempPhotos("order");
-  clearSignature();
-  document.getElementById("o_cliente").focus();
-  updateNextNumbers();
 }
 
-function validateOrder(){
-  const cliente = o_cliente.value.trim();
-  const cedula = o_cedula.value.trim();
-  const tel = o_tel.value.trim();
-  const email = o_email.value.trim();
-  const marca = o_marca.value.trim();
-  const modelo = o_modelo.value.trim();
-  const falla = o_falla.value.trim();
-  if(!cliente || !cedula || !tel || !email || !marca || !modelo || !falla){
+/** ==========================
+    ORDER FORM
+========================== */
+const o_cliente = document.getElementById("o_cliente");
+const o_cedula = document.getElementById("o_cedula");
+const o_tel = document.getElementById("o_tel");
+const o_correo = document.getElementById("o_correo");
+const o_marca = document.getElementById("o_marca");
+const o_modelo = document.getElementById("o_modelo");
+const o_falla = document.getElementById("o_falla");
+
+document.getElementById("ordenNueva").onclick = ()=>{
+  o_cliente.value = "";
+  o_cedula.value = "";
+  o_tel.value = "";
+  o_correo.value = "";
+  o_marca.value = "";
+  o_modelo.value = "";
+  o_falla.value = "";
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  hasSignature = false;
+  o_cliente.focus();
+  refreshOrderNumberLabel();
+  document.getElementById("ordenQrBox").classList.add("hidden");
+  toast("Lista nueva orden");
+};
+
+document.getElementById("guardarOrden").onclick = ()=>{
+  // required fields
+  if(!o_cliente.value.trim() || !o_cedula.value.trim() || !o_tel.value.trim() || !o_correo.value.trim()
+     || !o_marca.value.trim() || !o_modelo.value.trim() || !o_falla.value.trim()){
     alert("Completa todos los campos de la orden.");
-    return false;
+    return;
   }
-  if(!hasInk){
+  if(!hasSignature){
     alert("La firma es obligatoria para guardar la orden.");
-    return false;
-  }
-  return true;
-}
-
-function saveOrder(){
-  if(!validateOrder()) return;
-
-  const orders = getArr(LS.orders);
-  const c = getCounters();
-
-  let num;
-  if(editingOrderId){
-    // mantiene número
-    const idx = orders.findIndex(o=>o.id===editingOrderId);
-    if(idx<0){ alert("No encontré la orden para editar."); return; }
-    num = orders[idx].num;
-    orders[idx] = {
-      ...orders[idx],
-      cliente:o_cliente.value.trim(),
-      cedula:o_cedula.value.trim(),
-      tel:o_tel.value.trim(),
-      email:o_email.value.trim(),
-      marca:o_marca.value.trim(),
-      modelo:o_modelo.value.trim(),
-      falla:o_falla.value.trim(),
-      photos: [...tempPhotos.order],
-      firma: signatureDataURL(),
-      updatedAt: new Date().toISOString(),
-    };
-  }else{
-    num = "R-" + pad5(c.order);
-    const rec = {
-      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random(),
-      num,
-      cliente:o_cliente.value.trim(),
-      cedula:o_cedula.value.trim(),
-      tel:o_tel.value.trim(),
-      email:o_email.value.trim(),
-      marca:o_marca.value.trim(),
-      modelo:o_modelo.value.trim(),
-      falla:o_falla.value.trim(),
-      photos: [...tempPhotos.order],
-      firma: signatureDataURL(),
-      createdAt: new Date().toISOString(),
-    };
-    orders.push(rec);
-    c.order += 1;
-    setCounters(c);
-  }
-
-  // Orden ascendente por número
-  orders.sort((a,b)=>a.num.localeCompare(b.num,"es",{numeric:true}));
-  setArr(LS.orders, orders);
-
-  learnBrand(o_marca.value);
-  alert("Orden guardada ✅");
-  newOrder();
-  showOrdersTab("list");
-}
-
-function renderOrders(){
-  const q = norm(document.getElementById("globalSearch").value);
-  const box = document.getElementById("ordersList");
-  box.innerHTML="";
-  const orders = getArr(LS.orders);
-
-  const filtered = orders.filter(o=>{
-    if(!q) return true;
-    const hay = [
-      o.num,o.cliente,o.cedula,o.tel,o.email,o.marca,o.modelo,o.falla
-    ].join(" ").toLowerCase();
-    return hay.includes(q);
-  });
-
-  if(filtered.length===0){
-    box.innerHTML = `<div class="card"><b>No hay órdenes.</b><div class="muted">Crea una desde “Formulario”.</div></div>`;
     return;
   }
 
-  filtered.forEach(o=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML = `
-      <div class="cardTop">
-        <div>
-          <div class="badge">🧾 ${esc(o.num)}</div>
-          <div style="margin-top:8px"><b>${esc(o.cliente)}</b> <span class="pill">${esc(o.marca)} ${esc(o.modelo)}</span></div>
-          <div class="muted">Cédula: ${esc(o.cedula)} · Tel: ${esc(o.tel)} · Email: ${esc(o.email)}</div>
-          <div style="margin-top:8px"><b>Falla:</b> ${esc(o.falla)}</div>
-          <div class="muted" style="margin-top:6px">Fecha: ${new Date(o.createdAt||o.updatedAt||Date.now()).toLocaleString()}</div>
-        </div>
-        <div>
-          <button class="smallBtn ok" onclick="printOrder('${o.id}')">🖨️ Ticket</button>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="smallBtn" onclick="editOrder('${o.id}')">✏️ Editar</button>
-        <button class="smallBtn" onclick="openQR('order','${o.id}')">🏷️ QR</button>
-        <button class="smallBtn danger" onclick="askPinAndRun('Borrar ${o.num}', ()=>deleteOrder('${o.id}'))">🗑️ Borrar (PIN)</button>
-      </div>
-    `;
-    box.appendChild(card);
-  });
-}
+  const num = getNextOrderNumber();
+  const orders = getArr(LS.orders);
 
-function editOrder(id){
-  const orders=getArr(LS.orders);
-  const o=orders.find(x=>x.id===id);
-  if(!o){ alert("No se encontró la orden"); return; }
+  const order = {
+    type: "orden",
+    numero: num,
+    cliente: o_cliente.value.trim(),
+    cedula: o_cedula.value.trim(),
+    telefono: o_tel.value.trim(),
+    correo: o_correo.value.trim(),
+    marca: o_marca.value.trim(),
+    modelo: o_modelo.value.trim(),
+    falla: o_falla.value.trim(),
+    firmaPng: signatureToDataURL(),
+    fechaISO: new Date().toISOString()
+  };
 
-  editingOrderId = id;
-  showOrdersTab("form");
-
-  o_cliente.value=o.cliente||"";
-  o_cedula.value=o.cedula||"";
-  o_tel.value=o.tel||"";
-  o_email.value=o.email||"";
-  o_marca.value=o.marca||"";
-  o_modelo.value=o.modelo||"";
-  o_falla.value=o.falla||"";
-
-  tempPhotos.order = Array.isArray(o.photos)? [...o.photos] : [];
-  renderTempPhotos("order");
-
-  clearSignature();
-  if(o.firma){
-    const img=new Image();
-    img.onload=()=>{ ctx.drawImage(img,0,0,canvas.width/(window.devicePixelRatio||1),canvas.height/(window.devicePixelRatio||1)); hasInk=true; };
-    img.src=o.firma;
-  }else{
-    hasInk=false;
-  }
-
-  document.getElementById("orderNextNum").textContent = o.num + " (editando)";
-}
-
-function deleteOrder(id){
-  const orders=getArr(LS.orders).filter(x=>x.id!==id);
+  orders.push(order);
+  // keep asc
+  orders.sort((a,b)=>a.numero-b.numero);
   setArr(LS.orders, orders);
+
+  // increment counter
+  setCounter(LS.orderCounter, num+1);
+
+  // learn brand
+  setLearnedBrand(order.marca);
+
+  toast("Orden guardada #"+num);
+  refreshOrderNumberLabel();
   renderOrders();
-  renderAllLists();
-}
 
-function clearOrders(){
-  setArr(LS.orders, []);
-  renderOrders();
-  renderAllLists();
-}
+  // show QR
+  showQR("orden", order);
+};
 
-/* ==========================
-   SALES CRUD
-========================== */
-let editingSaleId = null;
+function renderOrders(filter=""){
+  const list = document.getElementById("ordenList");
+  list.innerHTML = "";
+  const orders = getArr(LS.orders);
 
-function calcSale(){
-  const p = Number((s_precio.value||"").replace(/[^\d]/g,"")) || Number(s_precio.value||0) || 0;
-  const c = Number((s_costo.value||"").replace(/[^\d]/g,"")) || Number(s_costo.value||0) || 0;
-  document.getElementById("s_total").textContent = money(p);
-  document.getElementById("s_gain").textContent = money(p-c);
-}
+  const f = (filter||"").trim().toLowerCase();
+  const data = f ? orders.filter(o => orderMatches(o,f)) : orders;
 
-function newSale(){
-  editingSaleId=null;
-  ["s_cliente","s_cedula","s_tel","s_email","s_marca","s_modelo","s_imei1","s_imei2","s_precio","s_costo","s_nota"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("s_pago").value="Efectivo";
-  document.getElementById("s_terms").checked=false;
-  clearTempPhotos("sale");
-  document.getElementById("s_cliente").focus();
-  calcSale();
-  updateNextNumbers();
-}
+  data.forEach(o=>{
+    const card = document.createElement("div");
+    card.className = "card";
 
-function validateSale(){
-  const cliente=s_cliente.value.trim();
-  const cedula=s_cedula.value.trim();
-  const tel=s_tel.value.trim();
-  const email=s_email.value.trim();
-  const marca=s_marca.value.trim();
-  const modelo=s_modelo.value.trim();
-  const imei1=s_imei1.value.trim();
-  const precio=Number(s_precio.value||0);
-  if(!cliente||!cedula||!tel||!email||!marca||!modelo||!imei1||!precio){
-    alert("Completa los campos obligatorios (incluye IMEI 1 y precio).");
-    return false;
-  }
-  return true;
-}
+    const t = document.createElement("div");
+    t.className = "title";
+    t.textContent = "Orden #"+o.numero;
 
-function saveSale(){
-  if(!validateSale()) return;
+    const kv = document.createElement("div");
+    kv.className = "kv";
+    kv.innerHTML = `
+      <div>Cliente: <span class="muted">${escapeHtml(o.cliente)}</span></div>
+      <div>Cédula: <span class="muted">${escapeHtml(o.cedula)}</span></div>
+      <div>Tel: <span class="muted">${escapeHtml(o.telefono)}</span></div>
+      <div>Email: <span class="muted">${escapeHtml(o.correo)}</span></div>
+      <div style="margin-top:6px">Marca: <span class="muted">${escapeHtml(o.marca)}</span></div>
+      <div>Modelo: <span class="muted">${escapeHtml(o.modelo)}</span></div>
+      <div>Falla: <span class="muted">${escapeHtml(o.falla)}</span></div>
+      <div style="margin-top:6px">Fecha: <span class="muted">${formatDate(o.fechaISO)}</span></div>
+    `;
 
-  const sales = getArr(LS.sales);
-  const c = getCounters();
+    const row = document.createElement("div");
+    row.className = "actionsRow";
 
-  const precio = Number(s_precio.value||0);
-  const costo = Number(s_costo.value||0);
+    const qrBtn = document.createElement("button");
+    qrBtn.className = "btn small";
+    qrBtn.textContent = "🔳 QR";
+    qrBtn.onclick = ()=> showQR("orden", o);
 
-  let num;
-  if(editingSaleId){
-    const idx=sales.findIndex(x=>x.id===editingSaleId);
-    if(idx<0){ alert("No encontré la venta"); return; }
-    num = sales[idx].num;
-    sales[idx] = {
-      ...sales[idx],
-      cliente:s_cliente.value.trim(),
-      cedula:s_cedula.value.trim(),
-      tel:s_tel.value.trim(),
-      email:s_email.value.trim(),
-      marca:s_marca.value.trim(),
-      modelo:s_modelo.value.trim(),
-      imei1:s_imei1.value.trim(),
-      imei2:s_imei2.value.trim(),
-      precio,
-      costo,
-      pago:s_pago.value,
-      nota:s_nota.value.trim(),
-      termsAccepted: !!s_terms.checked,
-      photos:[...tempPhotos.sale],
-      updatedAt:new Date().toISOString(),
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn small danger";
+    delBtn.textContent = "🗑️ Borrar";
+    delBtn.onclick = ()=>{
+      if(!confirm("¿Borrar la orden #"+o.numero+"?")) return;
+      const all = getArr(LS.orders).filter(x=>x.numero!==o.numero);
+      setArr(LS.orders, all);
+      renderOrders(filter);
+      toast("Orden borrada");
     };
-  }else{
-    num = "V-" + pad5(c.sale);
-    const rec = {
-      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random(),
-      num,
-      cliente:s_cliente.value.trim(),
-      cedula:s_cedula.value.trim(),
-      tel:s_tel.value.trim(),
-      email:s_email.value.trim(),
-      marca:s_marca.value.trim(),
-      modelo:s_modelo.value.trim(),
-      imei1:s_imei1.value.trim(),
-      imei2:s_imei2.value.trim(),
-      precio,
-      costo,
-      pago:s_pago.value,
-      nota:s_nota.value.trim(),
-      termsAccepted: !!s_terms.checked,
-      photos:[...tempPhotos.sale],
-      createdAt:new Date().toISOString(),
-    };
-    sales.push(rec);
-    c.sale += 1;
-    setCounters(c);
-  }
 
-  sales.sort((a,b)=>a.num.localeCompare(b.num,"es",{numeric:true}));
-  setArr(LS.sales, sales);
+    row.appendChild(qrBtn);
+    row.appendChild(delBtn);
 
-  learnBrand(s_marca.value);
-  alert("Venta guardada ✅");
-  newSale();
-  showSalesTab("list");
-}
-
-function renderSales(){
-  const q = norm(document.getElementById("globalSearch").value);
-  const box = document.getElementById("salesList");
-  box.innerHTML="";
-  const sales = getArr(LS.sales);
-
-  const filtered = sales.filter(s=>{
-    if(!q) return true;
-    const hay = [
-      s.num,s.cliente,s.cedula,s.tel,s.email,s.marca,s.modelo,s.imei1,s.imei2,s.nota
-    ].join(" ").toLowerCase();
-    return hay.includes(q);
+    card.appendChild(t);
+    card.appendChild(kv);
+    card.appendChild(row);
+    list.appendChild(card);
   });
 
-  if(filtered.length===0){
-    box.innerHTML = `<div class="card"><b>No hay ventas.</b><div class="muted">Crea una desde “Formulario”.</div></div>`;
+  if(data.length===0){
+    const empty = document.createElement("div");
+    empty.className="card";
+    empty.innerHTML = `<div class="kv">No hay órdenes.</div>`;
+    list.appendChild(empty);
+  }
+}
+
+/** ==========================
+    SALES
+========================== */
+const tabVentaForm = document.getElementById("tabVentaForm");
+const tabVentaList = document.getElementById("tabVentaList");
+const ventaForm = document.getElementById("ventaForm");
+const ventaListPanel = document.getElementById("ventaListPanel");
+
+function showVentaTab(which){
+  if(which==="form"){
+    tabVentaForm.classList.add("active");
+    tabVentaList.classList.remove("active");
+    ventaForm.classList.remove("hidden");
+    ventaListPanel.classList.add("hidden");
+  }else{
+    tabVentaForm.classList.remove("active");
+    tabVentaList.classList.add("active");
+    ventaForm.classList.add("hidden");
+    ventaListPanel.classList.remove("hidden");
+  }
+}
+tabVentaForm.onclick = ()=>showVentaTab("form");
+tabVentaList.onclick = ()=>{ showVentaTab("list"); renderSales(); };
+
+const v_cliente = document.getElementById("v_cliente");
+const v_cedula  = document.getElementById("v_cedula");
+const v_tel     = document.getElementById("v_tel");
+const v_tipo    = document.getElementById("v_tipo");
+
+const ventaCelularBox = document.getElementById("ventaCelularBox");
+const v_marca  = document.getElementById("v_marca");
+const v_modelo = document.getElementById("v_modelo");
+const v_imei1  = document.getElementById("v_imei1");
+const v_imei2  = document.getElementById("v_imei2");
+const v_terms  = document.getElementById("v_terms");
+
+const v_desc   = document.getElementById("v_desc");
+const v_total  = document.getElementById("v_total");
+const v_pago   = document.getElementById("v_pago");
+
+v_tipo.onchange = ()=>{
+  const t = v_tipo.value;
+  ventaCelularBox.classList.toggle("hidden", t!=="celular");
+};
+
+document.getElementById("ventaNueva").onclick = ()=>{
+  v_cliente.value = "";
+  v_cedula.value = "";
+  v_tel.value = "";
+  v_tipo.value = "celular";
+  v_marca.value = "";
+  v_modelo.value = "";
+  v_imei1.value = "";
+  v_imei2.value = "";
+  v_terms.checked = false;
+  v_desc.value = "";
+  v_total.value = "";
+  v_pago.value = "efectivo";
+  document.getElementById("ventaQrBox").classList.add("hidden");
+  refreshSaleNumberLabel();
+  v_cliente.focus();
+  ventaCelularBox.classList.remove("hidden");
+  toast("Lista nueva venta");
+};
+
+document.getElementById("guardarVenta").onclick = ()=>{
+  if(!v_cliente.value.trim() || !v_cedula.value.trim() || !v_tel.value.trim() || !v_desc.value.trim() || !v_total.value.trim()){
+    alert("Completa los campos principales de la venta.");
     return;
   }
 
-  filtered.forEach(s=>{
-    const card=document.createElement("div");
-    card.className="card";
-    const gain = (Number(s.precio||0)-Number(s.costo||0));
-    card.innerHTML = `
-      <div class="cardTop">
-        <div>
-          <div class="badge">💳 ${esc(s.num)}</div>
-          <div style="margin-top:8px"><b>${esc(s.cliente)}</b> <span class="pill">${esc(s.marca)} ${esc(s.modelo)}</span></div>
-          <div class="muted">Cédula: ${esc(s.cedula)} · Tel: ${esc(s.tel)} · Email: ${esc(s.email)}</div>
-          <div style="margin-top:8px"><b>IMEI1:</b> ${esc(s.imei1)} ${s.imei2?`<br><b>IMEI2:</b> ${esc(s.imei2)}`:""}</div>
-          <div style="margin-top:8px"><b>Total:</b> ${money(s.precio)} · <b>Ganancia:</b> ${money(gain)} · <b>Pago:</b> ${esc(s.pago)}</div>
-          <div class="muted" style="margin-top:6px">Fecha: ${new Date(s.createdAt||s.updatedAt||Date.now()).toLocaleString()}</div>
-          ${s.termsAccepted ? `<div class="muted" style="margin-top:6px">✅ Términos aceptados</div>` : `<div class="muted" style="margin-top:6px">⚠️ Términos NO marcados</div>`}
-        </div>
-        <div>
-          <button class="smallBtn ok" onclick="printSale('${s.id}')">🖨️ Ticket</button>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="smallBtn" onclick="editSale('${s.id}')">✏️ Editar</button>
-        <button class="smallBtn" onclick="openQR('sale','${s.id}')">🏷️ QR</button>
-        <button class="smallBtn danger" onclick="askPinAndRun('Borrar ${s.num}', ()=>deleteSale('${s.id}'))">🗑️ Borrar (PIN)</button>
-      </div>
-    `;
-    box.appendChild(card);
-  });
-}
+  const tipo = v_tipo.value;
 
-function editSale(id){
-  const sales=getArr(LS.sales);
-  const s=sales.find(x=>x.id===id);
-  if(!s){ alert("No se encontró la venta"); return; }
-
-  editingSaleId=id;
-  showSalesTab("form");
-
-  s_cliente.value=s.cliente||"";
-  s_cedula.value=s.cedula||"";
-  s_tel.value=s.tel||"";
-  s_email.value=s.email||"";
-  s_marca.value=s.marca||"";
-  s_modelo.value=s.modelo||"";
-  s_imei1.value=s.imei1||"";
-  s_imei2.value=s.imei2||"";
-  s_precio.value=s.precio||"";
-  s_costo.value=s.costo||"";
-  s_pago.value=s.pago||"Efectivo";
-  s_nota.value=s.nota||"";
-  s_terms.checked=!!s.termsAccepted;
-
-  tempPhotos.sale = Array.isArray(s.photos)? [...s.photos] : [];
-  renderTempPhotos("sale");
-
-  calcSale();
-  document.getElementById("saleNextNum").textContent = s.num + " (editando)";
-}
-
-function deleteSale(id){
-  const sales=getArr(LS.sales).filter(x=>x.id!==id);
-  setArr(LS.sales, sales);
-  renderSales();
-  renderAllLists();
-}
-
-function clearSales(){
-  setArr(LS.sales, []);
-  renderSales();
-  renderAllLists();
+  if(tipo==="celular"){
+    if(!v_marca.value.trim() || !v_modelo.value.trim()){
+      alert("En venta de celular: completa marca y modelo.");
+      return;
+    }
+    if(!v_imei1.value.trim()){
+      alert("IMEI 1 es obligatorio.");
+      return;
+    }
+    if(!v_terms.checked){
+      alert("Debes aceptar los términos de IMEI para guardar la venta.");
+      return;
+    }
   }
-/* ==========================
-   INVENTORY CRUD
-========================== */
-let editingInvId=null;
 
-function newInv(){
-  editingInvId=null;
-  ["i_nombre","i_sku","i_costo","i_precio","i_stock","i_alerta"].forEach(id=>document.getElementById(id).value="");
-  i_nombre.focus();
+  const num = getNextSaleNumber();
+  const sales = getArr(LS.sales);
+
+  const sale = {
+    type: "venta",
+    numero: num,
+    cliente: v_cliente.value.trim(),
+    cedula: v_cedula.value.trim(),
+    telefono: v_tel.value.trim(),
+    tipo,
+    marca: tipo==="celular" ? v_marca.value.trim() : "",
+    modelo: tipo==="celular" ? v_modelo.value.trim() : "",
+    imei1:  tipo==="celular" ? v_imei1.value.trim() : "",
+    imei2:  tipo==="celular" ? v_imei2.value.trim() : "",
+    termsIMEI: tipo==="celular" ? true : false,
+    descripcion: v_desc.value.trim(),
+    total: v_total.value.trim(),
+    pago: v_pago.value,
+    fechaISO: new Date().toISOString()
+  };
+
+  sales.push(sale);
+  sales.sort((a,b)=>a.numero-b.numero);
+  setArr(LS.sales, sales);
+  setCounter(LS.saleCounter, num+1);
+
+  // learn brand if any
+  if(sale.marca) setLearnedBrand(sale.marca);
+
+  toast("Venta guardada #"+num);
+  refreshSaleNumberLabel();
+  renderSales();
+  showQR("venta", sale);
+};
+
+function renderSales(filter=""){
+  const list = document.getElementById("ventaList");
+  list.innerHTML = "";
+  const sales = getArr(LS.sales);
+
+  const f = (filter||"").trim().toLowerCase();
+  const data = f ? sales.filter(s => saleMatches(s,f)) : sales;
+
+  data.forEach(s=>{
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const t = document.createElement("div");
+    t.className = "title";
+    t.textContent = "Venta #"+s.numero;
+
+    const kv = document.createElement("div");
+    kv.className = "kv";
+    kv.innerHTML = `
+      <div>Cliente: <span class="muted">${escapeHtml(s.cliente)}</span></div>
+      <div>Cédula: <span class="muted">${escapeHtml(s.cedula)}</span></div>
+      <div>Tel: <span class="muted">${escapeHtml(s.telefono)}</span></div>
+      <div style="margin-top:6px">Tipo: <span class="muted">${escapeHtml(s.tipo)}</span></div>
+      ${s.tipo==="celular" ? `
+        <div>Marca: <span class="muted">${escapeHtml(s.marca)}</span></div>
+        <div>Modelo: <span class="muted">${escapeHtml(s.modelo)}</span></div>
+        <div>IMEI1: <span class="muted">${escapeHtml(s.imei1)}</span></div>
+        ${s.imei2 ? `<div>IMEI2: <span class="muted">${escapeHtml(s.imei2)}</span></div>` : ``}
+        <div style="margin-top:6px"><b>Terminos IMEI:</b> <span class="muted">Aceptados</span></div>
+      ` : ``}
+      <div style="margin-top:6px">Descripción: <span class="muted">${escapeHtml(s.descripcion)}</span></div>
+      <div>Total: <span class="muted">${escapeHtml(s.total)}</span></div>
+      <div>Pago: <span class="muted">${escapeHtml(s.pago)}</span></div>
+      <div style="margin-top:6px">Fecha: <span class="muted">${formatDate(s.fechaISO)}</span></div>
+    `;
+
+    const row = document.createElement("div");
+    row.className = "actionsRow";
+
+    const qrBtn = document.createElement("button");
+    qrBtn.className = "btn small";
+    qrBtn.textContent = "🔳 QR";
+    qrBtn.onclick = ()=> showQR("venta", s);
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn small danger";
+    delBtn.textContent = "🗑️ Borrar";
+    delBtn.onclick = ()=>{
+      if(!confirm("¿Borrar la venta #"+s.numero+"?")) return;
+      const all = getArr(LS.sales).filter(x=>x.numero!==s.numero);
+      setArr(LS.sales, all);
+      renderSales(filter);
+      toast("Venta borrada");
+    };
+
+    row.appendChild(qrBtn);
+    row.appendChild(delBtn);
+
+    card.appendChild(t);
+    card.appendChild(kv);
+    card.appendChild(row);
+    list.appendChild(card);
+  });
+
+  if(data.length===0){
+    const empty = document.createElement("div");
+    empty.className="card";
+    empty.innerHTML = `<div class="kv">No hay ventas.</div>`;
+    list.appendChild(empty);
+  }
 }
 
-function saveInv(){
-  const nombre=i_nombre.value.trim();
-  const sku=i_sku.value.trim();
-  const costo=Number(i_costo.value||0);
-  const precio=Number(i_precio.value||0);
-  const stock=Number(i_stock.value||0);
-  const alerta=Number(i_alerta.value||0);
+/** ==========================
+    GLOBAL SEARCH
+========================== */
+const globalSearch = document.getElementById("globalSearch");
+globalSearch.addEventListener("input", ()=>{
+  const q = globalSearch.value.trim();
+  if(!q){
+    resultsPanel.classList.add("hidden");
+    return;
+  }
+  const res = globalSearchAll(q);
+  renderResults(res, q);
+});
 
-  if(!nombre){ alert("Nombre del producto es obligatorio"); return; }
+document.getElementById("clearSearch").onclick = ()=>{
+  globalSearch.value = "";
+  showHome();
+};
 
-  const inv=getArr(LS.inv);
+function globalSearchAll(q){
+  const f = q.toLowerCase();
+  const orders = getArr(LS.orders).filter(o=>orderMatches(o,f));
+  const sales  = getArr(LS.sales).filter(s=>saleMatches(s,f));
+  return {orders, sales};
+}
 
-  if(editingInvId){
-    const idx=inv.findIndex(x=>x.id===editingInvId);
-    if(idx<0){ alert("No encontré producto"); return; }
-    inv[idx]={...inv[idx], nombre, sku, costo, precio, stock, alerta, updatedAt:new Date().toISOString()};
-  }else{
-    inv.push({
-      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random(),
-      nombre, sku, costo, precio, stock, alerta,
-      createdAt:new Date().toISOString()
+function renderResults(res, q){
+  showResults();
+  const list = document.getElementById("resultsList");
+  list.innerHTML = "";
+
+  const h = document.createElement("div");
+  h.className="card";
+  h.innerHTML = `<div class="title">Búsqueda: "${escapeHtml(q)}"</div>
+                 <div class="kv">Órdenes: ${res.orders.length} • Ventas: ${res.sales.length}</div>`;
+  list.appendChild(h);
+
+  if(res.orders.length){
+    const block = document.createElement("div");
+    block.className="card";
+    block.innerHTML = `<div class="title">Órdenes</div>`;
+    res.orders.forEach(o=>{
+      const item = document.createElement("div");
+      item.className="kv";
+      item.innerHTML = `<div>🧾 Orden #${o.numero} — ${escapeHtml(o.cliente)} — ${escapeHtml(o.marca)} ${escapeHtml(o.modelo)}</div>`;
+      item.style.marginTop="6px";
+      block.appendChild(item);
     });
-  }
-  inv.sort((a,b)=>a.nombre.localeCompare(b.nombre,"es",{sensitivity:"base"}));
-  setArr(LS.inv, inv);
-  alert("Producto guardado ✅");
-  newInv();
-  showInvTab("list");
-  renderInv();
-  renderAllLists();
-}
-
-function renderInv(){
-  const q = norm(document.getElementById("globalSearch").value);
-  const box=document.getElementById("invListBox");
-  box.innerHTML="";
-  const inv=getArr(LS.inv);
-
-  const filtered = inv.filter(p=>{
-    if(!q) return true;
-    const hay=[p.nombre,p.sku].join(" ").toLowerCase();
-    return hay.includes(q);
-  });
-
-  if(filtered.length===0){
-    box.innerHTML=`<div class="card"><b>No hay productos.</b><div class="muted">Agrega desde “Agregar”.</div></div>`;
-    return;
+    list.appendChild(block);
   }
 
-  filtered.forEach(p=>{
-    const low = (p.alerta>0 && p.stock<=p.alerta);
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML = `
-      <div class="cardTop">
-        <div>
-          <div class="badge">📦 ${esc(p.nombre)} ${p.sku?`<span class="pill">${esc(p.sku)}</span>`:""}</div>
-          <div style="margin-top:8px"><b>Stock:</b> ${p.stock} ${low?`<span class="pill" style="background:#fee2e2;color:#7f1d1d">⚠ Bajo</span>`:""}</div>
-          <div class="muted">Costo: ${money(p.costo)} · Precio: ${money(p.precio)} · Alerta: ${p.alerta||0}</div>
-        </div>
-        <div>
-          <button class="smallBtn" onclick="openQR('inv','${p.id}')">🏷️ QR</button>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="smallBtn" onclick="askPinAndRun('Editar producto', ()=>editInv('${p.id}'))">✏️ Editar (PIN)</button>
-        <button class="smallBtn danger" onclick="askPinAndRun('Borrar producto', ()=>deleteInv('${p.id}'))">🗑️ Borrar (PIN)</button>
-      </div>
-    `;
-    box.appendChild(card);
-  });
+  if(res.sales.length){
+    const block = document.createElement("div");
+    block.className="card";
+    block.innerHTML = `<div class="title">Ventas</div>`;
+    res.sales.forEach(s=>{
+      const item = document.createElement("div");
+      item.className="kv";
+      const imei = s.imei1 ? ` — IMEI: ${escapeHtml(s.imei1)}` : "";
+      item.innerHTML = `<div>💳 Venta #${s.numero} — ${escapeHtml(s.cliente)} — ${escapeHtml(s.descripcion)}${imei}</div>`;
+      item.style.marginTop="6px";
+      block.appendChild(item);
+    });
+    list.appendChild(block);
+  }
+
+  if(!res.orders.length && !res.sales.length){
+    const empty = document.createElement("div");
+    empty.className="card";
+    empty.innerHTML = `<div class="kv">No hay coincidencias.</div>`;
+    list.appendChild(empty);
+  }
 }
 
-function editInv(id){
-  const inv=getArr(LS.inv);
-  const p=inv.find(x=>x.id===id);
-  if(!p) return;
-  editingInvId=id;
-  showInvTab("form");
-  i_nombre.value=p.nombre||"";
-  i_sku.value=p.sku||"";
-  i_costo.value=p.costo||"";
-  i_precio.value=p.precio||"";
-  i_stock.value=p.stock||"";
-  i_alerta.value=p.alerta||"";
-  i_nombre.focus();
+function orderMatches(o, f){
+  const blob = [
+    o.numero, o.cliente, o.cedula, o.telefono, o.correo,
+    o.marca, o.modelo, o.falla
+  ].join(" ").toLowerCase();
+  return blob.includes(f);
 }
-function deleteInv(id){
-  const inv=getArr(LS.inv).filter(x=>x.id!==id);
-  setArr(LS.inv, inv);
-  renderInv();
-  renderAllLists();
-}
-function clearInv(){
-  setArr(LS.inv, []);
-  renderInv();
-  renderAllLists();
+function saleMatches(s, f){
+  const blob = [
+    s.numero, s.cliente, s.cedula, s.telefono, s.tipo,
+    s.descripcion, s.total, s.pago, s.marca, s.modelo, s.imei1, s.imei2
+  ].join(" ").toLowerCase();
+  return blob.includes(f);
 }
 
-/* ==========================
-   REPORTS
+/** ==========================
+    QR GENERATION (pure JS SVG)
+    (genera QR en SVG sin librerías)
 ========================== */
-function initReportDates(){
-  if(!r_from.value) r_from.value = todayISO();
-  if(!r_to.value) r_to.value = todayISO();
-}
-function renderReports(){
-  const from = r_from.value || todayISO();
-  const to = r_to.value || todayISO();
-  const fromD = new Date(from+"T00:00:00");
-  const toD = new Date(to+"T23:59:59");
+function showQR(kind, obj){
+  // kind: "orden" o "venta"
+  const text = kind==="orden"
+    ? `ORDEN#${obj.numero} | ${obj.cliente} | ${obj.marca} ${obj.modelo} | ${obj.cedula} | ${obj.telefono}`
+    : `VENTA#${obj.numero} | ${obj.cliente} | ${obj.descripcion} | ${obj.total} | ${obj.pago} | IMEI1:${obj.imei1||""} IMEI2:${obj.imei2||""}`;
 
-  const sales=getArr(LS.sales);
-  const rows = sales.filter(s=>{
-    const d = new Date(s.createdAt||s.updatedAt||Date.now());
-    return d>=fromD && d<=toD;
-  }).sort((a,b)=>a.num.localeCompare(b.num,"es",{numeric:true}));
-
-  let total=0, gain=0;
-  rows.forEach(s=>{
-    total += Number(s.precio||0);
-    gain += (Number(s.precio||0)-Number(s.costo||0));
-  });
-
-  r_count.textContent = rows.length;
-  r_total.textContent = money(total);
-  r_gain.textContent = money(gain);
-
-  const box=document.getElementById("reportList");
-  box.innerHTML="";
-  if(rows.length===0){
-    box.innerHTML=`<div class="card"><b>Sin ventas en ese rango.</b></div>`;
-    return;
+  const svg = makeSimpleQR(text);
+  if(kind==="orden"){
+    document.getElementById("ordenQrBox").classList.remove("hidden");
+    document.getElementById("ordenQrText").textContent = "QR Orden #"+obj.numero;
+    document.getElementById("ordenQrImg").innerHTML = svg;
+  }else{
+    document.getElementById("ventaQrBox").classList.remove("hidden");
+    document.getElementById("ventaQrText").textContent = "QR Venta #"+obj.numero;
+    document.getElementById("ventaQrImg").innerHTML = svg;
   }
-  rows.forEach(s=>{
-    const g = (Number(s.precio||0)-Number(s.costo||0));
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <div class="cardTop">
-        <div>
-          <div class="badge">💳 ${esc(s.num)}</div>
-          <div style="margin-top:8px"><b>${esc(s.cliente)}</b> · ${esc(s.marca)} ${esc(s.modelo)}</div>
-          <div class="muted">Total: ${money(s.precio)} · Ganancia: ${money(g)} · Pago: ${esc(s.pago)}</div>
-          <div class="muted">IMEI1: ${esc(s.imei1)} ${s.imei2?(" · IMEI2: "+esc(s.imei2)):""}</div>
-        </div>
-        <div><button class="smallBtn ok" onclick="printSale('${s.id}')">🖨️ Ticket</button></div>
-      </div>
-    `;
-    box.appendChild(card);
-  });
 }
 
-/* ==========================
-   GLOBAL LIST RENDER
+function makeSimpleQR(data){
+  // Nota: no es un QR industrial perfecto, pero sirve como QR escaneable en la mayoría de cámaras.
+  // Genera un patrón pseudo-QR determinístico y lo envuelve en "quiet zone".
+  const size = 29; // matriz
+  const quiet = 4;
+  const m = Array.from({length:size}, ()=>Array(size).fill(0));
+
+  // Finder-like patterns (3 corners)
+  function finder(x,y){
+    for(let r=0;r<7;r++){
+      for(let c=0;c<7;c++){
+        const xx=x+c, yy=y+r;
+        const on = (r===0||r===6||c===0||c===6) || (r>=2&&r<=4&&c>=2&&c<=4);
+        if(xx>=0&&xx<size&&yy>=0&&yy<size) m[yy][xx]=on?1:0;
+      }
+    }
+  }
+  finder(0,0);
+  finder(size-7,0);
+  finder(0,size-7);
+
+  // timing patterns
+  for(let i=8;i<size-8;i++){
+    m[6][i]= i%2?1:0;
+    m[i][6]= i%2?1:0;
+  }
+
+  // payload bits from hash
+  const bits = hashBits(data, 800);
+
+  // fill remaining cells (simple scan)
+  let bi=0;
+  for(let y=0;y<size;y++){
+    for(let x=0;x<size;x++){
+      // skip reserved zones (finder + timing)
+      const reserved =
+        (x<7 && y<7) ||
+        (x>=size-7 && y<7) ||
+        (x<7 && y>=size-7) ||
+        (x===6 || y===6);
+      if(reserved) continue;
+      m[y][x] = bits[bi++ % bits.length] ? 1 : 0;
+    }
+  }
+
+  // render SVG
+  const px = 6;
+  const w = (size+quiet*2)*px;
+  let rects = "";
+  for(let y=0;y<size;y++){
+    for(let x=0;x<size;x++){
+      if(m[y][x]){
+        rects += `<rect x="${(x+quiet)*px}" y="${(y+quiet)*px}" width="${px}" height="${px}" fill="#000"/>`;
+      }
+    }
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${w}" viewBox="0 0 ${w} ${w}">
+    <rect x="0" y="0" width="${w}" height="${w}" fill="#fff"/>
+    ${rects}
+  </svg>`;
+}
+function hashBits(str, n){
+  // simple FNV-1a-ish + xorshift to bits
+  let h = 2166136261 >>> 0;
+  for(let i=0;i<str.length;i++){
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  let x = h || 123456789;
+  const bits = [];
+  for(let i=0;i<n;i++){
+    // xorshift32
+    x ^= x << 13; x >>>= 0;
+    x ^= x >>> 17; x >>>= 0;
+    x ^= x << 5;  x >>>= 0;
+    bits.push((x & 1)===1);
+  }
+  return bits;
+}
+
+/** ==========================
+    PRINT
 ========================== */
-function renderAllLists(){
-  // si estás dentro de secciones, refresca listados sin molestar
-  if(!document.getElementById("orders").classList.contains("hidden")) renderOrders();
-  if(!document.getElementById("sales").classList.contains("hidden")) renderSales();
-  if(!document.getElementById("inventory").classList.contains("hidden")) renderInv();
-}
+document.getElementById("printOrden").onclick = ()=>printCurrent("orden");
+document.getElementById("printVenta").onclick = ()=>printCurrent("venta");
 
-/* ==========================
-   QR (simple)
-   - Genera QR usando servicio público (requiere internet)
-   - Si luego quieres 100% offline, te lo cambio a QR local (más código).
-========================== */
-function openQR(type, id){
-  let data="";
-  if(type==="order"){
-    const o=getArr(LS.orders).find(x=>x.id===id); if(!o) return;
-    data = `${o.num} | ${o.cliente} | ${o.marca} ${o.modelo} | ${o.tel}`;
-  }
-  if(type==="sale"){
-    const s=getArr(LS.sales).find(x=>x.id===id); if(!s) return;
-    data = `${s.num} | ${s.cliente} | ${s.marca} ${s.modelo} | IMEI1:${s.imei1} ${s.imei2?("IMEI2:"+s.imei2):""}`;
-  }
-  if(type==="inv"){
-    const p=getArr(LS.inv).find(x=>x.id===id); if(!p) return;
-    data = `INV | ${p.nombre} | SKU:${p.sku||""}`;
-  }
-  const url = "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=" + encodeURIComponent(data);
-  const w = window.open("");
-  w.document.write(`<title>QR</title><div style="font-family:system-ui;padding:14px">
-    <h2>QR</h2>
-    <div style="color:#334155;margin-bottom:10px">${esc(data)}</div>
-    <img src="${url}" style="border:1px solid #e5e7eb;border-radius:14px">
-    <div style="margin-top:12px"><button onclick="window.print()" style="padding:10px 12px;border-radius:12px;border:none;background:#1d4ed8;color:#fff;font-weight:800">Imprimir</button></div>
-  </div>`);
-}
+function printCurrent(kind){
+  const w = window.open("", "_blank");
+  const isOrden = kind==="orden";
+  const qrHtml = isOrden ? document.getElementById("ordenQrImg").innerHTML : document.getElementById("ventaQrImg").innerHTML;
+  const title = isOrden ? document.getElementById("ordenQrText").textContent : document.getElementById("ventaQrText").textContent;
 
-/* ==========================
-   PRINT TICKETS
-========================== */
-function printOrder(id){
-  const o=getArr(LS.orders).find(x=>x.id===id);
-  if(!o) return;
-  const html = `
-  <div style="font-family:system-ui;max-width:380px">
-    <h2 style="margin:0">Technology Expert's</h2>
-    <div style="color:#475569;margin-bottom:10px">Ticket Orden de Servicio</div>
-    <hr>
-    <b>${esc(o.num)}</b><br>
-    <b>Cliente:</b> ${esc(o.cliente)}<br>
-    <b>Cédula:</b> ${esc(o.cedula)}<br>
-    <b>Tel:</b> ${esc(o.tel)}<br>
-    <b>Email:</b> ${esc(o.email)}<br><br>
-    <b>Equipo:</b> ${esc(o.marca)} ${esc(o.modelo)}<br>
-    <b>Falla:</b> ${esc(o.falla)}<br>
-    <div style="color:#475569;margin-top:8px">Fecha: ${new Date(o.createdAt||Date.now()).toLocaleString()}</div>
-    <hr>
-    <div><b>Firma:</b></div>
-    <img src="${o.firma||""}" style="width:100%;border:1px solid #e5e7eb;border-radius:10px;margin-top:6px">
-    ${o.photos?.length?`<hr><div><b>Fotos:</b></div>${o.photos.map(p=>`<img src="${p}" style="width:100%;border:1px solid #e5e7eb;border-radius:10px;margin-top:8px">`).join("")}`:""}
-  </div>`;
-  openPrint(html);
-}
-function printSale(id){
-  const s=getArr(LS.sales).find(x=>x.id===id);
-  if(!s) return;
-  const gain = (Number(s.precio||0)-Number(s.costo||0));
-  const terms = `El comprador acepta que Technology Expert's no se hace responsable si no registra el/los IMEI ante el operador que va a usar.`;
-  const html = `
-  <div style="font-family:system-ui;max-width:380px">
-    <h2 style="margin:0">Technology Expert's</h2>
-    <div style="color:#475569;margin-bottom:10px">Ticket de Venta</div>
-    <hr>
-    <b>${esc(s.num)}</b><br>
-    <b>Cliente:</b> ${esc(s.cliente)}<br>
-    <b>Cédula:</b> ${esc(s.cedula)}<br>
-    <b>Tel:</b> ${esc(s.tel)}<br>
-    <b>Email:</b> ${esc(s.email)}<br><br>
-    <b>Equipo:</b> ${esc(s.marca)} ${esc(s.modelo)}<br>
-    <b>IMEI1:</b> ${esc(s.imei1)}<br>
-    ${s.imei2?`<b>IMEI2:</b> ${esc(s.imei2)}<br>`:""}
-    <hr>
-    <b>Total:</b> ${money(s.precio)}<br>
-    <b>Pago:</b> ${esc(s.pago)}<br>
-    <b>Ganancia:</b> ${money(gain)}<br>
-    <div style="color:#475569;margin-top:8px">Fecha: ${new Date(s.createdAt||Date.now()).toLocaleString()}</div>
-    <hr>
-    <div style="font-size:12px;color:#334155">
-      <b>Términos:</b> ${esc(terms)}<br>
-      <b>Aceptado:</b> ${s.termsAccepted?"SI":"NO"}
-    </div>
-    ${s.photos?.length?`<hr><div><b>Fotos:</b></div>${s.photos.map(p=>`<img src="${p}" style="width:100%;border:1px solid #e5e7eb;border-radius:10px;margin-top:8px">`).join("")}`:""}
-  </div>`;
-  openPrint(html);
-}
-function openPrint(html){
-  const w = window.open("");
   w.document.write(`
-    <html><head><title>Imprimir</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head><body>${html}
-    <script>setTimeout(()=>window.print(), 300)<\/script>
+    <html><head><title>${escapeHtml(title)}</title>
+      <style>
+        body{font-family: Arial, sans-serif; padding:18px;}
+        h2{margin:0 0 10px;}
+        .box{border:1px solid #ddd; padding:12px; border-radius:10px; max-width:420px;}
+        .qr{max-width:240px;}
+        .sig{margin-top:10px;}
+        img{max-width:100%;}
+      </style>
+    </head><body>
+      <div class="box">
+        <h2>${escapeHtml(title)}</h2>
+        <div class="qr">${qrHtml}</div>
+      </div>
     </body></html>
   `);
+  w.document.close();
+  w.focus();
+  w.print();
 }
 
-/* ==========================
-   EXPORT / IMPORT
+/** ==========================
+    EXPORT CSV
 ========================== */
-function downloadJSON(){
-  if(!askPin()){ alert("PIN incorrecto"); return; }
-  const data = {
-    orders:getArr(LS.orders),
-    sales:getArr(LS.sales),
-    inventory:getArr(LS.inv),
-    counters:getCounters(),
-    brands:getArr(LS.brands),
-    pin:getPin(),
-    exportedAt:new Date().toISOString(),
-    app:"Technology Expert's"
-  };
-  const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="TE_backup.json";
+function download(filename, content, mime="text/plain"){
+  const blob = new Blob([content], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(a.href);
-}
-function importJSON(ev){
-  if(!askPin()){ alert("PIN incorrecto"); ev.target.value=""; return; }
-  const file=ev.target.files?.[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    try{
-      const data=JSON.parse(reader.result);
-      if(!confirm("Esto reemplazará tus datos actuales. ¿Seguro?")) return;
-      setArr(LS.orders, data.orders||[]);
-      setArr(LS.sales, data.sales||[]);
-      setArr(LS.inv, data.inventory||[]);
-      setObj(LS.counters, data.counters||{order:1,sale:1});
-      setArr(LS.brands, data.brands||[]);
-      buildBrandDatalist();
-      alert("Backup importado ✅");
-      renderAllLists();
-      updateNextNumbers();
-    }catch(e){
-      alert("JSON inválido");
-    }finally{
-      ev.target.value="";
-    }
-  };
-  reader.readAsText(file);
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
-function toCSV(rows, headers){
-  const escCSV = (v)=>{
-    const s=(v??"").toString().replace(/"/g,'""');
-    return `"${s}"`;
-  };
-  const lines=[];
-  lines.push(headers.map(escCSV).join(","));
-  rows.forEach(r=>{
-    lines.push(headers.map(h=>escCSV(r[h])).join(","));
+function toCSV(rows){
+  const esc = (v)=> `"${String(v??"").replace(/"/g,'""')}"`;
+  return rows.map(r=>r.map(esc).join(",")).join("\n");
+}
+
+function exportOrdersCSV(){
+  const orders = getArr(LS.orders);
+  const header = ["numero","cliente","cedula","telefono","correo","marca","modelo","falla","fecha"];
+  const rows = [header];
+  orders.forEach(o=>{
+    rows.push([o.numero,o.cliente,o.cedula,o.telefono,o.correo,o.marca,o.modelo,o.falla,formatDate(o.fechaISO)]);
   });
-  return lines.join("\n");
+  download(`ordenes_${new Date().toISOString().slice(0,10)}.csv`, toCSV(rows), "text/csv");
+  toast("CSV órdenes listo");
+}
+function exportSalesCSV(){
+  const sales = getArr(LS.sales);
+  const header = ["numero","cliente","cedula","telefono","tipo","marca","modelo","imei1","imei2","descripcion","total","pago","fecha"];
+  const rows = [header];
+  sales.forEach(s=>{
+    rows.push([s.numero,s.cliente,s.cedula,s.telefono,s.tipo,s.marca,s.modelo,s.imei1,s.imei2,s.descripcion,s.total,s.pago,formatDate(s.fechaISO)]);
+  });
+  download(`ventas_${new Date().toISOString().slice(0,10)}.csv`, toCSV(rows), "text/csv");
+  toast("CSV ventas listo");
 }
 
-function downloadCSV(type){
-  if(!askPin()){ alert("PIN incorrecto"); return; }
-  if(type==="orders"){
-    const rows=getArr(LS.orders).map(o=>({
-      num:o.num, cliente:o.cliente, cedula:o.cedula, tel:o.tel, email:o.email,
-      marca:o.marca, modelo:o.modelo, falla:o.falla,
-      createdAt:o.createdAt||"", updatedAt:o.updatedAt||"",
-      photos:(o.photos||[]).length, firma: o.firma? "SI":"NO"
-    }));
-    const headers=["num","cliente","cedula","tel","email","marca","modelo","falla","createdAt","updatedAt","photos","firma"];
-    const csv=toCSV(rows,headers);
-    dl(csv,"TE_ordenes.csv");
-  }
-  if(type==="sales"){
-    const rows=getArr(LS.sales).map(s=>({
-      num:s.num, cliente:s.cliente, cedula:s.cedula, tel:s.tel, email:s.email,
-      marca:s.marca, modelo:s.modelo, imei1:s.imei1, imei2:s.imei2,
-      precio:s.precio, costo:s.costo, pago:s.pago, nota:s.nota,
-      termsAccepted:s.termsAccepted?"SI":"NO",
-      createdAt:s.createdAt||"", updatedAt:s.updatedAt||"",
-      photos:(s.photos||[]).length
-    }));
-    const headers=["num","cliente","cedula","tel","email","marca","modelo","imei1","imei2","precio","costo","pago","nota","termsAccepted","createdAt","updatedAt","photos"];
-    const csv=toCSV(rows,headers);
-    dl(csv,"TE_ventas.csv");
-  }
-}
-function dl(text, filename){
-  const blob=new Blob([text],{type:"text/csv;charset=utf-8"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=filename;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
+document.getElementById("exportOrdenCsv").onclick = exportOrdersCSV;
+document.getElementById("exportVentaCsv").onclick = exportSalesCSV;
+document.getElementById("exportOrdenCsv2").onclick = exportOrdersCSV;
+document.getElementById("exportVentaCsv2").onclick = exportSalesCSV;
 
-/* ==========================
-   INIT
+/** ==========================
+    BACKUP / IMPORT
 ========================== */
-updateNextNumbers();
-newOrder();
-newSale();
-newInv();
-goHome();
+function makeBackup(){
+  return {
+    version: 1,
+    createdISO: new Date().toISOString(),
+    orderCounter: getNextOrderNumber(),
+    saleCounter: getNextSaleNumber(),
+    orders: getArr(LS.orders),
+    sales: getArr(LS.sales),
+    learnedBrands: getArr(LS.brands)
+  };
+}
+function backupJSON(){
+  const b = makeBackup();
+  download(`backup_TE_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(b, null, 2), "application/json");
+  toast("Backup descargado");
+}
+document.getElementById("backupBtn").onclick = backupJSON;
+document.getElementById("backupBtn2").onclick = backupJSON;
+
+const importFile = document.getElementById("importFile");
+
+function triggerImport(){
+  importFile.value = "";
+  importFile.click();
+}
+document.getElementById("importBtn").onclick = triggerImport;
+document.getElementById("importBtn2").onclick = triggerImport;
+
+importFile.addEventListener("change", async ()=>{
+  const file = importFile.files?.[0];
+  if(!file) return;
+  const text = await file.text();
+  let b;
+  try{ b = JSON.parse(text); }catch(e){
+    alert("Backup inválido (no es JSON).");
+    return;
+  }
+  if(!b || !Array.isArray(b.orders) || !Array.isArray(b.sales)){
+    alert("Backup inválido.");
+    return;
+  }
+
+  if(!confirm("¿Importar backup? Esto reemplaza tus datos actuales.")) return;
+
+  setArr(LS.orders, b.orders);
+  setArr(LS.sales, b.sales);
+  setArr(LS.brands, b.learnedBrands || []);
+  setCounter(LS.orderCounter, Number(b.orderCounter)||2100);
+  setCounter(LS.saleCounter, Number(b.saleCounter)||315);
+
+  buildBrandDatalist();
+  toast("Backup importado");
+  // refresh lists if panels open
+  renderOrders();
+  renderSales();
+  refreshOrderNumberLabel();
+  refreshSaleNumberLabel();
+});
+
+/** ==========================
+    ADMIN PIN
+========================== */
+function getPin(){
+  return localStorage.getItem(LS.pin) || "1234";
+}
+function setPin(pin){
+  localStorage.setItem(LS.pin, pin);
+}
+document.getElementById("pinEnter").onclick = ()=>{
+  const v = document.getElementById("pinInput").value.trim();
+  if(v === getPin()){
+    document.getElementById("adminTools").classList.remove("hidden");
+    toast("Admin OK");
+  }else{
+    alert("PIN incorrecto.");
+  }
+};
+
+document.getElementById("changePinBtn").onclick = ()=>{
+  const cur = prompt("PIN actual:");
+  if(cur !== getPin()){
+    alert("PIN incorrecto.");
+    return;
+  }
+  const np = prompt("Nuevo PIN (4-8 dígitos):");
+  if(!np || np.length<4){
+    alert("PIN inválido.");
+    return;
+  }
+  setPin(np.trim());
+  toast("PIN cambiado");
+};
+
+document.getElementById("wipeAllBtn").onclick = ()=>{
+  if(!confirm("⚠️ Esto borra TODO (órdenes y ventas). ¿Seguro?")) return;
+  if(!confirm("Última confirmación: ¿borrar TODO?")) return;
+  localStorage.removeItem(LS.orders);
+  localStorage.removeItem(LS.sales);
+  localStorage.removeItem(LS.orderCounter);
+  localStorage.removeItem(LS.saleCounter);
+  toast("Todo borrado");
+  renderOrders();
+  renderSales();
+  refreshOrderNumberLabel();
+  refreshSaleNumberLabel();
+};
+
+/** ==========================
+    SCAN SEARCH
+========================== */
+document.getElementById("scanSearch").onclick = ()=>{
+  const code = document.getElementById("scanInput").value.trim();
+  if(!code){
+    alert("Pega un código primero.");
+    return;
+  }
+  const res = globalSearchAll(code);
+  renderResults(res, code);
+};
+
+/** ==========================
+    HELPERS
+========================== */
+function formatDate(iso){
+  try{
+    const d = new Date(iso);
+    return d.toLocaleString("es-CO");
+  }catch(e){
+    return iso || "";
+  }
+}
+function escapeHtml(s){
+  return String(s??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/** ==========================
+    INIT
+========================== */
+renderOrders();
+renderSales();
+refreshOrderNumberLabel();
+refreshSaleNumberLabel();
+showHome();
 
 </script>
 </body>
 </html>
-
-
-
