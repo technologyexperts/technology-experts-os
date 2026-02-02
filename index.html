@@ -4,8 +4,12 @@
   <meta charset="UTF-8">
   <title>Technology Expert’s</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    body { font-family: Arial; padding: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
     input, textarea, button {
       width: 100%;
       margin: 6px 0;
@@ -24,12 +28,20 @@
     }
   </style>
 </head>
+
 <body>
 
 <h2>Orden de Servicio</h2>
 
+<h4>Datos del cliente</h4>
 <input id="cliente" placeholder="Nombre del cliente">
-<input id="equipo" placeholder="Equipo / Modelo">
+<input id="cedula" placeholder="Cédula">
+<input id="telefono" placeholder="Celular">
+<input id="correo" placeholder="Correo electrónico">
+
+<h4>Equipo</h4>
+<input id="marca" placeholder="Marca del celular">
+<input id="modelo" placeholder="Modelo del celular">
 <textarea id="falla" placeholder="Falla reportada"></textarea>
 
 <button onclick="guardar()">Guardar orden</button>
@@ -39,16 +51,43 @@
 
 <script>
 let ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
+let contador = Number(localStorage.getItem("contador")) || 2100;
 
 function guardar() {
+  if (
+    !cliente.value || !cedula.value || !telefono.value ||
+    !correo.value || !marca.value || !modelo.value || !falla.value
+  ) {
+    alert("Completa todos los campos");
+    return;
+  }
+
   const orden = {
+    numero: contador,
     cliente: cliente.value,
-    equipo: equipo.value,
+    cedula: cedula.value,
+    telefono: telefono.value,
+    correo: correo.value,
+    marca: marca.value,
+    modelo: modelo.value,
     falla: falla.value,
     fecha: new Date().toLocaleString()
   };
+
   ordenes.push(orden);
+  contador++;
+
   localStorage.setItem("ordenes", JSON.stringify(ordenes));
+  localStorage.setItem("contador", contador);
+
+  cliente.value = "";
+  cedula.value = "";
+  telefono.value = "";
+  correo.value = "";
+  marca.value = "";
+  modelo.value = "";
+  falla.value = "";
+
   mostrar();
 }
 
@@ -57,11 +96,17 @@ function mostrar() {
   ordenes.forEach(o => {
     lista.innerHTML += `
       <div class="orden">
-        <b>${o.cliente}</b><br>
-        ${o.equipo}<br>
-        ${o.falla}<br>
+        <b>Orden #${o.numero}</b><br>
+        Cliente: ${o.cliente}<br>
+        Cédula: ${o.cedula}<br>
+        Tel: ${o.telefono}<br>
+        Email: ${o.correo}<br><br>
+        Marca: ${o.marca}<br>
+        Modelo: ${o.modelo}<br>
+        Falla: ${o.falla}<br>
         <small>${o.fecha}</small>
-      </div>`;
+      </div>
+    `;
   });
 }
 
