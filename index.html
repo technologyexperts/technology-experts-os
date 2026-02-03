@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Technology Expert's</title>
 
   <style>
     :root{
       --bg1:#050821;
       --bg2:#070f3a;
-      --card:#0b1238cc;
-      --card2:#0b123899;
+      --card:rgba(10,14,36,.78);
+      --card2:rgba(10,14,36,.55);
       --text:#eaf0ff;
       --muted:#a9b6ff;
 
@@ -18,6 +18,7 @@
       --neon-purple:#a855ff;
       --neon-green:#2cffc6;
 
+      --black:#000;
       --shadow: 0 20px 70px rgba(0,0,0,.55);
       --radius: 22px;
     }
@@ -29,24 +30,24 @@
       color:var(--text);
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(900px 500px at 80% 20%, rgba(55,184,255,.20), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(55,184,255,.22), transparent 55%),
         radial-gradient(700px 420px at 20% 85%, rgba(168,85,255,.18), transparent 55%),
-        radial-gradient(900px 500px at 70% 110%, rgba(44,255,198,.12), transparent 55%),
+        radial-gradient(900px 500px at 70% 110%, rgba(44,255,198,.14), transparent 55%),
         linear-gradient(180deg, var(--bg2), var(--bg1));
       overflow-x:hidden;
     }
 
     .wrap{
       min-height:100%;
-      padding: 22px 16px 34px;
+      padding: 18px 14px 28px;
       display:flex;
       align-items:center;
       justify-content:center;
     }
 
     .panel{
-      width:min(980px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      width:min(1100px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
       border: 1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -67,9 +68,7 @@
       opacity:.7;
     }
 
-    .header{
-      padding: 26px 22px 10px;
-    }
+    .header{ padding: 22px 18px 8px; }
     .title{
       font-size: clamp(34px, 4.2vw, 54px);
       font-weight: 900;
@@ -80,15 +79,15 @@
     .subtitle{
       margin: 8px 0 0;
       color: var(--muted);
-      font-weight: 600;
+      font-weight: 700;
       font-size: 15px;
       line-height:1.35;
     }
 
     .content{
-      padding: 16px 22px 24px;
+      padding: 14px 18px 18px;
       display:grid;
-      gap: 16px;
+      gap: 14px;
     }
 
     .roleGrid{
@@ -98,20 +97,12 @@
     }
 
     @media (max-width: 720px){
-      .roleGrid{
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      .header{ padding: 22px 16px 8px; }
-      .content{ padding: 14px 16px 20px; }
+      .header{ padding: 18px 14px 8px; }
+      .content{ padding: 12px 14px 16px; }
     }
-
     @media (max-width: 420px){
-      .roleGrid{
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .roleGrid .tile:nth-child(3){
-        grid-column: span 2;
-      }
+      .roleGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .roleGrid .tile:nth-child(3){ grid-column: span 2; }
     }
 
     /* ====== NEON TILE ====== */
@@ -119,7 +110,7 @@
       position:relative;
       padding: 16px 14px 14px;
       border-radius: 18px;
-      background: linear-gradient(180deg, rgba(8,12,28,.85), rgba(6,10,26,.75));
+      background: linear-gradient(180deg, rgba(8,12,28,.86), rgba(6,10,26,.78));
       border: 1px solid rgba(255,255,255,.10);
       box-shadow: 0 14px 40px rgba(0,0,0,.35);
       cursor:pointer;
@@ -131,6 +122,7 @@
       align-items:center;
       justify-content:center;
       min-height: 132px;
+      color: var(--text);
     }
     .tile:active{ transform: scale(.99); }
     .tile:hover{ transform: translateY(-2px); box-shadow: 0 18px 48px rgba(0,0,0,.42); }
@@ -140,35 +132,27 @@
       position:absolute;
       inset:-2px;
       border-radius: 20px;
-      background: radial-gradient(100% 80% at 50% 50%, rgba(55,184,255,.28), transparent 55%);
       filter: blur(10px);
       opacity:.0;
       transition: opacity .18s ease;
       pointer-events:none;
     }
-    .tile:hover::before{ opacity:.9; }
+    .tile.admin::before{ background: radial-gradient(100% 80% at 50% 50%, rgba(55,184,255,.28), transparent 55%); }
+    .tile.ventas::before{ background: radial-gradient(100% 80% at 50% 50%, rgba(168,85,255,.24), transparent 55%); }
+    .tile.tecnico::before{ background: radial-gradient(100% 80% at 50% 50%, rgba(44,255,198,.22), transparent 55%); }
+    .tile:hover::before{ opacity:.95; }
 
-    .tile.admin{ box-shadow: 0 18px 48px rgba(55,184,255,.10); }
-    .tile.ventas{ box-shadow: 0 18px 48px rgba(168,85,255,.10); }
-    .tile.tecnico{ box-shadow: 0 18px 48px rgba(44,255,198,.10); }
-
-    .tileBorder{
-      position:absolute;
-      inset:0;
-      border-radius: 18px;
-      pointer-events:none;
-      opacity:.95;
-    }
+    .tileBorder{ position:absolute; inset:0; border-radius: 18px; pointer-events:none; opacity:.95; }
     .tile.admin .tileBorder{
-      border: 2px solid rgba(55,184,255,.55);
+      border: 2px solid rgba(55,184,255,.60);
       box-shadow: 0 0 26px rgba(55,184,255,.35), inset 0 0 22px rgba(55,184,255,.12);
     }
     .tile.ventas .tileBorder{
-      border: 2px solid rgba(168,85,255,.55);
+      border: 2px solid rgba(168,85,255,.60);
       box-shadow: 0 0 26px rgba(168,85,255,.35), inset 0 0 22px rgba(168,85,255,.12);
     }
     .tile.tecnico .tileBorder{
-      border: 2px solid rgba(44,255,198,.55);
+      border: 2px solid rgba(44,255,198,.60);
       box-shadow: 0 0 26px rgba(44,255,198,.35), inset 0 0 22px rgba(44,255,198,.12);
     }
 
@@ -182,26 +166,53 @@
       border: 1px solid rgba(255,255,255,.10);
       margin-bottom: 10px;
     }
-    .tile.admin .iconWrap{ box-shadow: 0 0 0 1px rgba(55,184,255,.25), 0 0 18px rgba(55,184,255,.20); }
-    .tile.ventas .iconWrap{ box-shadow: 0 0 0 1px rgba(168,85,255,.25), 0 0 18px rgba(168,85,255,.20); }
-    .tile.tecnico .iconWrap{ box-shadow: 0 0 0 1px rgba(44,255,198,.25), 0 0 18px rgba(44,255,198,.20); }
 
+    /* 🔥 FIX: fuerza texto blanco y visible SIEMPRE */
     .tileLabel{
-      font-weight: 900;
-      letter-spacing: .6px;
+      font-weight: 950;
+      letter-spacing: .9px;
       text-transform: uppercase;
       font-size: 13px;
       margin:0;
+      color:#fff !important;
+      text-shadow: 0 2px 10px rgba(0,0,0,.65);
     }
 
-    /* ====== BUTTONS / INPUTS (reutilizables) ====== */
+    /* ====== APP NAV ====== */
+    .topBar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 14px 0;
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.12);
+      color:#fff;
+      font-weight: 900;
+      letter-spacing:.2px;
+    }
+    .pill small{ opacity:.75; font-weight:800; }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      padding: 10px 14px 14px;
+    }
     .btn{
       appearance:none;
       border:none;
       cursor:pointer;
       border-radius: 14px;
       padding: 12px 14px;
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing: .2px;
       color: #fff;
       background: #000;
@@ -209,48 +220,60 @@
       transition: transform .12s ease, box-shadow .12s ease;
     }
     .btn:active{ transform: scale(.99); }
-    .btn.neonBlue{ box-shadow: 0 0 0 1px rgba(55,184,255,.35), 0 0 18px rgba(55,184,255,.25), 0 14px 30px rgba(0,0,0,.35); }
-    .btn.neonPurple{ box-shadow: 0 0 0 1px rgba(168,85,255,.35), 0 0 18px rgba(168,85,255,.25), 0 14px 30px rgba(0,0,0,.35); }
-    .btn.neonGreen{ box-shadow: 0 0 0 1px rgba(44,255,198,.35), 0 0 18px rgba(44,255,198,.25), 0 14px 30px rgba(0,0,0,.35); }
+    .btn.blueGlow{ box-shadow: 0 0 0 1px rgba(55,184,255,.35), 0 0 18px rgba(55,184,255,.22), 0 14px 30px rgba(0,0,0,.35); }
+    .btn.purpleGlow{ box-shadow: 0 0 0 1px rgba(168,85,255,.35), 0 0 18px rgba(168,85,255,.22), 0 14px 30px rgba(0,0,0,.35); }
+    .btn.greenGlow{ box-shadow: 0 0 0 1px rgba(44,255,198,.35), 0 0 18px rgba(44,255,198,.22), 0 14px 30px rgba(0,0,0,.35); }
+
+    .card{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    }
 
     .row{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    @media (max-width: 720px){
-      .row{ grid-template-columns: 1fr; }
-    }
+    @media (max-width: 720px){ .row{ grid-template-columns: 1fr; } }
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-    }
-    .label{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 800;
-      letter-spacing: .2px;
-    }
-    input{
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .label{ font-size: 12px; color: var(--muted); font-weight: 850; letter-spacing:.2px; }
+    input, textarea, select{
       width:100%;
       padding: 12px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.55);
+      background: rgba(0,0,0,.62);
       color: #fff;
-      font-weight: 800;
+      font-weight: 850;
       outline: none;
     }
-    input::placeholder{ color: rgba(255,255,255,.35); font-weight: 700; }
+    textarea{ min-height: 86px; resize: vertical; }
+    input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.35); font-weight: 750; }
 
-    .help{
-      color: rgba(255,255,255,.55);
+    .muted{ color: rgba(255,255,255,.65); font-size: 12px; line-height:1.35; }
+    .divider{ height:1px; background: rgba(255,255,255,.10); margin: 12px 0; }
+
+    .listItem{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(0,0,0,.40);
+      margin-top: 10px;
+    }
+    .listItem h4{ margin:0 0 6px; font-weight: 950; letter-spacing:.2px; }
+    .listItem pre{
+      margin:0;
+      white-space:pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: rgba(255,255,255,.82);
       font-size: 12px;
       line-height: 1.35;
-      margin:0;
     }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
 
     /* ====== MODAL ====== */
     .modalBack{
@@ -264,9 +287,8 @@
       z-index: 1000;
     }
     .modalBack.show{ display:flex; }
-
     .modal{
-      width: min(520px, 100%);
+      width: min(760px, 100%);
       border-radius: 20px;
       background: linear-gradient(180deg, rgba(10,14,36,.92), rgba(6,10,26,.92));
       border: 1px solid rgba(255,255,255,.12);
@@ -282,25 +304,19 @@
       gap: 10px;
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .modalTitle{
-      margin:0;
-      font-weight: 950;
-      letter-spacing:.2px;
-    }
+    .modalTitle{ margin:0; font-weight: 950; letter-spacing:.2px; }
     .x{
       width: 40px; height: 40px;
       border-radius: 12px;
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.10);
       color:#fff;
-      font-weight: 900;
+      font-weight: 950;
       cursor:pointer;
     }
     .modalBody{ padding: 14px 16px 16px; }
 
-    .pwWrap{
-      position:relative;
-    }
+    .pwWrap{ position:relative; }
     .eyeBtn{
       position:absolute;
       right: 8px;
@@ -315,34 +331,49 @@
       cursor:pointer;
     }
 
-    .footer{
-      padding: 10px 16px 16px;
-      display:flex;
-      gap: 10px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-    }
+    .fadeIn{ animation: fadeIn .22s ease both; }
+    @keyframes fadeIn{ from{ opacity:0; transform: translateY(6px);} to{ opacity:1; transform:none;} }
 
-    .smallNote{
-      margin: 10px 0 0;
+    /* ====== SIGN CANVAS ====== */
+    .sigBox{
+      border: 1px dashed rgba(255,255,255,.25);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(0,0,0,.50);
+      touch-action:none;
+    }
+    canvas{ display:block; width:100%; height:160px; }
+    .sigHint{ font-size:12px; color: rgba(255,255,255,.65); margin: 6px 0 0; }
+
+    /* ====== SCANNER ====== */
+    .scanWrap{
+      display:grid;
+      gap:10px;
+    }
+    video{
+      width:100%;
+      border-radius: 16px;
+      background:#000;
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .scanResult{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 10px;
+      color: rgba(255,255,255,.85);
       font-size: 12px;
-      color: rgba(255,255,255,.55);
-      line-height: 1.4;
     }
 
-    /* simple fade-in */
-    .fadeIn{
-      animation: fadeIn .25s ease both;
-    }
-    @keyframes fadeIn{
-      from{ opacity:0; transform: translateY(6px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
+    /* hide sections */
+    .hidden{ display:none !important; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
+    <!-- LOGIN SCREEN -->
     <div class="panel fadeIn" id="rolePanel">
       <div class="header">
         <h1 class="title" id="bizName">Technology Expert's</h1>
@@ -354,10 +385,9 @@
           <button class="tile admin" data-role="admin" type="button" aria-label="Administrador">
             <div class="tileBorder"></div>
             <div class="iconWrap" aria-hidden="true">
-              <!-- Shield -->
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2l8 4v6c0 6-3.5 9.5-8 10-4.5-.5-8-4-8-10V6l8-4z"
-                      stroke="rgba(55,184,255,.95)" stroke-width="1.8" />
+                      stroke="rgba(55,184,255,.95)" stroke-width="1.8"/>
                 <path d="M8.5 12.2l2.2 2.3 4.8-5.2"
                       stroke="rgba(55,184,255,.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -368,7 +398,6 @@
           <button class="tile ventas" data-role="ventas" type="button" aria-label="Ventas">
             <div class="tileBorder"></div>
             <div class="iconWrap" aria-hidden="true">
-              <!-- Receipt -->
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
                 <path d="M7 2h10v20l-2-1-2 1-2-1-2 1-2-1-2 1V2z"
                       stroke="rgba(168,85,255,.95)" stroke-width="1.8" stroke-linejoin="round"/>
@@ -382,7 +411,6 @@
           <button class="tile tecnico" data-role="tecnico" type="button" aria-label="Técnico">
             <div class="tileBorder"></div>
             <div class="iconWrap" aria-hidden="true">
-              <!-- Wrench -->
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
                 <path d="M21 7.5a5.5 5.5 0 0 1-7.7 5L7 18.8a2 2 0 0 1-2.8 0l-1-1a2 2 0 0 1 0-2.8l6.3-6.3A5.5 5.5 0 0 1 21 7.5z"
                       stroke="rgba(44,255,198,.95)" stroke-width="1.8" stroke-linejoin="round"/>
@@ -394,13 +422,265 @@
           </button>
         </div>
 
-        <p class="smallNote">
-          Acceso con usuario y contraseña. (Esto es un control básico porque todo corre en el navegador).
+        <p class="muted" style="margin:0;">
+          Acceso con usuario y contraseña. (Control básico porque todo corre en el navegador).
         </p>
       </div>
     </div>
+<!-- APP -->
+    <div class="panel fadeIn hidden" id="appPanel">
+      <div class="topBar">
+        <div class="pill">
+          <span id="pillRole">ROL</span>
+          <small id="pillUser">user</small>
+        </div>
+
+        <div class="pill">
+          <span id="pillNow">—</span>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="btn blueGlow" id="goHome" type="button">🏠 Inicio</button>
+        <button class="btn greenGlow" id="goOrdenes" type="button">🧾 Órdenes</button>
+        <button class="btn purpleGlow" id="goVentas" type="button">💳 Ventas</button>
+        <button class="btn blueGlow" id="goInv" type="button">🏷️ Inventario</button>
+        <button class="btn" id="goScan" type="button">📷 Escanear</button>
+        <button class="btn" id="logout" type="button">🚪 Salir</button>
+      </div>
+
+      <div class="content" style="padding-top:0;">
+        <!-- HOME -->
+        <div class="card" id="secHome">
+          <h2 style="margin:0 0 6px; font-weight:950;">Panel</h2>
+          <p class="muted" style="margin:0;">
+            Aquí trabajas sin servidor (por ahora). Todo se guarda en el dispositivo (localStorage).
+            Luego exportas a PC.
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="card" style="background:var(--card2);">
+              <h3 style="margin:0 0 8px; font-weight:950;">Órdenes</h3>
+              <p class="muted" style="margin:0 0 10px;">Siguiente número:</p>
+              <div class="pill"><span id="nextOrden">—</span></div>
+            </div>
+
+            <div class="card" style="background:var(--card2);">
+              <h3 style="margin:0 0 8px; font-weight:950;">Ventas</h3>
+              <p class="muted" style="margin:0 0 10px;">Siguiente número:</p>
+              <div class="pill"><span id="nextVenta">—</span></div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="actions">
+            <button class="btn greenGlow" id="quickOrden" type="button">Abrir Órdenes</button>
+            <button class="btn purpleGlow" id="quickVenta" type="button">Abrir Ventas</button>
+            <button class="btn blueGlow" id="quickInv" type="button">Abrir Inventario</button>
+          </div>
+        </div>
+
+        <!-- ÓRDENES -->
+        <div class="card hidden" id="secOrdenes">
+          <h2 style="margin:0 0 6px; font-weight:950;">Orden de servicio</h2>
+          <p class="muted" style="margin:0;">Firma obligatoria. Numeración ascendente desde <b>2100</b>.</p>
+
+          <div class="divider"></div>
+
+          <div class="pill" style="justify-content:center;">
+            <span>🧾 Orden #</span>
+            <b id="ordenNumero">—</b>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px; font-weight:950;">Datos del cliente</h3>
+          <div class="row">
+            <div class="field">
+              <div class="label">Nombre</div>
+              <input id="o_cliente" placeholder="Nombre del cliente"/>
+            </div>
+            <div class="field">
+              <div class="label">Cédula</div>
+              <input id="o_cedula" placeholder="Cédula" inputmode="numeric"/>
+            </div>
+            <div class="field">
+              <div class="label">Celular</div>
+              <input id="o_tel" placeholder="Celular" inputmode="tel"/>
+            </div>
+            <div class="field">
+              <div class="label">Correo</div>
+              <input id="o_mail" placeholder="Correo electrónico" inputmode="email" autocomplete="email"/>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px; font-weight:950;">Equipo</h3>
+          <div class="row">
+            <div class="field">
+              <div class="label">Marca</div>
+              <input id="o_marca" placeholder="Ej: Samsung, Xiaomi, iPhone"/>
+            </div>
+            <div class="field">
+              <div class="label">Modelo</div>
+              <input id="o_modelo" placeholder="Modelo del celular"/>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:10px;">
+            <div class="label">Falla reportada</div>
+            <textarea id="o_falla" placeholder="Describe la falla..."></textarea>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0 0 8px; font-weight:950;">Firma del cliente (obligatoria)</h3>
+          <div class="sigBox">
+            <canvas id="sigCanvas"></canvas>
+          </div>
+          <p class="sigHint">Firma con el dedo. (Si está en blanco, no deja guardar).</p>
+
+          <div class="actions">
+            <button class="btn" id="sigClear" type="button">🧼 Borrar firma</button>
+            <button class="btn greenGlow" id="saveOrden" type="button">💾 Guardar orden</button>
+            <button class="btn" id="newOrden" type="button">🆕 Nueva orden (limpiar)</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="margin:0; font-weight:950;">Órdenes guardadas</h3>
+          <div id="ordenList"></div>
+        </div>
+
+        <!-- VENTAS -->
+        <div class="card hidden" id="secVentas">
+          <h2 style="margin:0 0 6px; font-weight:950;">Ventas</h2>
+          <p class="muted" style="margin:0;">Numeración ascendente desde <b>315</b>.</p>
+
+          <div class="divider"></div>
+
+          <div class="pill" style="justify-content:center;">
+            <span>💳 Venta #</span>
+            <b id="ventaNumero">—</b>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <div class="label">Cliente</div>
+              <input id="v_cliente" placeholder="Nombre del cliente"/>
+            </div>
+            <div class="field">
+              <div class="label">Celular</div>
+              <input id="v_tel" placeholder="Celular" inputmode="tel"/>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <div class="field">
+              <div class="label">Tipo de venta</div>
+              <select id="v_tipo">
+                <option value="accesorio">Accesorio / Servicio</option>
+                <option value="telefono">Teléfono (requiere IMEI)</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="label">Total</div>
+              <input id="v_total" placeholder="Total" inputmode="decimal"/>
+            </div>
+          </div>
+
+          <div id="ventaTelefonoBox" class="hidden" style="margin-top:10px;">
+            <div class="row">
+              <div class="field">
+                <div class="label">IMEI 1</div>
+                <input id="v_imei1" placeholder="IMEI 1" inputmode="numeric"/>
+              </div>
+              <div class="field">
+                <div class="label">IMEI 2 (opcional)</div>
+                <input id="v_imei2" placeholder="IMEI 2 (si tiene 2)" inputmode="numeric"/>
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:10px;">
+              <div class="label">Término obligatorio</div>
+              <textarea id="v_termino" readonly>El cliente entiende y acepta que NO nos hacemos responsables si el/los IMEI no quedan registrados en la base de datos del operador que va a utilizar. El cliente debe registrar el/los IMEI ante su operador.</textarea>
+            </div>
+
+            <div class="field" style="margin-top:10px;">
+              <label class="pill" style="gap:10px; width:fit-content;">
+                <input id="v_acepto" type="checkbox" style="width:auto; margin:0; transform:scale(1.2);"/>
+                Acepto el término (obligatorio)
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn purpleGlow" id="saveVenta" type="button">💾 Guardar venta</button>
+            <button class="btn" id="newVenta" type="button">🆕 Nueva venta (limpiar)</button>
+          </div>
+
+          <div class="divider"></div>
+          <h3 style="margin:0; font-weight:950;">Ventas guardadas</h3>
+          <div id="ventaList"></div>
+        </div>
+
+        <!-- INVENTARIO -->
+        <div class="card hidden" id="secInv">
+          <h2 style="margin:0 0 6px; font-weight:950;">Inventario</h2>
+          <p class="muted" style="margin:0;">Puedes agregar producto por código (manual o escáner) y foto opcional.</p>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <div class="label">Código (barra / QR)</div>
+              <input id="i_code" placeholder="Ej: 7503030523387"/>
+              <p class="muted" style="margin:0;">Tip: usa “📷 Escanear” y se copiará aquí.</p>
+            </div>
+            <div class="field">
+              <div class="label">Nombre del producto</div>
+              <input id="i_name" placeholder="Ej: Cable 2m, Cargador..."/>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <div class="field">
+              <div class="label">Precio</div>
+              <input id="i_price" placeholder="Precio" inputmode="decimal"/>
+            </div>
+            <div class="field">
+              <div class="label">Cantidad</div>
+              <input id="i_qty" placeholder="Cantidad" inputmode="numeric"/>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:10px;">
+            <div class="label">Foto (opcional)</div>
+            <input id="i_photo" type="file" accept="image/*"/>
+            <p class="muted" style="margin:0;">Nota: fotos se guardan en el dispositivo. Evita fotos muy pesadas.</p>
+          </div>
+
+          <div class="actions">
+            <button class="btn blueGlow" id="saveInv" type="button">💾 Guardar producto</button>
+            <button class="btn" id="newInv" type="button">🆕 Nuevo producto</button>
+          </div>
+
+          <div class="divider"></div>
+          <h3 style="margin:0; font-weight:950;">Productos</h3>
+          <div id="invList"></div>
+        </div>
+
+      </div>
+    </div>
   </div>
-<!-- LOGIN MODAL -->
+
+  <!-- LOGIN MODAL -->
   <div class="modalBack" id="loginBack" role="dialog" aria-modal="true">
     <div class="modal fadeIn">
       <div class="modalHead">
@@ -409,55 +689,69 @@
       </div>
 
       <div class="modalBody">
-        <p class="help" id="loginRoleLine">Rol: —</p>
+        <p class="muted" id="loginRoleLine" style="margin:0;">Rol: —</p>
 
         <div class="row" style="margin-top:12px;">
           <div class="field">
             <div class="label">Usuario</div>
-            <input id="inpUser"
-              type="text"
-              inputmode="text"
-              autocapitalize="none"
-              autocorrect="off"
-              spellcheck="false"
-              placeholder="Ej: admin"
-              autocomplete="username" />
+            <input id="inpUser" type="text" autocapitalize="none" autocorrect="off" spellcheck="false"
+                   placeholder="Ej: admin" autocomplete="username"/>
           </div>
 
           <div class="field">
             <div class="label">Contraseña</div>
             <div class="pwWrap">
-              <input id="inpPass"
-                type="password"
-                inputmode="text"
-                autocapitalize="none"
-                autocorrect="off"
-                spellcheck="false"
-                placeholder="Ej: admin123"
-                autocomplete="current-password" />
+              <input id="inpPass" type="password" autocapitalize="none" autocorrect="off" spellcheck="false"
+                     placeholder="Ej: admin123" autocomplete="current-password"/>
               <button class="eyeBtn" id="btnEye" type="button" title="Mostrar/Ocultar">👁️</button>
             </div>
           </div>
         </div>
 
-        <p class="smallNote" id="hintCreds" style="margin-top:10px;">
-          Usuarios por defecto:<br>
-          <b>Admin:</b> admin / admin123<br>
-          <b>Ventas:</b> ventas / ventas123<br>
-          <b>Técnico:</b> tecnico / tecnico123<br>
-          (Luego lo cambiamos en “Ajustes Admin” cuando armemos el sistema completo)
+        <p class="muted" style="margin-top:10px;">
+          Usuarios por defecto:<br/>
+          <b>Admin:</b> admin / admin123<br/>
+          <b>Ventas:</b> ventas / ventas123<br/>
+          <b>Técnico:</b> tecnico / tecnico123
         </p>
       </div>
 
-      <div class="footer">
-        <button class="btn neonBlue" id="btnLogin" type="button">Entrar</button>
+      <div class="modalBody" style="padding-top:0;">
+        <div class="actions" style="justify-content:flex-end; margin-top:0;">
+          <button class="btn blueGlow" id="btnLogin" type="button">Entrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- SCANNER MODAL -->
+  <div class="modalBack" id="scanBack" role="dialog" aria-modal="true">
+    <div class="modal fadeIn">
+      <div class="modalHead">
+        <h3 class="modalTitle">Escáner (QR / barras)</h3>
+        <button class="x" id="closeScan" type="button">✕</button>
+      </div>
+      <div class="modalBody">
+        <div class="scanWrap">
+          <p class="muted" style="margin:0;">
+            Usa la cámara del dispositivo. Si tu navegador no soporta detección, igual puedes ingresar el código manual.
+          </p>
+          <video id="scanVideo" autoplay playsinline muted></video>
+          <div class="scanResult" id="scanResult">Resultado: —</div>
+          <div class="actions">
+            <button class="btn greenGlow" id="startScan" type="button">▶️ Iniciar</button>
+            <button class="btn" id="stopScan" type="button">⏹️ Detener</button>
+            <button class="btn blueGlow" id="useCode" type="button">✅ Usar código (Inventario)</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // ====== ESTADO / DATOS ======
-    const LS_KEY = "TE_APP_V1";
+    // =========================
+    // STORAGE
+    // =========================
+    const LS_KEY = "TE_APP_V2";
 
     const defaultStore = () => ({
       businessName: "Technology Expert's",
@@ -465,7 +759,11 @@
         admin:  { user:"admin",   pass:"admin123" },
         ventas: { user:"ventas",  pass:"ventas123" },
         tecnico:{ user:"tecnico", pass:"tecnico123" }
-      }
+      },
+      counters: { orden: 2100, venta: 315 },
+      ordenes: [],
+      ventas: [],
+      inventario: []
     });
 
     function loadStore(){
@@ -473,72 +771,184 @@
         const raw = localStorage.getItem(LS_KEY);
         if(!raw) return defaultStore();
         const obj = JSON.parse(raw);
-        // rellena faltantes si vienes de versiones viejas
         const d = defaultStore();
+
         obj.businessName = obj.businessName || d.businessName;
         obj.users = obj.users || d.users;
         obj.users.admin = obj.users.admin || d.users.admin;
         obj.users.ventas = obj.users.ventas || d.users.ventas;
         obj.users.tecnico = obj.users.tecnico || d.users.tecnico;
+
+        obj.counters = obj.counters || d.counters;
+        if(typeof obj.counters.orden !== "number") obj.counters.orden = d.counters.orden;
+        if(typeof obj.counters.venta !== "number") obj.counters.venta = d.counters.venta;
+
+        obj.ordenes = Array.isArray(obj.ordenes) ? obj.ordenes : [];
+        obj.ventas = Array.isArray(obj.ventas) ? obj.ventas : [];
+        obj.inventario = Array.isArray(obj.inventario) ? obj.inventario : [];
+
         return obj;
       }catch(e){
         return defaultStore();
       }
     }
 
-    function saveStore(store){
-      localStorage.setItem(LS_KEY, JSON.stringify(store));
-    }
-
+    function saveStore(){ localStorage.setItem(LS_KEY, JSON.stringify(store)); }
     let store = loadStore();
 
-    // ====== UI REFS ======
-    const bizName = document.getElementById("bizName");
+    // =========================
+    // UI REFS
+    // =========================
+    const rolePanel = document.getElementById("rolePanel");
+    const appPanel  = document.getElementById("appPanel");
+    const bizName   = document.getElementById("bizName");
+
+    const pillRole  = document.getElementById("pillRole");
+    const pillUser  = document.getElementById("pillUser");
+    const pillNow   = document.getElementById("pillNow");
+
+    const secHome   = document.getElementById("secHome");
+    const secOrdenes= document.getElementById("secOrdenes");
+    const secVentas = document.getElementById("secVentas");
+    const secInv    = document.getElementById("secInv");
+
+    const nextOrden = document.getElementById("nextOrden");
+    const nextVenta = document.getElementById("nextVenta");
+
+    const ordenNumero = document.getElementById("ordenNumero");
+    const ventaNumero = document.getElementById("ventaNumero");
+
+    const ordenList = document.getElementById("ordenList");
+    const ventaList = document.getElementById("ventaList");
+    const invList   = document.getElementById("invList");
+
+    // Orden inputs
+    const o_cliente = document.getElementById("o_cliente");
+    const o_cedula  = document.getElementById("o_cedula");
+    const o_tel     = document.getElementById("o_tel");
+    const o_mail    = document.getElementById("o_mail");
+    const o_marca   = document.getElementById("o_marca");
+    const o_modelo  = document.getElementById("o_modelo");
+    const o_falla   = document.getElementById("o_falla");
+
+    // Venta inputs
+    const v_cliente = document.getElementById("v_cliente");
+    const v_tel     = document.getElementById("v_tel");
+    const v_tipo    = document.getElementById("v_tipo");
+    const v_total   = document.getElementById("v_total");
+    const ventaTelefonoBox = document.getElementById("ventaTelefonoBox");
+    const v_imei1   = document.getElementById("v_imei1");
+    const v_imei2   = document.getElementById("v_imei2");
+    const v_acepto  = document.getElementById("v_acepto");
+
+    // Inventario inputs
+    const i_code  = document.getElementById("i_code");
+    const i_name  = document.getElementById("i_name");
+    const i_price = document.getElementById("i_price");
+    const i_qty   = document.getElementById("i_qty");
+    const i_photo = document.getElementById("i_photo");
+
+    // Nav buttons
+    const goHome  = document.getElementById("goHome");
+    const goOrden = document.getElementById("goOrdenes");
+    const goVent  = document.getElementById("goVentas");
+    const goInv   = document.getElementById("goInv");
+    const goScan  = document.getElementById("goScan");
+    const logout  = document.getElementById("logout");
+
+    const quickOrden = document.getElementById("quickOrden");
+    const quickVenta = document.getElementById("quickVenta");
+    const quickInv   = document.getElementById("quickInv");
+
+    // Login modal
     const tiles = document.querySelectorAll(".tile");
     const loginBack = document.getElementById("loginBack");
-    const closeLogin = document.getElementById("closeLogin");
+    const closeLogin= document.getElementById("closeLogin");
     const loginRoleLine = document.getElementById("loginRoleLine");
-    const loginTitle = document.getElementById("loginTitle");
     const inpUser = document.getElementById("inpUser");
     const inpPass = document.getElementById("inpPass");
-    const btnEye = document.getElementById("btnEye");
-    const btnLogin = document.getElementById("btnLogin");
+    const btnEye  = document.getElementById("btnEye");
+    const btnLogin= document.getElementById("btnLogin");
 
+    // Scanner modal
+    const scanBack = document.getElementById("scanBack");
+    const closeScan= document.getElementById("closeScan");
+    const scanVideo= document.getElementById("scanVideo");
+    const scanResult= document.getElementById("scanResult");
+    const startScan= document.getElementById("startScan");
+    const stopScan = document.getElementById("stopScan");
+    const useCode  = document.getElementById("useCode");
+
+    // Firma
+    const sigCanvas = document.getElementById("sigCanvas");
+    const sigClear  = document.getElementById("sigClear");
+    const saveOrdenBtn = document.getElementById("saveOrden");
+    const newOrdenBtn  = document.getElementById("newOrden");
+
+    // Ventas
+    const saveVentaBtn = document.getElementById("saveVenta");
+    const newVentaBtn  = document.getElementById("newVenta");
+
+    // Inventario
+    const saveInvBtn = document.getElementById("saveInv");
+    const newInvBtn  = document.getElementById("newInv");
+
+    // =========================
+    // HELPERS
+    // =========================
+    function nowStr(){ return new Date().toLocaleString(); }
+    function normUser(v){ return (v||"").trim().toLowerCase(); }
+    function normPass(v){ return (v||"").trim(); }
+
+    function showSection(which){
+      [secHome, secOrdenes, secVentas, secInv].forEach(s => s.classList.add("hidden"));
+      which.classList.remove("hidden");
+      refreshCountersUI();
+      if(which === secOrdenes) renderOrdenes();
+      if(which === secVentas)  renderVentas();
+      if(which === secInv)     renderInv();
+    }
+
+    function refreshCountersUI(){
+      nextOrden.textContent = store.counters.orden;
+      nextVenta.textContent = store.counters.venta;
+      ordenNumero.textContent = store.counters.orden;
+      ventaNumero.textContent = store.counters.venta;
+      pillNow.textContent = nowStr();
+    }
+
+    function escapeTxt(s){
+      return String(s ?? "").replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+    }
+
+    // =========================
+    // INIT NAME
+    // =========================
     bizName.textContent = store.businessName;
 
-    // ====== LOGIN FLOW ======
+    // =========================
+    // LOGIN FLOW
+    // =========================
     let selectedRole = null;
     let passVisible = false;
+    let session = { role:null, user:null };
 
     function openLogin(role){
       selectedRole = role;
       loginRoleLine.textContent = "Rol: " + role.toUpperCase();
-      loginTitle.textContent = "Acceso";
       inpUser.value = "";
       inpPass.value = "";
       passVisible = false;
       inpPass.type = "password";
       btnEye.textContent = "👁️";
       loginBack.classList.add("show");
-
-      setTimeout(()=>inpUser.focus(), 80);
+      setTimeout(()=>inpUser.focus(), 60);
     }
+    function closeLoginModal(){ loginBack.classList.remove("show"); }
 
-    function closeLoginModal(){
-      loginBack.classList.remove("show");
-    }
-
-    tiles.forEach(t=>{
-      t.addEventListener("click", ()=>{
-        const role = t.dataset.role;
-        openLogin(role);
-      });
-    });
-
+    tiles.forEach(t => t.addEventListener("click", ()=> openLogin(t.dataset.role)));
     closeLogin.addEventListener("click", closeLoginModal);
-    loginBack.addEventListener("click", (e)=>{
-      if(e.target === loginBack) closeLoginModal();
-    });
+    loginBack.addEventListener("click", (e)=>{ if(e.target===loginBack) closeLoginModal(); });
 
     btnEye.addEventListener("click", ()=>{
       passVisible = !passVisible;
@@ -548,43 +958,511 @@
       inpPass.setSelectionRange(inpPass.value.length, inpPass.value.length);
     });
 
-    // Enter para iniciar
-    inpUser.addEventListener("keydown", (e)=>{ if(e.key === "Enter") inpPass.focus(); });
-    inpPass.addEventListener("keydown", (e)=>{ if(e.key === "Enter") doLogin(); });
-
-    // Truco anti-problemas móvil:
-    // - usuario siempre minúscula
-    // - quitamos espacios inicio/fin en user y pass
-    function normalizeUser(v){ return (v || "").trim().toLowerCase(); }
-    function normalizePass(v){ return (v || "").trim(); }
-
+    inpUser.addEventListener("keydown", (e)=>{ if(e.key==="Enter") inpPass.focus(); });
+    inpPass.addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
     btnLogin.addEventListener("click", doLogin);
 
     function doLogin(){
-      if(!selectedRole) return;
+      const u = normUser(inpUser.value);
+      const p = normPass(inpPass.value);
 
-      const u = normalizeUser(inpUser.value);
-      const p = normalizePass(inpPass.value);
+      const expected = store.users[selectedRole];
+      if(!expected){ alert("Rol inválido."); return; }
 
-      const expected = store.users[selectedRole] || null;
-      if(!expected){
-        alert("Rol inválido.");
-        return;
-      }
-
-      const okUser = normalizeUser(expected.user) === u;
-      const okPass = normalizePass(expected.pass) === p;
-
-      if(okUser && okPass){
+      if(normUser(expected.user)===u && normPass(expected.pass)===p){
+        session.role = selectedRole;
+        session.user = u;
         closeLoginModal();
-        alert("✅ Bienvenido (" + selectedRole.toUpperCase() + ").\n\nListo. Ahora seguimos con Órdenes/Ventas/Inventario con este mismo estilo.");
+
+        rolePanel.classList.add("hidden");
+        appPanel.classList.remove("hidden");
+
+        pillRole.textContent = selectedRole.toUpperCase();
+        pillUser.textContent = u;
+
+        refreshCountersUI();
+        showSection(secHome);
       }else{
-        alert("Usuario o contraseña incorrectos.\n\nTIP:\n- Usuario en minúscula\n- Revisa espacios\n- Usa el 👁️ para ver lo que escribiste.");
+        alert("Usuario o contraseña incorrectos.\n\nTIP:\n- Usuario en minúscula\n- Revisa espacios\n- Usa 👁️ para ver la contraseña");
       }
     }
 
-    // Guarda por si cambiaste el nombre (luego lo haremos desde Ajustes)
-    saveStore(store);
+    logout.addEventListener("click", ()=>{
+      session = { role:null, user:null };
+      appPanel.classList.add("hidden");
+      rolePanel.classList.remove("hidden");
+      showSection(secHome);
+    });
+
+    // =========================
+    // NAV
+    // =========================
+    goHome.addEventListener("click", ()=>showSection(secHome));
+    goOrden.addEventListener("click", ()=>showSection(secOrdenes));
+    goVent.addEventListener("click", ()=>showSection(secVentas));
+    goInv.addEventListener("click", ()=>showSection(secInv));
+    quickOrden.addEventListener("click", ()=>showSection(secOrdenes));
+    quickVenta.addEventListener("click", ()=>showSection(secVentas));
+    quickInv.addEventListener("click", ()=>showSection(secInv));
+
+    // =========================
+    // FIRMA (canvas) - obligatorio
+    // =========================
+    const ctx = sigCanvas.getContext("2d");
+    let drawing = false;
+    let hasInk = false;
+
+    function resizeCanvas(){
+      const rect = sigCanvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      sigCanvas.width = Math.floor(rect.width * dpr);
+      sigCanvas.height= Math.floor(160 * dpr);
+      sigCanvas.style.height = "160px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.lineWidth = 2.6;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "white";
+      clearSig(false);
+    }
+
+    function clearSig(resetInk=true){
+      ctx.clearRect(0,0,sigCanvas.width, sigCanvas.height);
+      if(resetInk) hasInk = false;
+    }
+
+    function pointerPos(e){
+      const r = sigCanvas.getBoundingClientRect();
+      const x = (e.clientX ?? e.touches?.[0]?.clientX) - r.left;
+      const y = (e.clientY ?? e.touches?.[0]?.clientY) - r.top;
+      return {x,y};
+    }
+
+    function startDraw(e){
+      drawing = true;
+      const p = pointerPos(e);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      e.preventDefault();
+    }
+    function moveDraw(e){
+      if(!drawing) return;
+      const p = pointerPos(e);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+      hasInk = true;
+      e.preventDefault();
+    }
+    function endDraw(e){
+      drawing = false;
+      e.preventDefault();
+    }
+
+    window.addEventListener("resize", ()=>{ if(!secOrdenes.classList.contains("hidden")) resizeCanvas(); });
+
+    sigCanvas.addEventListener("pointerdown", startDraw);
+    sigCanvas.addEventListener("pointermove", moveDraw);
+    sigCanvas.addEventListener("pointerup", endDraw);
+    sigCanvas.addEventListener("pointercancel", endDraw);
+
+    sigCanvas.addEventListener("touchstart", startDraw, {passive:false});
+    sigCanvas.addEventListener("touchmove", moveDraw, {passive:false});
+    sigCanvas.addEventListener("touchend", endDraw, {passive:false});
+
+    sigClear.addEventListener("click", ()=>clearSig(true));
+
+    function sigDataURL(){
+      try{ return sigCanvas.toDataURL("image/png"); }catch(e){ return ""; }
+    }
+
+    function resetOrdenForm(){
+      o_cliente.value=""; o_cedula.value=""; o_tel.value=""; o_mail.value="";
+      o_marca.value=""; o_modelo.value=""; o_falla.value="";
+      clearSig(true);
+      o_cliente.focus();
+    }
+
+    newOrdenBtn.addEventListener("click", resetOrdenForm);
+
+    saveOrdenBtn.addEventListener("click", ()=>{
+      // validar campos
+      if(!o_cliente.value.trim() || !o_cedula.value.trim() || !o_tel.value.trim() || !o_mail.value.trim()
+         || !o_marca.value.trim() || !o_modelo.value.trim() || !o_falla.value.trim()){
+        alert("Completa todos los campos de la orden.");
+        return;
+      }
+      if(!hasInk){
+        alert("La firma es obligatoria.");
+        return;
+      }
+
+      const n = store.counters.orden;
+      const item = {
+        numero: n,
+        fecha: nowStr(),
+        cliente: o_cliente.value.trim(),
+        cedula: o_cedula.value.trim(),
+        tel: o_tel.value.trim(),
+        mail: o_mail.value.trim(),
+        marca: o_marca.value.trim(),
+        modelo: o_modelo.value.trim(),
+        falla: o_falla.value.trim(),
+        firma: sigDataURL()
+      };
+
+      store.ordenes.push(item);
+      store.ordenes.sort((a,b)=>a.numero-b.numero);
+      store.counters.orden += 1;
+      saveStore();
+      refreshCountersUI();
+      renderOrdenes();
+      resetOrdenForm();
+      alert("✅ Orden guardada: #" + item.numero);
+    });
+
+    function renderOrdenes(){
+      resizeCanvas();
+      ordenNumero.textContent = store.counters.orden;
+
+      if(store.ordenes.length===0){
+        ordenList.innerHTML = `<p class="muted">No hay órdenes aún.</p>`;
+        return;
+      }
+
+      ordenList.innerHTML = store.ordenes.map(o=>{
+        return `
+          <div class="listItem">
+            <h4>Orden #${o.numero}</h4>
+            <pre>Cliente: ${escapeTxt(o.cliente)}
+Cédula: ${escapeTxt(o.cedula)}
+Tel: ${escapeTxt(o.tel)}
+Email: ${escapeTxt(o.mail)}
+
+Marca: ${escapeTxt(o.marca)}
+Modelo: ${escapeTxt(o.modelo)}
+Falla: ${escapeTxt(o.falla)}
+
+${escapeTxt(o.fecha)}</pre>
+            <div class="actions">
+              <button class="btn" onclick="window.__delOrden(${o.numero})">🗑️ Borrar</button>
+              <button class="btn greenGlow" onclick="window.__verFirma(${o.numero})">✍️ Ver firma</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.__delOrden = (num)=>{
+      if(!confirm("¿Borrar la orden #" + num + "?")) return;
+      store.ordenes = store.ordenes.filter(o=>o.numero!==num);
+      saveStore();
+      renderOrdenes();
+    };
+
+    window.__verFirma = (num)=>{
+      const o = store.ordenes.find(x=>x.numero===num);
+      if(!o || !o.firma){ alert("No hay firma."); return; }
+      const w = window.open("");
+      w.document.write(`<title>Firma Orden #${num}</title><img style="max-width:100%;height:auto" src="${o.firma}"/>`);
+    };
+
+// =========================
+    // VENTAS
+    // =========================
+    v_tipo.addEventListener("change", ()=>{
+      const isPhone = v_tipo.value==="telefono";
+      ventaTelefonoBox.classList.toggle("hidden", !isPhone);
+    });
+
+    function resetVentaForm(){
+      v_cliente.value=""; v_tel.value=""; v_total.value="";
+      v_tipo.value="accesorio";
+      v_imei1.value=""; v_imei2.value="";
+      v_acepto.checked=false;
+      ventaTelefonoBox.classList.add("hidden");
+      v_cliente.focus();
+    }
+    newVentaBtn.addEventListener("click", resetVentaForm);
+
+    saveVentaBtn.addEventListener("click", ()=>{
+      if(!v_cliente.value.trim() || !v_tel.value.trim() || !v_total.value.trim()){
+        alert("Completa cliente, celular y total.");
+        return;
+      }
+      const isPhone = v_tipo.value==="telefono";
+      if(isPhone){
+        if(!v_imei1.value.trim()){
+          alert("En venta de teléfono, IMEI 1 es obligatorio.");
+          return;
+        }
+        if(!v_acepto.checked){
+          alert("Debes aceptar el término (obligatorio).");
+          return;
+        }
+      }
+
+      const n = store.counters.venta;
+      const item = {
+        numero: n,
+        fecha: nowStr(),
+        cliente: v_cliente.value.trim(),
+        tel: v_tel.value.trim(),
+        total: v_total.value.trim(),
+        tipo: v_tipo.value,
+        imei1: isPhone ? v_imei1.value.trim() : "",
+        imei2: isPhone ? v_imei2.value.trim() : "",
+        terminoAceptado: isPhone ? true : false
+      };
+
+      store.ventas.push(item);
+      store.ventas.sort((a,b)=>a.numero-b.numero);
+      store.counters.venta += 1;
+      saveStore();
+      refreshCountersUI();
+      renderVentas();
+      resetVentaForm();
+      alert("✅ Venta guardada: #" + item.numero);
+    });
+
+    function renderVentas(){
+      ventaNumero.textContent = store.counters.venta;
+
+      if(store.ventas.length===0){
+        ventaList.innerHTML = `<p class="muted">No hay ventas aún.</p>`;
+        return;
+      }
+
+      ventaList.innerHTML = store.ventas.map(v=>{
+        const extra = v.tipo==="telefono"
+          ? `IMEI1: ${escapeTxt(v.imei1)}\nIMEI2: ${escapeTxt(v.imei2||"-")}\nTérmino: Aceptado`
+          : `Tipo: ${escapeTxt(v.tipo)}`;
+
+        return `
+          <div class="listItem">
+            <h4>Venta #${v.numero}</h4>
+            <pre>Cliente: ${escapeTxt(v.cliente)}
+Tel: ${escapeTxt(v.tel)}
+Total: ${escapeTxt(v.total)}
+
+${escapeTxt(extra)}
+
+${escapeTxt(v.fecha)}</pre>
+            <div class="actions">
+              <button class="btn" onclick="window.__delVenta(${v.numero})">🗑️ Borrar</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.__delVenta = (num)=>{
+      if(!confirm("¿Borrar la venta #" + num + "?")) return;
+      store.ventas = store.ventas.filter(v=>v.numero!==num);
+      saveStore();
+      renderVentas();
+    };
+
+    // =========================
+    // INVENTARIO
+    // =========================
+    function resetInvForm(){
+      i_code.value=""; i_name.value=""; i_price.value=""; i_qty.value="";
+      i_photo.value="";
+      i_code.focus();
+    }
+    newInvBtn.addEventListener("click", resetInvForm);
+
+    saveInvBtn.addEventListener("click", async ()=>{
+      if(!i_code.value.trim() || !i_name.value.trim()){
+        alert("Código y nombre son obligatorios.");
+        return;
+      }
+      const code = i_code.value.trim();
+      const name = i_name.value.trim();
+      const price = i_price.value.trim();
+      const qty = i_qty.value.trim();
+
+      let photoData = "";
+      const file = i_photo.files?.[0];
+      if(file){
+        photoData = await fileToDataURL(file);
+      }
+
+      const item = { code, name, price, qty, photo: photoData, fecha: nowStr() };
+
+      // si existe mismo código, actualiza
+      const idx = store.inventario.findIndex(p=>p.code===code);
+      if(idx>=0) store.inventario[idx] = item;
+      else store.inventario.push(item);
+
+      store.inventario.sort((a,b)=> a.name.localeCompare(b.name, "es", {sensitivity:"base"}));
+      saveStore();
+      renderInv();
+      resetInvForm();
+      alert("✅ Producto guardado.");
+    });
+
+    function fileToDataURL(file){
+      return new Promise((res, rej)=>{
+        const fr = new FileReader();
+        fr.onload = ()=> res(String(fr.result||""));
+        fr.onerror = ()=> rej(new Error("No se pudo leer foto"));
+        fr.readAsDataURL(file);
+      });
+    }
+
+    function renderInv(){
+      if(store.inventario.length===0){
+        invList.innerHTML = `<p class="muted">No hay productos aún.</p>`;
+        return;
+      }
+
+      invList.innerHTML = store.inventario.map(p=>{
+        const img = p.photo ? `<img src="${p.photo}" style="width:100%;max-width:260px;border-radius:14px;border:1px solid rgba(255,255,255,.12);margin-top:10px;" />` : "";
+        return `
+          <div class="listItem">
+            <h4>${escapeTxt(p.name)}</h4>
+            <pre>Código: ${escapeTxt(p.code)}
+Precio: ${escapeTxt(p.price||"-")}
+Cantidad: ${escapeTxt(p.qty||"-")}
+${escapeTxt(p.fecha)}</pre>
+            ${img}
+            <div class="actions">
+              <button class="btn" onclick="window.__delInv('${encodeURIComponent(p.code)}')">🗑️ Borrar</button>
+              <button class="btn blueGlow" onclick="window.__fillInv('${encodeURIComponent(p.code)}')">✏️ Editar</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.__delInv = (codeEnc)=>{
+      const code = decodeURIComponent(codeEnc);
+      if(!confirm("¿Borrar producto " + code + "?")) return;
+      store.inventario = store.inventario.filter(p=>p.code!==code);
+      saveStore();
+      renderInv();
+    };
+
+    window.__fillInv = (codeEnc)=>{
+      const code = decodeURIComponent(codeEnc);
+      const p = store.inventario.find(x=>x.code===code);
+      if(!p) return;
+      i_code.value = p.code;
+      i_name.value = p.name;
+      i_price.value= p.price||"";
+      i_qty.value  = p.qty||"";
+      alert("Edita y vuelve a Guardar producto.");
+    };
+
+    // =========================
+    // SCANNER (sin internet) usando BarcodeDetector
+    // =========================
+    let stream = null;
+    let detector = null;
+    let scanLoopId = null;
+    let lastCode = "";
+
+    function openScan(){
+      scanBack.classList.add("show");
+      scanResult.textContent = "Resultado: —";
+      lastCode = "";
+    }
+    function closeScanModal(){
+      scanBack.classList.remove("show");
+      stopScanner();
+    }
+
+    goScan.addEventListener("click", openScan);
+    closeScan.addEventListener("click", closeScanModal);
+    scanBack.addEventListener("click", (e)=>{ if(e.target===scanBack) closeScanModal(); });
+
+    startScan.addEventListener("click", startScanner);
+    stopScan.addEventListener("click", stopScanner);
+
+    useCode.addEventListener("click", ()=>{
+      if(!lastCode){
+        alert("No hay código detectado aún.");
+        return;
+      }
+      // copia a inventario y abre inventario
+      i_code.value = lastCode;
+      alert("✅ Código copiado a Inventario: " + lastCode);
+      closeScanModal();
+      showSection(secInv);
+    });
+
+    async function startScanner(){
+      // Permisos de cámara
+      try{
+        if(!("BarcodeDetector" in window)){
+          alert("Tu navegador no soporta BarcodeDetector. Puedes escribir el código manual.");
+          return;
+        }
+
+        detector = new BarcodeDetector({
+          formats: [
+            "qr_code","ean_13","ean_8","code_128","code_39","upc_a","upc_e","itf","data_matrix"
+          ]
+        });
+
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+          audio: false
+        });
+
+        scanVideo.srcObject = stream;
+        await scanVideo.play();
+
+        scanLoop();
+      }catch(err){
+        alert("No pudo iniciar la cámara. Revisa permisos de cámara.\n\n" + (err?.message || err));
+      }
+    }
+
+    function stopScanner(){
+      if(scanLoopId){
+        cancelAnimationFrame(scanLoopId);
+        scanLoopId = null;
+      }
+      if(scanVideo){
+        scanVideo.pause();
+        scanVideo.srcObject = null;
+      }
+      if(stream){
+        stream.getTracks().forEach(t=>t.stop());
+        stream = null;
+      }
+    }
+
+    async function scanLoop(){
+      try{
+        if(!detector || !scanVideo || scanVideo.readyState < 2){
+          scanLoopId = requestAnimationFrame(scanLoop);
+          return;
+        }
+        const codes = await detector.detect(scanVideo);
+        if(codes && codes.length){
+          const raw = codes[0].rawValue || "";
+          if(raw && raw !== lastCode){
+            lastCode = raw;
+            scanResult.textContent = "Resultado: " + raw;
+          }
+        }
+      }catch(e){
+        // si falla una vez, sigue
+      }
+      scanLoopId = requestAnimationFrame(scanLoop);
+    }
+
+    // =========================
+    // START
+    // =========================
+    refreshCountersUI();
+    renderOrdenes();
+    renderVentas();
+    renderInv();
+    saveStore();
   </script>
 </body>
 </html>
+
