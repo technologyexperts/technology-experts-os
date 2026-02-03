@@ -2,696 +2,1610 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#070B24" />
-  <title>Technology Expert’s</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Technology Expert's</title>
   <style>
     :root{
-      --bg0:#05071a;
-      --bg1:#060b28;
-      --bg2:#070f3a;
+      --bg0:#050816;
+      --bg1:#070b1f;
+      --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.10);
+      --text:#eaf2ff;
+      --muted:rgba(234,242,255,.70);
 
-      /* Neon Tech (Colores A) */
-      --neonCyan:#3CF2FF;
-      --neonBlue:#4B6BFF;
+      --neonBlue:#3CF2FF;
+      --neonPurple:#AA5AFF;
+      --neonGreen:#50FFC8;
 
-      --txt:#EAF2FF;
-      --muted:rgba(234,242,255,.72);
-
-      --glass:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.12);
-
-      --shadow: 0 18px 55px rgba(0,0,0,.55);
-      --radius: 22px;
-      --radius2: 16px;
-
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --shadow: 0 18px 45px rgba(0,0,0,.55);
+      --radius:18px;
     }
 
-    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
-      font-family:var(--font);
-      color:var(--txt);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
       background:
-        radial-gradient(1200px 800px at 18% 0%, rgba(75,107,255,.20), transparent 55%),
-        radial-gradient(1000px 700px at 92% 18%, rgba(60,242,255,.18), transparent 52%),
-        linear-gradient(180deg, var(--bg0), var(--bg1) 35%, var(--bg2));
-      overflow-x:hidden;
-      padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+        radial-gradient(1200px 800px at 20% 10%, rgba(60,242,255,.18), transparent 55%),
+        radial-gradient(900px 700px at 80% 30%, rgba(170,90,255,.16), transparent 55%),
+        radial-gradient(900px 700px at 60% 90%, rgba(80,255,200,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
     }
 
-    /* scanline suave */
-    .scanline{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:-1;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.03),
-        rgba(255,255,255,.03) 1px,
-        transparent 1px,
-        transparent 7px
-      );
-      opacity:.10;
-      mix-blend-mode: overlay;
-      animation: scan 8s linear infinite;
-    }
-    @keyframes scan{
-      from{ transform: translateY(-40px); }
-      to{ transform: translateY(40px); }
-    }
-    @media (prefers-reduced-motion: reduce){
-      .scanline{ animation:none; }
-      .roleCard::after{ animation:none; }
-      .btn:hover{ transform:none; }
-    }
+    a{ color:inherit; }
 
     .wrap{
       max-width: 980px;
       margin: 0 auto;
+      padding: 18px 14px 38px;
     }
 
-    /* Panel estilo app */
-    .panel{
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-      backdrop-filter: blur(10px);
-    }
-    .panel::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(320px 240px at 20% 15%, rgba(60,242,255,.18), transparent 62%),
-        radial-gradient(340px 260px at 80% 20%, rgba(75,107,255,.16), transparent 65%);
-      filter: blur(18px);
-      opacity:.75;
-      pointer-events:none;
-    }
-    .inner{
-      position:relative;
-      padding: 18px;
+    .topBrand{
+      display:flex;
+      gap:14px;
+      align-items:flex-end;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      padding: 8px 2px 6px;
     }
 
     .brandTitle{
-      margin: 6px 0 4px;
-      font-size: clamp(30px, 5vw, 46px);
-      letter-spacing: .2px;
-      line-height: 1.0;
-      text-shadow: 0 0 18px rgba(60,242,255,.18), 0 0 26px rgba(75,107,255,.12);
-      font-weight: 950;
-    }
-    .sub{
-      margin:0;
-      color:var(--muted);
-      font-size: 14px;
-      line-height: 1.25;
-      font-weight: 750;
-    }
-
-    .row{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-    }
-
-    .badge{
-      font-size: 12px;
-      color: rgba(234,242,255,.85);
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.12);
-      padding: 6px 10px;
-      border-radius: 999px;
-      backdrop-filter: blur(10px);
+      font-size: clamp(34px, 4.6vw, 56px);
       font-weight: 900;
+      letter-spacing: .2px;
+      line-height: 1.02;
+      text-shadow: 0 10px 40px rgba(0,0,0,.65);
     }
 
-    /* Roles grid */
-    .gridRoles{
+    .brandSubtitle{
+      margin-top: 8px;
+      color: var(--muted);
+      font-weight: 600;
+      max-width: 720px;
+    }
+
+    .pillRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    .pill{
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.20);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      font-weight: 800;
+      letter-spacing:.2px;
+      color: rgba(234,242,255,.92);
+    }
+
+    .card{
+      margin-top: 16px;
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    /* --------- Neon Tiles (Inicio) --------- */
+    .roleGrid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 12px;
-      margin-top: 14px;
+      gap:14px;
+      margin-top:18px;
     }
-    @media (max-width: 760px){
-      .gridRoles{ grid-template-columns: 1fr; }
+    @media (max-width:560px){
+      .roleGrid{ gap:10px; }
     }
 
-    /* Tarjeta rol Neon Tech (con SVG + texto abajo) */
-    .roleCard{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.12));
-      border-radius: 18px;
-      padding: 16px 14px;
-      color: var(--txt);
-      width:100%;
+    .roleTile{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.28);
+      border-radius:18px;
+      padding:14px 10px 12px;
       cursor:pointer;
+      box-shadow: var(--shadow);
       position:relative;
-      overflow:hidden;
-      box-shadow: 0 12px 26px rgba(0,0,0,.35);
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
-      min-height: 148px;
-      text-align:center;
+      transition: transform .16s ease, filter .16s ease;
+      backdrop-filter: blur(10px);
+      min-height: 130px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      user-select:none;
     }
-    .roleCard:focus{ outline:none; box-shadow: var(--shadow), 0 0 0 2px rgba(60,242,255,.25), 0 0 0 6px rgba(75,107,255,.14); }
-    .roleCard:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.45); box-shadow: 0 16px 34px rgba(0,0,0,.45), 0 0 18px rgba(60,242,255,.12); }
-    .roleCard:active{ transform: translateY(0px) scale(.99); }
+    .roleTile:hover{ transform: translateY(-2px); }
+    .roleTile:active{ transform: scale(.98); }
 
-    .roleCard::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(280px 190px at 25% 20%, rgba(60,242,255,.22), transparent 62%),
-        radial-gradient(260px 180px at 80% 30%, rgba(75,107,255,.20), transparent 65%);
-      opacity:.9;
-      pointer-events:none;
-    }
-    .roleCard::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.10) 40%, transparent 70%);
-      transform: translateX(-120%);
-      animation: shine 3.0s ease-in-out infinite;
-      opacity:.35;
-      pointer-events:none;
-    }
-    @keyframes shine{
-      0%{ transform: translateX(-120%); }
-      55%{ transform: translateX(120%); }
-      100%{ transform: translateX(120%); }
-    }
-
-    .roleIconWrap{
-      width: 64px;
-      height: 64px;
-      margin: 2px auto 10px;
-      border-radius: 18px;
+    .iconBox{
+      height:64px; width:64px;
+      border-radius:16px;
       display:grid;
       place-items:center;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 0 0 1px rgba(60,242,255,.10), 0 0 24px rgba(60,242,255,.10);
-      position:relative;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
     }
-    .roleIconWrap svg{
-      width: 42px;
-      height: 42px;
-      filter: drop-shadow(0 0 10px rgba(60,242,255,.25));
-    }
+    .ico{ width:34px; height:34px; color: currentColor; filter: drop-shadow(0 0 12px currentColor); }
+
     .roleLabel{
-      font-size: 17px;
-      font-weight: 950;
-      letter-spacing:.2px;
-      margin-top:2px;
-      text-shadow: 0 0 14px rgba(60,242,255,.12);
-    }
-    .roleHint{
-      margin-top:4px;
+      font-weight: 900;
+      letter-spacing: .7px;
       font-size: 12px;
-      color: rgba(234,242,255,.75);
-      font-weight: 800;
+      opacity:.98;
+      text-align:center;
     }
 
-    /* Cards internas */
-    .card{
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: var(--radius2);
-      padding: 14px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 22px rgba(0,0,0,.28);
-    }
-    .card h3{
-      margin: 0 0 10px;
-      font-size: 15px;
-      letter-spacing:.2px;
-      font-weight: 950;
-    }
-    .note{
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px dashed rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: rgba(234,242,255,.82);
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.35;
-    }
+    .neon-blue{ color: var(--neonBlue); border-color: rgba(60,242,255,.35); box-shadow: 0 0 0 1px rgba(60,242,255,.35), 0 0 18px rgba(60,242,255,.18), var(--shadow); }
+    .neon-purple{ color: var(--neonPurple); border-color: rgba(170,90,255,.35); box-shadow: 0 0 0 1px rgba(170,90,255,.35), 0 0 18px rgba(170,90,255,.20), var(--shadow); }
+    .neon-green{ color: var(--neonGreen); border-color: rgba(80,255,200,.30); box-shadow: 0 0 0 1px rgba(80,255,200,.30), 0 0 18px rgba(80,255,200,.18), var(--shadow); }
 
-    /* Login layout */
-    .grid2{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 12px;
-      margin-top: 14px;
-    }
-    @media (max-width: 860px){
-      .grid2{ grid-template-columns: 1fr; }
-    }
-
-    label{
-      font-size: 12px;
-      color: rgba(234,242,255,.75);
-      font-weight: 850;
-    }
-    input, textarea, select{
-      width:100%;
-      background: rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 14px;
-      padding: 12px 12px;
-      color: var(--txt);
-      font-size: 15px;
-      font-weight: 800;
-      outline:none;
-      transition: border-color .12s ease, box-shadow .12s ease;
-    }
-    textarea{ min-height: 110px; resize:vertical; }
-    input::placeholder, textarea::placeholder{ color: rgba(234,242,255,.52); }
-    input:focus, textarea:focus, select:focus{
-      border-color: rgba(60,242,255,.55);
-      box-shadow: 0 0 0 2px rgba(60,242,255,.20), 0 0 0 6px rgba(75,107,255,.12);
-    }
-
-    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
-
-    /* Botones Neon Tech (opción 1A) */
+    /* --------- Buttons Neon Tech --------- */
+    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; }
     .btn{
-      appearance:none;
-      cursor:pointer;
-      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      color: var(--text);
+      font-weight: 900;
+      letter-spacing:.3px;
       padding: 12px 14px;
-      font-weight: 950;
-      letter-spacing:.2px;
-      color: var(--txt);
-      background: linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.30));
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 12px 22px rgba(0,0,0,.35), 0 0 0 1px rgba(60,242,255,.08) inset;
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      border-radius: 16px;
+      cursor:pointer;
+      box-shadow: var(--shadow);
+      transition: transform .15s ease;
+      user-select:none;
       display:inline-flex;
       align-items:center;
       gap:10px;
+      min-height: 44px;
     }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.45); box-shadow: 0 16px 30px rgba(0,0,0,.45), 0 0 18px rgba(60,242,255,.14); }
-    .btn:active{ transform: translateY(0px) scale(.99); }
-    .btn.primary{
-      border-color: rgba(60,242,255,.26);
-      box-shadow: 0 16px 28px rgba(0,0,0,.45), 0 0 24px rgba(60,242,255,.10);
-    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: scale(.98); }
+    .btn.small{ padding: 10px 12px; border-radius: 14px; min-height:40px; }
+    .btn.full{ width:100%; justify-content:center; }
+    .btn.blue{ border-color: rgba(60,242,255,.35); box-shadow: 0 0 0 1px rgba(60,242,255,.25), 0 0 18px rgba(60,242,255,.12), var(--shadow); }
+    .btn.purple{ border-color: rgba(170,90,255,.35); box-shadow: 0 0 0 1px rgba(170,90,255,.22), 0 0 18px rgba(170,90,255,.14), var(--shadow); }
+    .btn.green{ border-color: rgba(80,255,200,.30); box-shadow: 0 0 0 1px rgba(80,255,200,.20), 0 0 18px rgba(80,255,200,.12), var(--shadow); }
+    .btn.danger{ border-color: rgba(255,80,100,.35); box-shadow: 0 0 0 1px rgba(255,80,100,.22), 0 0 18px rgba(255,80,100,.10), var(--shadow); }
     .btn.ghost{ background: rgba(255,255,255,.06); }
 
-    .small{ font-size:12px; color: rgba(234,242,255,.75); font-weight: 800; line-height:1.25; }
-
-    /* App header */
-    .appHeader{
+    /* --------- Sections / Tabs --------- */
+    .tabs{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
       gap:10px;
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      backdrop-filter: blur(10px);
+      flex-wrap:wrap;
+      margin-top: 14px;
     }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(234,242,255,.90);
-      font-size: 12px;
-      font-weight: 900;
+    .tabBtn{
+      flex: 1 1 160px;
+      text-align:center;
     }
-    .menuGrid{
-      margin-top: 12px;
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 12px;
-    }
-    @media (max-width: 860px){
-      .menuGrid{ grid-template-columns: 1fr; }
-    }
-    .menuBtn{ width:100%; justify-content:center; min-height: 86px; }
 
     .hidden{ display:none !important; }
 
-    /* Toast */
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,.55);
-      border: 1px solid rgba(255,255,255,.14);
-      color: rgba(234,242,255,.92);
-      padding: 10px 12px;
-      border-radius: 14px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 18px 40px rgba(0,0,0,.45);
-      max-width: min(520px, 92vw);
-      font-size: 13px;
-      opacity: 0;
-      pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
-      z-index: 50;
+    .h2{
+      font-size: 26px;
+      margin: 0 0 8px;
       font-weight: 900;
     }
-    .toast.show{
-      opacity: 1;
-      transform: translateX(-50%) translateY(-6px);
+    .h3{
+      font-size: 16px;
+      margin: 14px 0 8px;
+      font-weight: 900;
+      color: rgba(234,242,255,.92);
     }
+
+    /* --------- Inputs --------- */
+    input, textarea, select{
+      width:100%;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing:.2px;
+      outline:none;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+    }
+    input::placeholder, textarea::placeholder{ color: rgba(234,242,255,.45); font-weight:700; }
+    textarea{ min-height: 92px; resize: vertical; }
+
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width:720px){
+      .grid2,.grid3{ grid-template-columns: 1fr; }
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin: 14px 0;
+    }
+
+    /* --------- Lists --------- */
+    .list{
+      display:grid;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .item{
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+    .itemTop{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+    .itemTitle{
+      font-weight: 900;
+      letter-spacing:.2px;
+      font-size: 15px;
+      color: rgba(234,242,255,.95);
+    }
+    .itemMeta{
+      color: rgba(234,242,255,.70);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .kv{
+      margin-top: 8px;
+      display:grid;
+      gap: 4px;
+      color: rgba(234,242,255,.88);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .kv span b{ color: rgba(234,242,255,.98); }
+
+    /* --------- Modal --------- */
+    .modalBackdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 9999;
+    }
+    .modalBackdrop.show{ display:flex; }
+    .modal{
+      width:min(520px, 100%);
+      background: rgba(10,12,30,.92);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 26px 80px rgba(0,0,0,.75);
+      backdrop-filter: blur(10px);
+    }
+    .modalTitle{
+      font-size: 18px;
+      font-weight: 900;
+      margin: 0 0 10px;
+    }
+    .modalClose{
+      float:right;
+      cursor:pointer;
+      opacity:.8;
+      font-weight:900;
+    }
+
+    /* --------- Signature --------- */
+    .sigBox{
+      border: 1px dashed rgba(255,255,255,.25);
+      background: rgba(0,0,0,.28);
+      border-radius: 18px;
+      padding: 10px;
+    }
+    canvas{
+      width: 100%;
+      height: 180px;
+      border-radius: 14px;
+      display:block;
+      background: rgba(255,255,255,.04);
+    }
+
+    /* --------- Scanner --------- */
+    .scanWrap{
+      display:grid;
+      gap:10px;
+    }
+    video{
+      width:100%;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      box-shadow: var(--shadow);
+    }
+    .note{
+      color: rgba(234,242,255,.70);
+      font-weight: 650;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    /* --------- Top Mini Status --------- */
+    .statusBar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .badge{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      font-weight: 900;
+      letter-spacing:.2px;
+      color: rgba(234,242,255,.92);
+    }
+    .badge strong{ color: var(--neonBlue); }
+
+    /* ---------- small icons in buttons ---------- */
+    .btn svg{ width:18px; height:18px; }
   </style>
 </head>
 
 <body>
-<div class="scanline"></div>
+  <div class="wrap">
 
-<div class="wrap">
-  <section class="panel">
-    <div class="inner">
-      <div class="row" style="align-items:flex-end;">
+    <!-- ===== INICIO (ROL) ===== -->
+    <section id="screenHome" class="card">
+      <div class="topBrand">
         <div>
-          <div class="brandTitle">Technology Expert’s</div>
-          <p class="sub">Selecciona tu rol para ingresar. (Diseño Neon Tech • Opción 1 • Colores A • Animación)</p>
+          <div class="brandTitle">Technology Expert's</div>
+          <div class="brandSubtitle">Selecciona quién ingresa (diseño Neon Tech). PC / Android / iPhone.</div>
+          <div class="pillRow">
+            <div class="pill">📦 Órdenes</div>
+            <div class="pill">💳 Ventas</div>
+            <div class="pill">🏷️ Inventario</div>
+            <div class="pill">📷 Escáner (barcode/QR)</div>
+          </div>
         </div>
-        <span class="badge">PC • Android • iPhone</span>
       </div>
 
-      <!-- VIEW: ROLES -->
-      <div id="viewRoles">
-        <div class="gridRoles">
-          <!-- ADMIN -->
-          <button class="roleCard" type="button" onclick="pickRole('admin')" aria-label="Ingresar como Administrador">
-            <div class="roleIconWrap" aria-hidden="true">
-              <!-- Neon Tech SVG: Shield + check -->
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"
-                      stroke="rgba(60,242,255,.95)" stroke-width="2" />
-                <path d="M9 12l2 2 4-5"
-                      stroke="rgba(75,107,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="roleLabel">Administrador</div>
-            <div class="roleHint">Control total • Exportar • Borrar</div>
-          </button>
+      <div class="roleGrid">
+        <button class="roleTile neon-blue" data-role="admin">
+          <div class="iconBox">
+            <svg viewBox="0 0 24 24" class="ico" aria-hidden="true">
+              <path d="M12 2l8 4v6c0 5-3.2 9.4-8 10-4.8-.6-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M9.5 12.2l1.8 1.8 3.7-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="roleLabel">ADMINISTRADOR</div>
+        </button>
 
-          <!-- VENTAS (el estilo que acordamos: Neon Tech, no tarjeta genérica) -->
-          <button class="roleCard" type="button" onclick="pickRole('ventas')" aria-label="Ingresar como Ventas">
-            <div class="roleIconWrap" aria-hidden="true">
-              <!-- Neon Tech SVG: POS / Receipt -->
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M7 3h10v18l-2-1-2 1-2-1-2 1-2-1-2 1V3z"
-                      stroke="rgba(60,242,255,.95)" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M9 7h6M9 10h6M9 13h4"
-                      stroke="rgba(75,107,255,.95)" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="roleLabel">Ventas</div>
-            <div class="roleHint">Facturar • IMEI • Tickets</div>
-          </button>
+        <button class="roleTile neon-purple" data-role="ventas">
+          <div class="iconBox">
+            <svg viewBox="0 0 24 24" class="ico" aria-hidden="true">
+              <path d="M5 7h14v3a2 2 0 010 4v3H5v-3a2 2 0 010-4V7z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M9 10h6M9 13h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="roleLabel">VENTAS</div>
+        </button>
 
-          <!-- TÉCNICO -->
-          <button class="roleCard" type="button" onclick="pickRole('tecnico')" aria-label="Ingresar como Técnico">
-            <div class="roleIconWrap" aria-hidden="true">
-              <!-- Neon Tech SVG: Wrench -->
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M14 7a4 4 0 11-6 3l-5 5 2 2 2-2 1 1-2 2 2 2 5-5a4 4 0 006-3 4 4 0 00-5-5z"
-                      stroke="rgba(60,242,255,.95)" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M8 10l6 6"
-                      stroke="rgba(75,107,255,.95)" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="roleLabel">Técnico</div>
-            <div class="roleHint">Órdenes • Firma • Checklist</div>
+        <button class="roleTile neon-green" data-role="tecnico">
+          <div class="iconBox">
+            <svg viewBox="0 0 24 24" class="ico" aria-hidden="true">
+              <path d="M14 7a5 5 0 11-2 4l-7 7H3v-2l7-7a5 5 0 014-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="roleLabel">TÉCNICO</div>
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="note">
+        🔐 Cada rol entra con usuario y contraseña. (Admin puede cambiarlos).
+      </div>
+    </section>
+
+    <!-- ===== APP ===== -->
+    <section id="screenApp" class="card hidden">
+
+      <div class="statusBar">
+        <div class="badge">Rol: <strong id="whoRole">—</strong></div>
+        <div class="badge">Usuario: <strong id="whoUser">—</strong></div>
+        <div class="btnRow">
+          <button class="btn small ghost" id="btnLogout">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M10 7V5a2 2 0 012-2h7a2 2 0 012 2v14a2 2 0 01-2 2h-7a2 2 0 01-2-2v-2" stroke="currentColor" stroke-width="2"/><path d="M15 12H3m0 0l3-3M3 12l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Salir
           </button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="btn tabBtn blue" data-screen="orders">🧾 Órdenes</button>
+        <button class="btn tabBtn purple" data-screen="sales">💳 Ventas</button>
+        <button class="btn tabBtn green" data-screen="inventory">📦 Inventario</button>
+        <button class="btn tabBtn ghost" data-screen="admin">⚙️ Admin</button>
+      </div>
+
+      <!-- ===== ÓRDENES ===== -->
+      <div id="orders" class="card" style="margin-top:14px;">
+        <div class="h2">Orden de Servicio</div>
+        <div class="note">Número siguiente: <b id="nextOrderNo">—</b></div>
+
+        <div class="h3">Datos del cliente</div>
+        <div class="grid2">
+          <input id="oCliente" placeholder="Nombre del cliente" autocomplete="name"/>
+          <input id="oCedula" placeholder="Cédula" inputmode="numeric" />
+        </div>
+        <div class="grid2">
+          <input id="oTelefono" placeholder="Celular" inputmode="tel" autocomplete="tel"/>
+          <input id="oCorreo" placeholder="Correo electrónico" inputmode="email" autocomplete="email" list="emailDomains"/>
+        </div>
+        <datalist id="emailDomains"></datalist>
+
+        <div class="h3">Equipo</div>
+        <div class="grid2">
+          <input id="oMarca" placeholder="Marca (Samsung, Xiaomi...)" list="brandList" autocomplete="off"/>
+          <input id="oModelo" placeholder="Modelo del celular" autocomplete="off"/>
+        </div>
+        <textarea id="oFalla" placeholder="Falla reportada"></textarea>
+
+        <div class="h3">Firma del cliente (OBLIGATORIA)</div>
+        <div class="sigBox">
+          <div class="note">Firma con el dedo. Si no firma, NO deja guardar.</div>
+          <canvas id="sigCanvas"></canvas>
+          <div class="btnRow" style="margin-top:10px;">
+            <button class="btn danger" id="btnSigClear">🧽 Borrar firma</button>
+            <button class="btn blue" id="btnOrderSave">💾 Guardar orden</button>
+            <button class="btn ghost" id="btnOrderNew">🆕 Nueva orden (limpiar)</button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="h3">Órdenes guardadas</div>
+        <div class="grid2">
+          <input id="qOrders" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, modelo..." />
+          <div class="btnRow">
+            <button class="btn small ghost" id="btnOrdersCsv">⬇️ CSV Órdenes</button>
+            <button class="btn small ghost" id="btnOrdersClear">🗑️ Borrar TODAS las órdenes</button>
+          </div>
+        </div>
+        <div id="ordersList" class="list"></div>
+      </div>
+
+      <!-- ===== VENTAS ===== -->
+      <div id="sales" class="card hidden" style="margin-top:14px;">
+        <div class="h2">Ventas</div>
+        <div class="note">Número siguiente: <b id="nextSaleNo">—</b></div>
+
+        <div class="h3">Datos del cliente</div>
+        <div class="grid2">
+          <input id="sCliente" placeholder="Nombre del cliente" autocomplete="name"/>
+          <input id="sCedula" placeholder="Cédula" inputmode="numeric"/>
+        </div>
+        <div class="grid2">
+          <input id="sTelefono" placeholder="Celular" inputmode="tel" autocomplete="tel"/>
+          <input id="sCorreo" placeholder="Correo electrónico" inputmode="email" autocomplete="email" list="emailDomains2"/>
+        </div>
+        <datalist id="emailDomains2"></datalist>
+
+        <div class="h3">Producto vendido</div>
+        <div class="grid2">
+          <input id="sProducto" placeholder="Producto (Ej: iPhone 12 128GB)" />
+          <input id="sPrecio" placeholder="Precio" inputmode="decimal"/>
+        </div>
+
+        <div class="h3">IMEI (si es teléfono)</div>
+        <div class="grid2">
+          <input id="sImei1" placeholder="IMEI 1 (15 dígitos)" inputmode="numeric"/>
+          <input id="sImei2" placeholder="IMEI 2 (opcional)" inputmode="numeric"/>
+        </div>
+
+        <div class="h3">Términos (OBLIGATORIO)</div>
+        <div class="item">
+          <div class="note" style="margin:0 0 10px;">
+            ✅ <b>NO respondemos</b> si el cliente <b>NO registra</b> los IMEI ante el operador que va a usar.
+          </div>
+          <label style="display:flex; gap:10px; align-items:flex-start; font-weight:900;">
+            <input id="sTerminos" type="checkbox" style="width:auto; margin-top:4px; transform:scale(1.15);" />
+            Acepto los términos y condiciones (obligatorio).
+          </label>
+        </div>
+
+        <div class="btnRow" style="margin-top:10px;">
+          <button class="btn purple" id="btnSaleSave">💾 Guardar venta</button>
+          <button class="btn ghost" id="btnSaleNew">🆕 Nueva venta (limpiar)</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="h3">Ventas guardadas</div>
+        <div class="grid2">
+          <input id="qSales" placeholder="Buscar por #, nombre, cédula, IMEI, producto..." />
+          <div class="btnRow">
+            <button class="btn small ghost" id="btnSalesCsv">⬇️ CSV Ventas</button>
+            <button class="btn small ghost" id="btnSalesClear">🗑️ Borrar TODAS las ventas</button>
+          </div>
+        </div>
+        <div id="salesList" class="list"></div>
+      </div>
+
+      <!-- ===== INVENTARIO ===== -->
+      <div id="inventory" class="card hidden" style="margin-top:14px;">
+        <div class="h2">Inventario</div>
+
+        <div class="h3">Agregar / Editar producto</div>
+
+        <div class="grid2">
+          <input id="iCode" placeholder="Código (barcode/QR)" />
+          <button class="btn green" id="btnScanToInventory">📷 Escanear código</button>
         </div>
 
         <div class="grid2">
-          <div class="card">
-            <h3>Acceso con usuario y contraseña</h3>
-            <div class="note">
-              Por defecto:<br>
-              Admin: <b>admin</b> / <b>admin123</b><br>
-              Ventas: <b>ventas</b> / <b>ventas123</b><br>
-              Técnico: <b>tecnico</b> / <b>tecnico123</b><br><br>
-              (Luego te pongo un panel para que el Admin cambie usuarios/contraseñas sin tocar código.)
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Recomendación en celular</h3>
-            <div class="small">
-              Si lo quieres como “app” en iPhone/Android: abre en Chrome/Safari y usa “Agregar a pantalla de inicio”.
-            </div>
-            <div class="btnRow" style="margin-top:12px;">
-              <button class="btn ghost" type="button" onclick="resetUsers()">♻️ Restaurar usuarios</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VIEW: LOGIN -->
-      <div id="viewLogin" class="hidden">
-        <div class="row" style="margin-top:14px;">
-          <div>
-            <div style="font-weight:950; font-size:18px;" id="loginTitle">Ingresar</div>
-            <div class="small" id="loginHint">—</div>
-          </div>
-          <span class="badge" id="roleBadge">Rol</span>
+          <input id="iNombre" placeholder="Nombre producto" />
+          <input id="iMarca" placeholder="Marca (autocompleta y aprende)" list="brandList" />
         </div>
 
+        <div class="grid3">
+          <input id="iCosto" placeholder="Costo" inputmode="decimal"/>
+          <input id="iPrecio" placeholder="Precio venta" inputmode="decimal"/>
+          <input id="iQty" placeholder="Cantidad" inputmode="numeric"/>
+        </div>
+
+        <div class="h3">Foto (opcional)</div>
+        <input id="iFoto" type="file" accept="image/*" />
+
+        <div class="btnRow" style="margin-top:10px;">
+          <button class="btn green" id="btnInvSave">💾 Guardar en inventario</button>
+          <button class="btn ghost" id="btnInvNew">🆕 Nuevo producto (limpiar)</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="h3">Inventario guardado</div>
         <div class="grid2">
-          <div class="card">
-            <h3>Credenciales</h3>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div>
-                <label for="user">Usuario</label>
-                <input id="user" autocomplete="username" placeholder="Escribe tu usuario" />
-              </div>
-              <div>
-                <label for="pass">Contraseña</label>
-                <input id="pass" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña" />
-              </div>
-            </div>
-
-            <div class="btnRow">
-              <button class="btn primary" type="button" onclick="doLogin()">🔓 Entrar</button>
-              <button class="btn ghost" type="button" onclick="goRoles()">⬅️ Volver</button>
-            </div>
-
-            <div class="small" style="margin-top:10px;">
-              Enter en el teclado = entrar.
-            </div>
+          <input id="qInv" placeholder="Buscar por código, nombre, marca..." />
+          <div class="btnRow">
+            <button class="btn small ghost" id="btnInvCsv">⬇️ CSV Inventario</button>
+            <button class="btn small ghost" id="btnInvClear">🗑️ Borrar TODO inventario</button>
           </div>
+        </div>
 
-          <div class="card">
-            <h3>Seguridad</h3>
-            <div class="note">
-              Aquí luego activamos (si quieres): bloqueo por intentos, PIN rápido, y permisos por rol.
-              Todo sin depender de servidor.
-            </div>
-          </div>
+        <div id="invList" class="list"></div>
+      </div>
+
+      <!-- ===== ADMIN ===== -->
+      <div id="admin" class="card hidden" style="margin-top:14px;">
+        <div class="h2">Admin</div>
+        <div class="note">Exporta / importa backup completo y cambia usuarios.</div>
+
+        <div class="h3">Backup</div>
+        <div class="btnRow">
+          <button class="btn ghost" id="btnBackupJson">📦 Backup JSON (todo)</button>
+          <label class="btn ghost" style="cursor:pointer;">
+            📥 Importar Backup JSON
+            <input id="inpImportJson" type="file" accept="application/json" style="display:none;">
+          </label>
+        </div>
+
+        <div class="h3">Escáner (barcode/QR)</div>
+        <div class="btnRow">
+          <button class="btn blue" id="btnOpenScanner">📷 Abrir escáner</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="h3">Usuarios (Admin puede cambiar)</div>
+        <div class="grid3">
+          <input id="uAdmin" placeholder="Usuario Admin" />
+          <input id="pAdmin" placeholder="Clave Admin" />
+          <button class="btn blue" id="btnSaveUsers">💾 Guardar credenciales</button>
+        </div>
+        <div class="grid3" style="margin-top:10px;">
+          <input id="uVentas" placeholder="Usuario Ventas" />
+          <input id="pVentas" placeholder="Clave Ventas" />
+          <div></div>
+        </div>
+        <div class="grid3" style="margin-top:10px;">
+          <input id="uTecnico" placeholder="Usuario Técnico" />
+          <input id="pTecnico" placeholder="Clave Técnico" />
+          <div></div>
+        </div>
+
+        <div class="note" style="margin-top:10px;">
+          Tip: si olvidas claves, borra datos del navegador (localStorage) y se restauran por defecto.
         </div>
       </div>
 
-      <!-- VIEW: APP HOME -->
-      <div id="viewApp" class="hidden">
-        <div class="appHeader">
-          <div class="pill" id="sessionPill">✅ Sesión</div>
-          <div class="btnRow" style="margin:0;">
-            <button class="btn ghost" type="button" onclick="logout()">🚪 Salir</button>
-          </div>
-        </div>
+    </section>
+  </div>
 
-        <div class="menuGrid">
-          <button class="btn primary menuBtn" type="button" onclick="toast('Siguiente: conectamos Orden de Servicio con firma obligatoria.')">
-            🧾 Orden de servicio
-          </button>
+  <!-- ===== MODAL LOGIN ===== -->
+  <div id="loginModal" class="modalBackdrop">
+    <div class="modal">
+      <div class="modalClose" id="loginClose">✕</div>
+      <div class="modalTitle">Acceso</div>
+      <div class="note" style="margin-top:-6px;">Rol: <b id="loginRoleLabel">—</b></div>
 
-          <button class="btn primary menuBtn" type="button" onclick="toast('Siguiente: conectamos Ventas con IMEI 1/2 y términos.')">
-            💳 Ventas
-          </button>
-
-          <button class="btn primary menuBtn" type="button" onclick="toast('Siguiente: conectamos Inventario con escáner y foto opcional.')">
-            📦 Inventario
-          </button>
-        </div>
-
-        <div style="margin-top:12px;" class="card">
-          <h3>Confirmación de diseño</h3>
-          <div class="small">
-            Ya quedó el inicio con íconos Neon Tech (SVG) + texto abajo.<br>
-            Si en tu celular todavía ves algo viejo: borra caché del navegador o recarga fuerte (Android: mantener recargar / iPhone: cerrar pestaña y abrir de nuevo).
-          </div>
-        </div>
+      <div style="margin-top:12px;" class="grid2">
+        <input id="loginUser" placeholder="Usuario" autocomplete="username"/>
+        <input id="loginPass" placeholder="Contraseña" type="password" autocomplete="current-password"/>
       </div>
 
+      <div class="btnRow" style="margin-top:12px;">
+        <button class="btn blue" id="btnLogin">Entrar</button>
+        <button class="btn ghost" id="btnBackHome">Volver</button>
+      </div>
+
+      <div class="note" style="margin-top:10px;">
+        <b>Credenciales por defecto:</b><br/>
+        Admin: <code>admin / admin123</code><br/>
+        Ventas: <code>ventas / ventas123</code><br/>
+        Técnico: <code>tecnico / tecnico123</code>
+      </div>
     </div>
-  </section>
-</div>
+  </div>
 
-<div id="toast" class="toast"></div>
+  <!-- ===== MODAL SCANNER ===== -->
+  <div id="scannerModal" class="modalBackdrop">
+    <div class="modal" style="width:min(720px,100%);">
+      <div class="modalClose" id="scanClose">✕</div>
+      <div class="modalTitle">Escáner (cámara)</div>
+
+      <div class="scanWrap">
+        <video id="scanVideo" autoplay playsinline></video>
+        <div class="grid2">
+          <button class="btn green" id="btnScanStart">▶️ Iniciar</button>
+          <button class="btn danger" id="btnScanStop">⏹️ Detener</button>
+        </div>
+
+        <div class="grid2">
+          <input id="scanResult" placeholder="Resultado del escaneo (se llena solo)" />
+          <button class="btn blue" id="btnUseScanValue">Usar este código</button>
+        </div>
+
+        <div class="note">
+          ✅ Lee muchos códigos (EAN-13, CODE-128, QR, etc.) si tu navegador soporta <b>BarcodeDetector</b>.<br/>
+          iPhone: puede ser limitado. Si no funciona, copia el código manual.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <datalist id="brandList"></datalist>
 
 <script>
-  const LS = {
-    users: "te_users_v2",
-    session: "te_session_v2"
-  };
+/* =========================
+   STORAGE KEYS
+========================= */
+const LS = {
+  users: "te_users_v1",
+  roleSession: "te_session_v1",
+  orders: "te_orders_v1",
+  sales: "te_sales_v1",
+  inv: "te_inventory_v1",
+  orderCounter: "te_orderCounter_v1",
+  saleCounter: "te_saleCounter_v1",
+  brands: "te_brands_v1"
+};
 
-  const ROLE_META = {
-    admin:  { label:"Administrador", hint:"Control total" },
-    ventas: { label:"Ventas",        hint:"Facturar y ventas" },
-    tecnico:{ label:"Técnico",       hint:"Órdenes y reparación" }
+/* =========================
+   DEFAULT USERS
+========================= */
+function getUsers(){
+  const saved = JSON.parse(localStorage.getItem(LS.users) || "null");
+  if(saved) return saved;
+  const def = {
+    admin:{ user:"admin", pass:"admin123" },
+    ventas:{ user:"ventas", pass:"ventas123" },
+    tecnico:{ user:"tecnico", pass:"tecnico123" }
   };
+  localStorage.setItem(LS.users, JSON.stringify(def));
+  return def;
+}
+function setUsers(u){ localStorage.setItem(LS.users, JSON.stringify(u)); }
 
-  function loadUsers(){
-    const raw = localStorage.getItem(LS.users);
-    if(!raw) return null;
-    try { return JSON.parse(raw); } catch { return null; }
+/* =========================
+   COUNTERS (ASC)
+========================= */
+function getOrderCounter(){
+  const v = Number(localStorage.getItem(LS.orderCounter));
+  if(!v || v < 2100){
+    localStorage.setItem(LS.orderCounter, "2100");
+    return 2100;
   }
-  function saveUsers(u){ localStorage.setItem(LS.users, JSON.stringify(u)); }
-  function ensureUsers(){
-    let u = loadUsers();
-    if(u) return u;
-    u = {
-      admin:  { username:"admin",   password:"admin123" },
-      ventas: { username:"ventas",  password:"ventas123" },
-      tecnico:{ username:"tecnico", password:"tecnico123" }
+  return v;
+}
+function setOrderCounter(n){ localStorage.setItem(LS.orderCounter, String(n)); }
+
+function getSaleCounter(){
+  const v = Number(localStorage.getItem(LS.saleCounter));
+  if(!v || v < 315){
+    localStorage.setItem(LS.saleCounter, "315");
+    return 315;
+  }
+  return v;
+}
+function setSaleCounter(n){ localStorage.setItem(LS.saleCounter, String(n)); }
+
+/* =========================
+   DATA LOAD/SAVE
+========================= */
+const getArr = (k)=> JSON.parse(localStorage.getItem(k) || "[]");
+const setArr = (k,a)=> localStorage.setItem(k, JSON.stringify(a));
+
+/* =========================
+   EMAIL SUGGESTIONS
+========================= */
+const emailDomains = ["gmail.com","hotmail.com","outlook.com","icloud.com","yahoo.com","live.com","proton.me","protonmail.com"];
+function buildEmailDatalist(id){
+  const dl = document.getElementById(id);
+  dl.innerHTML = "";
+  emailDomains.forEach(d=>{
+    const opt = document.createElement("option");
+    opt.value = "@"+d;
+    dl.appendChild(opt);
+  });
+}
+buildEmailDatalist("emailDomains");
+buildEmailDatalist("emailDomains2");
+
+/* =========================
+   BRAND AUTOCOMPLETE + LEARN
+========================= */
+const defaultBrands = [
+  "Samsung","Xiaomi","Redmi","Realme","Huawei","Honor","Motorola","Nokia",
+  "Apple","iPhone","iPad","Tecno","Infinix","Itel","OPPO","Vivo","OnePlus",
+  "ZTE","Alcatel","Sony","LG","Google Pixel","Asus","Lenovo","TCL","Meizu",
+  "BlackBerry","HTC","Micromax","Blu","Cubot","Doogee","Ulefone","Umidigi",
+  "Nothing","Meitu","CAT","Fairphone","Sharp","Panasonic","Philips","Sagem",
+  "Mobiwire","Lava","Karbonn","Coolpad","Hisense","Haier","Wiko","Poco"
+];
+function getBrands(){
+  const learned = JSON.parse(localStorage.getItem(LS.brands) || "[]");
+  const all = Array.from(new Set([...defaultBrands, ...learned]));
+  all.sort((a,b)=> a.localeCompare(b,"es",{sensitivity:"base"}));
+  return all;
+}
+function learnBrand(name){
+  const clean = (name||"").trim();
+  if(!clean) return;
+  const allLower = getBrands().map(x=>x.toLowerCase());
+  if(allLower.includes(clean.toLowerCase())) return;
+  const learned = JSON.parse(localStorage.getItem(LS.brands) || "[]");
+  learned.push(clean);
+  localStorage.setItem(LS.brands, JSON.stringify(learned));
+  buildBrandList();
+}
+function buildBrandList(){
+  const dl = document.getElementById("brandList");
+  dl.innerHTML = "";
+  getBrands().forEach(b=>{
+    const opt = document.createElement("option");
+    opt.value = b;
+    dl.appendChild(opt);
+  });
+}
+buildBrandList();
+
+/* =========================
+   UI REFERENCES
+========================= */
+const screenHome = document.getElementById("screenHome");
+const screenApp = document.getElementById("screenApp");
+
+const loginModal = document.getElementById("loginModal");
+const loginRoleLabel = document.getElementById("loginRoleLabel");
+const loginUser = document.getElementById("loginUser");
+const loginPass = document.getElementById("loginPass");
+const btnLogin = document.getElementById("btnLogin");
+const btnBackHome = document.getElementById("btnBackHome");
+const loginClose = document.getElementById("loginClose");
+
+const whoRole = document.getElementById("whoRole");
+const whoUser = document.getElementById("whoUser");
+
+const nextOrderNo = document.getElementById("nextOrderNo");
+const nextSaleNo  = document.getElementById("nextSaleNo");
+
+/* =========================
+   ROLE + LOGIN FLOW
+========================= */
+let wantedRole = null;
+
+document.querySelectorAll(".roleTile").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    wantedRole = btn.dataset.role;
+    openLogin(wantedRole);
+  });
+});
+
+function openLogin(role){
+  loginRoleLabel.textContent = role.toUpperCase();
+  loginUser.value = "";
+  loginPass.value = "";
+  loginModal.classList.add("show");
+  setTimeout(()=> loginUser.focus(), 80);
+}
+
+function closeLogin(){
+  loginModal.classList.remove("show");
+}
+
+loginClose.onclick = closeLogin;
+btnBackHome.onclick = ()=>{
+  closeLogin();
+  wantedRole = null;
+};
+
+btnLogin.onclick = ()=>{
+  const users = getUsers();
+  const u = (loginUser.value||"").trim();
+  const p = (loginPass.value||"").trim();
+  if(!wantedRole){ alert("Selecciona un rol."); return; }
+  if(u === users[wantedRole].user && p === users[wantedRole].pass){
+    const session = { role:wantedRole, user:u, t:Date.now() };
+    localStorage.setItem(LS.roleSession, JSON.stringify(session));
+    closeLogin();
+    enterApp(session);
+  }else{
+    alert("Usuario o contraseña incorrectos.");
+  }
+};
+
+function getSession(){
+  try{ return JSON.parse(localStorage.getItem(LS.roleSession) || "null"); }catch{ return null; }
+}
+
+function logout(){
+  localStorage.removeItem(LS.roleSession);
+  screenApp.classList.add("hidden");
+  screenHome.classList.remove("hidden");
+}
+
+document.getElementById("btnLogout").onclick = logout;
+
+/* =========================
+   ENTER APP + PERMISSIONS
+========================= */
+function enterApp(session){
+  screenHome.classList.add("hidden");
+  screenApp.classList.remove("hidden");
+  whoRole.textContent = session.role.toUpperCase();
+  whoUser.textContent = session.user;
+
+  // permissions:
+  // admin: all
+  // ventas: sales + inventory
+  // tecnico: orders
+  const role = session.role;
+  document.querySelector('[data-screen="orders"]').classList.toggle("hidden", role==="ventas");
+  document.querySelector('[data-screen="sales"]').classList.toggle("hidden", role==="tecnico");
+  document.querySelector('[data-screen="inventory"]').classList.toggle("hidden", role==="tecnico");
+  document.querySelector('[data-screen="admin"]').classList.toggle("hidden", role!=="admin");
+
+  // default open screen
+  if(role==="tecnico") showScreen("orders");
+  else if(role==="ventas") showScreen("sales");
+  else showScreen("orders");
+
+  refreshCounters();
+  renderAll();
+  fillAdminUsers();
+}
+
+function refreshCounters(){
+  nextOrderNo.textContent = String(getOrderCounter());
+  nextSaleNo.textContent  = String(getSaleCounter());
+}
+
+/* tabs */
+document.querySelectorAll(".tabBtn").forEach(b=>{
+  b.addEventListener("click", ()=> showScreen(b.dataset.screen));
+});
+
+function showScreen(name){
+  ["orders","sales","inventory","admin"].forEach(id=>{
+    document.getElementById(id).classList.toggle("hidden", id!==name);
+  });
+  // update counters display as soon as open
+  refreshCounters();
+}
+
+/* auto-enter if session exists */
+const sess = getSession();
+if(sess) enterApp(sess);
+
+/* =========================
+   SIGNATURE PAD (mandatory)
+========================= */
+const sigCanvas = document.getElementById("sigCanvas");
+const sigCtx = sigCanvas.getContext("2d");
+let drawing = false;
+let hasSignature = false;
+
+function resizeCanvas(){
+  const rect = sigCanvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  sigCanvas.width = Math.floor(rect.width * dpr);
+  sigCanvas.height = Math.floor(rect.height * dpr);
+  sigCtx.scale(dpr, dpr);
+  sigCtx.lineWidth = 3;
+  sigCtx.lineCap = "round";
+  sigCtx.strokeStyle = "#eaf2ff";
+}
+window.addEventListener("resize", ()=> { clearSignature(false); resizeCanvas(); });
+setTimeout(resizeCanvas, 60);
+
+function getPos(e){
+  const r = sigCanvas.getBoundingClientRect();
+  const t = (e.touches && e.touches[0]) ? e.touches[0] : e;
+  return { x: t.clientX - r.left, y: t.clientY - r.top };
+}
+
+function startDraw(e){
+  drawing = true;
+  hasSignature = true;
+  const p = getPos(e);
+  sigCtx.beginPath();
+  sigCtx.moveTo(p.x, p.y);
+}
+function moveDraw(e){
+  if(!drawing) return;
+  e.preventDefault();
+  const p = getPos(e);
+  sigCtx.lineTo(p.x, p.y);
+  sigCtx.stroke();
+}
+function endDraw(){ drawing = false; }
+
+sigCanvas.addEventListener("mousedown", startDraw);
+sigCanvas.addEventListener("mousemove", moveDraw);
+window.addEventListener("mouseup", endDraw);
+
+sigCanvas.addEventListener("touchstart", startDraw, {passive:false});
+sigCanvas.addEventListener("touchmove", moveDraw, {passive:false});
+sigCanvas.addEventListener("touchend", endDraw);
+
+function clearSignature(resetFlag=true){
+  const rect = sigCanvas.getBoundingClientRect();
+  sigCtx.clearRect(0,0,rect.width,rect.height);
+  if(resetFlag) hasSignature=false;
+}
+
+document.getElementById("btnSigClear").onclick = ()=> clearSignature(true);
+
+/* =========================
+   ORDERS
+========================= */
+const oCliente = document.getElementById("oCliente");
+const oCedula  = document.getElementById("oCedula");
+const oTelefono= document.getElementById("oTelefono");
+const oCorreo  = document.getElementById("oCorreo");
+const oMarca   = document.getElementById("oMarca");
+const oModelo  = document.getElementById("oModelo");
+const oFalla   = document.getElementById("oFalla");
+const ordersList = document.getElementById("ordersList");
+const qOrders = document.getElementById("qOrders");
+
+document.getElementById("btnOrderNew").onclick = ()=>{
+  oCliente.value=""; oCedula.value=""; oTelefono.value=""; oCorreo.value="";
+  oMarca.value=""; oModelo.value=""; oFalla.value="";
+  clearSignature(true);
+  oCliente.focus();
+};
+
+document.getElementById("btnOrderSave").onclick = ()=>{
+  // required fields + signature
+  if(!oCliente.value.trim() || !oCedula.value.trim() || !oTelefono.value.trim() || !oCorreo.value.trim()
+     || !oMarca.value.trim() || !oModelo.value.trim() || !oFalla.value.trim()){
+    alert("Completa todos los campos de la orden.");
+    return;
+  }
+  if(!hasSignature){
+    alert("La firma es obligatoria para guardar la orden.");
+    return;
+  }
+
+  learnBrand(oMarca.value);
+
+  const no = getOrderCounter();
+  const sigData = sigCanvas.toDataURL("image/png");
+
+  const order = {
+    no,
+    cliente: oCliente.value.trim(),
+    cedula: oCedula.value.trim(),
+    telefono: oTelefono.value.trim(),
+    correo: oCorreo.value.trim(),
+    marca: oMarca.value.trim(),
+    modelo: oModelo.value.trim(),
+    falla: oFalla.value.trim(),
+    firma: sigData,
+    fecha: new Date().toISOString()
+  };
+
+  const arr = getArr(LS.orders);
+  arr.push(order);
+  arr.sort((a,b)=> a.no - b.no);
+  setArr(LS.orders, arr);
+
+  setOrderCounter(no + 1);
+  refreshCounters();
+  renderOrders();
+
+  alert("Orden guardada: #" + no);
+  document.getElementById("btnOrderNew").click();
+};
+
+qOrders.addEventListener("input", renderOrders);
+
+document.getElementById("btnOrdersClear").onclick = ()=>{
+  if(!confirm("¿Borrar TODAS las órdenes?")) return;
+  localStorage.removeItem(LS.orders);
+  localStorage.setItem(LS.orderCounter, "2100");
+  refreshCounters();
+  renderOrders();
+};
+
+document.getElementById("btnOrdersCsv").onclick = ()=>{
+  const arr = getArr(LS.orders);
+  const rows = [
+    ["no","cliente","cedula","telefono","correo","marca","modelo","falla","fecha"]
+  ];
+  arr.forEach(o=>{
+    rows.push([o.no,o.cliente,o.cedula,o.telefono,o.correo,o.marca,o.modelo,o.falla,o.fecha]);
+  });
+  downloadCSV("ordenes.csv", rows);
+};
+
+function renderOrders(){
+  const arr = getArr(LS.orders);
+  const q = (qOrders.value||"").trim().toLowerCase();
+  const filtered = !q ? arr : arr.filter(o=>{
+    const s = `${o.no} ${o.cliente} ${o.cedula} ${o.telefono} ${o.correo} ${o.marca} ${o.modelo} ${o.falla}`.toLowerCase();
+    return s.includes(q);
+  });
+
+  ordersList.innerHTML = "";
+  filtered.forEach(o=>{
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="itemTop">
+        <div>
+          <div class="itemTitle">Orden #${o.no}</div>
+          <div class="itemMeta">${fmtDate(o.fecha)}</div>
+        </div>
+        <div class="btnRow">
+          <button class="btn small danger" data-del="${o.no}">🗑️</button>
+        </div>
+      </div>
+      <div class="kv">
+        <span><b>Cliente:</b> ${esc(o.cliente)}</span>
+        <span><b>Cédula:</b> ${esc(o.cedula)}</span>
+        <span><b>Tel:</b> ${esc(o.telefono)} | <b>Email:</b> ${esc(o.correo)}</span>
+        <span><b>Equipo:</b> ${esc(o.marca)} ${esc(o.modelo)}</span>
+        <span><b>Falla:</b> ${esc(o.falla)}</span>
+        <div style="margin-top:8px;">
+          <b>Firma:</b><br/>
+          <img src="${o.firma}" alt="firma" style="max-width:100%; border-radius:14px; border:1px solid rgba(255,255,255,.14); margin-top:6px;">
+        </div>
+      </div>
+    `;
+    div.querySelector("[data-del]").onclick = ()=>{
+      if(!confirm("¿Borrar la orden #" + o.no + "?")) return;
+      const a = getArr(LS.orders).filter(x=> x.no !== o.no);
+      setArr(LS.orders, a);
+      renderOrders();
     };
-    saveUsers(u);
-    return u;
-  }
-  function resetUsers(){
-    localStorage.removeItem(LS.users);
-    ensureUsers();
-    toast("Usuarios por defecto restaurados ✅");
-  }
-
-  function saveSession(session){ localStorage.setItem(LS.session, JSON.stringify(session)); }
-  function loadSession(){
-    const raw = localStorage.getItem(LS.session);
-    if(!raw) return null;
-    try { return JSON.parse(raw); } catch { return null; }
-  }
-  function clearSession(){ localStorage.removeItem(LS.session); }
-
-  const viewRoles = document.getElementById("viewRoles");
-  const viewLogin = document.getElementById("viewLogin");
-  const viewApp   = document.getElementById("viewApp");
-
-  const loginTitle = document.getElementById("loginTitle");
-  const loginHint  = document.getElementById("loginHint");
-  const roleBadge  = document.getElementById("roleBadge");
-  const sessionPill= document.getElementById("sessionPill");
-
-  const userInput = document.getElementById("user");
-  const passInput = document.getElementById("pass");
-
-  let selectedRole = null;
-
-  function show(which){
-    viewRoles.classList.toggle("hidden", which !== "roles");
-    viewLogin.classList.toggle("hidden", which !== "login");
-    viewApp.classList.toggle("hidden",   which !== "app");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function toast(msg){
-    const el = document.getElementById("toast");
-    el.textContent = msg;
-    el.classList.add("show");
-    clearTimeout(window.__t);
-    window.__t = setTimeout(()=>el.classList.remove("show"), 2400);
-  }
-
-  function pickRole(role){
-    ensureUsers();
-    selectedRole = role;
-    const meta = ROLE_META[role] || { label:"Acceso", hint:"" };
-    loginTitle.textContent = `Ingresar • ${meta.label}`;
-    loginHint.textContent = meta.hint || "";
-    roleBadge.textContent = meta.label;
-    userInput.value = "";
-    passInput.value = "";
-    show("login");
-    setTimeout(()=>userInput.focus(), 60);
-  }
-
-  function goRoles(){
-    selectedRole = null;
-    show("roles");
-  }
-
-  function doLogin(){
-    const users = ensureUsers();
-    if(!selectedRole){
-      toast("Primero elige un rol.");
-      show("roles");
-      return;
-    }
-    const u = (userInput.value || "").trim();
-    const p = (passInput.value || "").trim();
-    if(!u || !p){
-      toast("Completa usuario y contraseña.");
-      return;
-    }
-    const ref = users[selectedRole];
-    if(!ref){
-      toast("Rol inválido.");
-      return;
-    }
-    if(u === ref.username && p === ref.password){
-      saveSession({ role: selectedRole, username: u, at: Date.now() });
-      const meta = ROLE_META[selectedRole];
-      sessionPill.textContent = `✅ Sesión: ${meta.label} • ${u}`;
-      show("app");
-      toast("Sesión iniciada ✅");
-    } else {
-      toast("Usuario o contraseña incorrectos.");
-    }
-  }
-
-  function logout(){
-    clearSession();
-    toast("Sesión cerrada.");
-    goRoles();
-  }
-
-  // Enter para iniciar sesión
-  passInput.addEventListener("keydown", (e)=>{
-    if(e.key === "Enter") doLogin();
+    ordersList.appendChild(div);
   });
-  userInput.addEventListener("keydown", (e)=>{
-    if(e.key === "Enter") passInput.focus();
+}
+
+/* =========================
+   SALES
+========================= */
+const sCliente = document.getElementById("sCliente");
+const sCedula  = document.getElementById("sCedula");
+const sTelefono= document.getElementById("sTelefono");
+const sCorreo  = document.getElementById("sCorreo");
+const sProducto= document.getElementById("sProducto");
+const sPrecio  = document.getElementById("sPrecio");
+const sImei1   = document.getElementById("sImei1");
+const sImei2   = document.getElementById("sImei2");
+const sTerminos= document.getElementById("sTerminos");
+const salesList= document.getElementById("salesList");
+const qSales   = document.getElementById("qSales");
+
+document.getElementById("btnSaleNew").onclick = ()=>{
+  sCliente.value=""; sCedula.value=""; sTelefono.value=""; sCorreo.value="";
+  sProducto.value=""; sPrecio.value=""; sImei1.value=""; sImei2.value="";
+  sTerminos.checked=false;
+  sCliente.focus();
+};
+
+document.getElementById("btnSaleSave").onclick = ()=>{
+  if(!sCliente.value.trim() || !sCedula.value.trim() || !sTelefono.value.trim() || !sCorreo.value.trim()
+     || !sProducto.value.trim() || !sPrecio.value.trim()){
+    alert("Completa todos los campos de la venta.");
+    return;
+  }
+  if(!sTerminos.checked){
+    alert("Debes aceptar los términos y condiciones (obligatorio).");
+    return;
+  }
+
+  const no = getSaleCounter();
+  const sale = {
+    no,
+    cliente: sCliente.value.trim(),
+    cedula: sCedula.value.trim(),
+    telefono: sTelefono.value.trim(),
+    correo: sCorreo.value.trim(),
+    producto: sProducto.value.trim(),
+    precio: sPrecio.value.trim(),
+    imei1: sImei1.value.trim(),
+    imei2: sImei2.value.trim(),
+    terminos: true,
+    fecha: new Date().toISOString()
+  };
+
+  const arr = getArr(LS.sales);
+  arr.push(sale);
+  arr.sort((a,b)=> a.no - b.no);
+  setArr(LS.sales, arr);
+
+  setSaleCounter(no + 1);
+  refreshCounters();
+  renderSales();
+
+  alert("Venta guardada: #" + no);
+  document.getElementById("btnSaleNew").click();
+};
+
+qSales.addEventListener("input", renderSales);
+
+document.getElementById("btnSalesClear").onclick = ()=>{
+  if(!confirm("¿Borrar TODAS las ventas?")) return;
+  localStorage.removeItem(LS.sales);
+  localStorage.setItem(LS.saleCounter, "315");
+  refreshCounters();
+  renderSales();
+};
+
+document.getElementById("btnSalesCsv").onclick = ()=>{
+  const arr = getArr(LS.sales);
+  const rows = [
+    ["no","cliente","cedula","telefono","correo","producto","precio","imei1","imei2","terminos","fecha"]
+  ];
+  arr.forEach(s=>{
+    rows.push([s.no,s.cliente,s.cedula,s.telefono,s.correo,s.producto,s.precio,s.imei1,s.imei2,"SI",s.fecha]);
+  });
+  downloadCSV("ventas.csv", rows);
+};
+
+function renderSales(){
+  const arr = getArr(LS.sales);
+  const q = (qSales.value||"").trim().toLowerCase();
+  const filtered = !q ? arr : arr.filter(s=>{
+    const ss = `${s.no} ${s.cliente} ${s.cedula} ${s.telefono} ${s.correo} ${s.producto} ${s.imei1} ${s.imei2}`.toLowerCase();
+    return ss.includes(q);
   });
 
-  // Boot
-  (function boot(){
-    ensureUsers();
-    const s = loadSession();
-    if(!s || !s.role) return;
-    const meta = ROLE_META[s.role] || { label:"Usuario" };
-    sessionPill.textContent = `✅ Sesión: ${meta.label} • ${s.username || ""}`;
-    show("app");
-  })();
+  salesList.innerHTML = "";
+  filtered.forEach(s=>{
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="itemTop">
+        <div>
+          <div class="itemTitle">Venta #${s.no}</div>
+          <div class="itemMeta">${fmtDate(s.fecha)}</div>
+        </div>
+        <div class="btnRow">
+          <button class="btn small danger" data-del="${s.no}">🗑️</button>
+        </div>
+      </div>
+      <div class="kv">
+        <span><b>Cliente:</b> ${esc(s.cliente)} | <b>Cédula:</b> ${esc(s.cedula)}</span>
+        <span><b>Tel:</b> ${esc(s.telefono)} | <b>Email:</b> ${esc(s.correo)}</span>
+        <span><b>Producto:</b> ${esc(s.producto)}</span>
+        <span><b>Precio:</b> ${esc(s.precio)}</span>
+        <span><b>IMEI1:</b> ${esc(s.imei1 || "—")} | <b>IMEI2:</b> ${esc(s.imei2 || "—")}</span>
+        <span><b>Términos:</b> SI</span>
+      </div>
+    `;
+    div.querySelector("[data-del]").onclick = ()=>{
+      if(!confirm("¿Borrar la venta #" + s.no + "?")) return;
+      const a = getArr(LS.sales).filter(x=> x.no !== s.no);
+      setArr(LS.sales, a);
+      renderSales();
+    };
+    salesList.appendChild(div);
+  });
+}
+
+/* =========================
+   INVENTORY
+========================= */
+const iCode = document.getElementById("iCode");
+const iNombre = document.getElementById("iNombre");
+const iMarca = document.getElementById("iMarca");
+const iCosto = document.getElementById("iCosto");
+const iPrecio = document.getElementById("iPrecio");
+const iQty = document.getElementById("iQty");
+const iFoto = document.getElementById("iFoto");
+const invList = document.getElementById("invList");
+const qInv = document.getElementById("qInv");
+
+document.getElementById("btnInvNew").onclick = ()=>{
+  iCode.value=""; iNombre.value=""; iMarca.value="";
+  iCosto.value=""; iPrecio.value=""; iQty.value="";
+  iFoto.value="";
+  iCode.focus();
+};
+
+document.getElementById("btnInvSave").onclick = async ()=>{
+  if(!iCode.value.trim() || !iNombre.value.trim() || !iMarca.value.trim()){
+    alert("Código, Nombre y Marca son obligatorios.");
+    return;
+  }
+  learnBrand(iMarca.value);
+
+  // foto opcional
+  let photoData = "";
+  if(iFoto.files && iFoto.files[0]){
+    photoData = await fileToDataURL(iFoto.files[0]);
+  }
+
+  const item = {
+    code: iCode.value.trim(),
+    nombre: iNombre.value.trim(),
+    marca: iMarca.value.trim(),
+    costo: iCosto.value.trim(),
+    precio: iPrecio.value.trim(),
+    qty: iQty.value.trim(),
+    foto: photoData,
+    updatedAt: new Date().toISOString()
+  };
+
+  const arr = getArr(LS.inv);
+  // si existe por code, reemplaza
+  const idx = arr.findIndex(x=> x.code === item.code);
+  if(idx >= 0) arr[idx] = item;
+  else arr.push(item);
+
+  arr.sort((a,b)=> (a.nombre||"").localeCompare(b.nombre||"","es",{sensitivity:"base"}));
+  setArr(LS.inv, arr);
+  renderInv();
+  alert("Inventario guardado.");
+  document.getElementById("btnInvNew").click();
+};
+
+qInv.addEventListener("input", renderInv);
+
+document.getElementById("btnInvClear").onclick = ()=>{
+  if(!confirm("¿Borrar TODO el inventario?")) return;
+  localStorage.removeItem(LS.inv);
+  renderInv();
+};
+
+document.getElementById("btnInvCsv").onclick = ()=>{
+  const arr = getArr(LS.inv);
+  const rows = [["code","nombre","marca","costo","precio","qty","updatedAt"]];
+  arr.forEach(i=>{
+    rows.push([i.code,i.nombre,i.marca,i.costo,i.precio,i.qty,i.updatedAt]);
+  });
+  downloadCSV("inventario.csv", rows);
+};
+
+function renderInv(){
+  const arr = getArr(LS.inv);
+  const q = (qInv.value||"").trim().toLowerCase();
+  const filtered = !q ? arr : arr.filter(i=>{
+    const s = `${i.code} ${i.nombre} ${i.marca}`.toLowerCase();
+    return s.includes(q);
+  });
+
+  invList.innerHTML = "";
+  filtered.forEach(i=>{
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="itemTop">
+        <div>
+          <div class="itemTitle">${esc(i.nombre)}</div>
+          <div class="itemMeta">Código: ${esc(i.code)} • ${esc(i.marca)} • ${fmtDate(i.updatedAt)}</div>
+        </div>
+        <div class="btnRow">
+          <button class="btn small ghost" data-edit="${esc(i.code)}">✏️</button>
+          <button class="btn small danger" data-del="${esc(i.code)}">🗑️</button>
+        </div>
+      </div>
+      <div class="kv">
+        <span><b>Costo:</b> ${esc(i.costo||"—")} | <b>Precio:</b> ${esc(i.precio||"—")} | <b>Cant:</b> ${esc(i.qty||"—")}</span>
+        ${i.foto ? `<img src="${i.foto}" alt="foto" style="max-width:100%; border-radius:14px; border:1px solid rgba(255,255,255,.14); margin-top:8px;">` : ""}
+      </div>
+    `;
+    div.querySelector("[data-del]").onclick = ()=>{
+      if(!confirm("¿Borrar producto " + i.code + "?")) return;
+      const a = getArr(LS.inv).filter(x=> x.code !== i.code);
+      setArr(LS.inv, a);
+      renderInv();
+    };
+    div.querySelector("[data-edit]").onclick = ()=>{
+      iCode.value = i.code;
+      iNombre.value = i.nombre;
+      iMarca.value = i.marca;
+      iCosto.value = i.costo || "";
+      iPrecio.value = i.precio || "";
+      iQty.value = i.qty || "";
+      iFoto.value = "";
+      showScreen("inventory");
+      iNombre.focus();
+    };
+    invList.appendChild(div);
+  });
+}
+
+/* =========================
+   ADMIN: BACKUP + USERS
+========================= */
+document.getElementById("btnBackupJson").onclick = ()=>{
+  const data = {
+    users: getUsers(),
+    orderCounter: getOrderCounter(),
+    saleCounter: getSaleCounter(),
+    orders: getArr(LS.orders),
+    sales: getArr(LS.sales),
+    inventory: getArr(LS.inv),
+    brands: JSON.parse(localStorage.getItem(LS.brands) || "[]"),
+    exportedAt: new Date().toISOString()
+  };
+  downloadJSON("backup_technology_experts.json", data);
+};
+
+document.getElementById("inpImportJson").addEventListener("change", async (e)=>{
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  try{
+    const txt = await f.text();
+    const data = JSON.parse(txt);
+
+    if(data.users) setUsers(data.users);
+    if(data.orderCounter) localStorage.setItem(LS.orderCounter, String(data.orderCounter));
+    if(data.saleCounter) localStorage.setItem(LS.saleCounter, String(data.saleCounter));
+    if(Array.isArray(data.orders)) setArr(LS.orders, data.orders);
+    if(Array.isArray(data.sales)) setArr(LS.sales, data.sales);
+    if(Array.isArray(data.inventory)) setArr(LS.inv, data.inventory);
+    if(Array.isArray(data.brands)) localStorage.setItem(LS.brands, JSON.stringify(data.brands));
+
+    alert("Backup importado. Recarga la página.");
+    location.reload();
+  }catch(err){
+    console.error(err);
+    alert("No se pudo importar el JSON.");
+  }finally{
+    e.target.value = "";
+  }
+});
+
+function fillAdminUsers(){
+  const u = getUsers();
+  document.getElementById("uAdmin").value = u.admin.user;
+  document.getElementById("pAdmin").value = u.admin.pass;
+  document.getElementById("uVentas").value = u.ventas.user;
+  document.getElementById("pVentas").value = u.ventas.pass;
+  document.getElementById("uTecnico").value = u.tecnico.user;
+  document.getElementById("pTecnico").value = u.tecnico.pass;
+}
+
+document.getElementById("btnSaveUsers").onclick = ()=>{
+  const session = getSession();
+  if(!session || session.role!=="admin"){
+    alert("Solo ADMIN puede cambiar usuarios.");
+    return;
+  }
+  const users = {
+    admin:{ user: document.getElementById("uAdmin").value.trim(), pass: document.getElementById("pAdmin").value.trim() },
+    ventas:{ user: document.getElementById("uVentas").value.trim(), pass: document.getElementById("pVentas").value.trim() },
+    tecnico:{ user: document.getElementById("uTecnico").value.trim(), pass: document.getElementById("pTecnico").value.trim() }
+  };
+  if(!users.admin.user || !users.admin.pass || !users.ventas.user || !users.ventas.pass || !users.tecnico.user || !users.tecnico.pass){
+    alert("No dejes campos vacíos.");
+    return;
+  }
+  setUsers(users);
+  alert("Credenciales guardadas.");
+};
+
+/* =========================
+   SCANNER (BarcodeDetector)
+========================= */
+const scannerModal = document.getElementById("scannerModal");
+const scanVideo = document.getElementById("scanVideo");
+const scanResult = document.getElementById("scanResult");
+
+let scanStream = null;
+let scanning = false;
+let barcodeDetector = null;
+let scanTargetInput = null; // input to fill on "Usar este código"
+
+document.getElementById("btnOpenScanner").onclick = ()=> openScanner(null);
+document.getElementById("btnScanToInventory").onclick = ()=> openScanner(iCode);
+
+document.getElementById("scanClose").onclick = closeScanner;
+document.getElementById("btnScanStart").onclick = startScan;
+document.getElementById("btnScanStop").onclick = stopScan;
+
+document.getElementById("btnUseScanValue").onclick = ()=>{
+  const v = (scanResult.value||"").trim();
+  if(!v){ alert("No hay resultado."); return; }
+  if(scanTargetInput){
+    scanTargetInput.value = v;
+    if(scanTargetInput === iCode) iNombre.focus();
+  }
+  closeScanner();
+};
+
+function openScanner(targetInput){
+  scanTargetInput = targetInput;
+  scanResult.value = "";
+  scannerModal.classList.add("show");
+
+  // init detector
+  if("BarcodeDetector" in window){
+    try{
+      barcodeDetector = new BarcodeDetector({
+        formats: [
+          "qr_code","ean_13","ean_8","code_128","code_39","codabar","upc_a","upc_e","itf"
+        ]
+      });
+    }catch(e){
+      barcodeDetector = null;
+    }
+  }else{
+    barcodeDetector = null;
+  }
+
+  if(!barcodeDetector){
+    alert("Tu navegador no soporta el lector. Usa Chrome/Android o PC Chrome. (iPhone puede ser limitado).");
+  }
+}
+
+function closeScanner(){
+  stopScan();
+  scannerModal.classList.remove("show");
+  scanTargetInput = null;
+}
+
+async function startScan(){
+  if(scanning) return;
+
+  if(!barcodeDetector){
+    alert("No cargó el lector. Revisa navegador (BarcodeDetector).");
+    return;
+  }
+
+  try{
+    scanStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" },
+      audio: false
+    });
+    scanVideo.srcObject = scanStream;
+    scanning = true;
+    tickScan();
+  }catch(err){
+    console.error(err);
+    alert("No se pudo abrir la cámara. Revisa permisos.");
+  }
+}
+
+function stopScan(){
+  scanning = false;
+  if(scanStream){
+    scanStream.getTracks().forEach(t=> t.stop());
+    scanStream = null;
+  }
+  scanVideo.srcObject = null;
+}
+
+async function tickScan(){
+  if(!scanning) return;
+
+  try{
+    const barcodes = await barcodeDetector.detect(scanVideo);
+    if(barcodes && barcodes.length){
+      const v = barcodes[0].rawValue || "";
+      if(v){
+        scanResult.value = v;
+        // auto stop after first detection
+        stopScan();
+        return;
+      }
+    }
+  }catch(err){
+    // ignore occasional errors
+  }
+  requestAnimationFrame(tickScan);
+}
+
+/* =========================
+   EXPORT HELPERS
+========================= */
+function downloadCSV(filename, rows){
+  const escCSV = (v)=>{
+    const s = String(v ?? "");
+    if(s.includes('"') || s.includes(",") || s.includes("\n")) return `"${s.replace(/"/g,'""')}"`;
+    return s;
+  };
+  const csv = rows.map(r=> r.map(escCSV).join(",")).join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function downloadJSON(filename, obj){
+  const blob = new Blob([JSON.stringify(obj,null,2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g, m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[m]));
+}
+function fmtDate(iso){
+  try{
+    const d = new Date(iso);
+    return d.toLocaleString("es-CO");
+  }catch{ return iso; }
+}
+
+function renderAll(){
+  renderOrders();
+  renderSales();
+  renderInv();
+}
+
+/* =========================
+   FILE TO DATAURL (photo)
+========================= */
+function fileToDataURL(file){
+  return new Promise((resolve,reject)=>{
+    const r = new FileReader();
+    r.onload = ()=> resolve(String(r.result||""));
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
 </script>
 </body>
 </html>
