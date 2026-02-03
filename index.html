@@ -1,1560 +1,756 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Technology Expert’s</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technology Expert's</title>
+  <meta name="theme-color" content="#070B24" />
 
   <style>
     :root{
-      --bg1:#0a1f6b;
-      --bg2:#0b3aa8;
-      --card:rgba(255,255,255,.08);
-      --stroke:rgba(255,255,255,.14);
-      --text:#ffffff;
-      --muted:rgba(255,255,255,.75);
-      --black:#000000;
-      --shadow: 0 14px 40px rgba(0,0,0,.35);
-      --radius:18px;
+      --bg0:#05071a;
+      --bg1:#060b28;
+      --bg2:#070f3a;
+
+      --neonA:#3CF2FF;   /* cian */
+      --neonB:#9D4DFF;   /* morado */
+      --neonC:#3BFF7A;   /* verde */
+      --neonD:#FF3CF0;   /* fucsia */
+
+      --txt:#EAF2FF;
+      --muted:rgba(234,242,255,.7);
+      --glass:rgba(255,255,255,.06);
+      --glass2:rgba(255,255,255,.09);
+
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --radius: 22px;
+      --radius2: 16px;
+      --ring: 0 0 0 2px rgba(60,242,255,.25), 0 0 0 6px rgba(157,77,255,.14);
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
-    *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 700px at 30% 15%, #1b58ff55, transparent 55%),
-                  radial-gradient(900px 600px at 70% 35%, #00d4ff22, transparent 60%),
-                  linear-gradient(160deg, var(--bg2), var(--bg1));
-      color:var(--text);
-      min-height:100vh;
+      font-family:var(--font);
+      color:var(--txt);
+      background:
+        radial-gradient(1200px 800px at 20% 0%, rgba(157,77,255,.20), transparent 55%),
+        radial-gradient(900px 700px at 90% 20%, rgba(60,242,255,.18), transparent 52%),
+        radial-gradient(800px 600px at 30% 100%, rgba(59,255,122,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 35%, var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* fondo con “orbes” + scanline suave */
+    .bg-orbs::before, .bg-orbs::after{
+      content:"";
+      position:fixed;
+      inset:-40vh -30vw;
+      pointer-events:none;
+      z-index:-2;
+      background:
+        radial-gradient(300px 240px at 18% 22%, rgba(60,242,255,.24), transparent 65%),
+        radial-gradient(340px 280px at 82% 28%, rgba(157,77,255,.22), transparent 68%),
+        radial-gradient(380px 320px at 52% 80%, rgba(255,60,240,.12), transparent 70%);
+      filter: blur(2px);
+      transform: translateZ(0);
+    }
+    .scanline{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.03),
+        rgba(255,255,255,.03) 1px,
+        transparent 1px,
+        transparent 6px
+      );
+      opacity:.10;
+      mix-blend-mode: overlay;
+      animation: scan 8s linear infinite;
+    }
+    @keyframes scan{
+      from{ transform: translateY(-40px); }
+      to{ transform: translateY(40px); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .scanline{ animation:none; }
+      .float{ animation:none !important; }
     }
 
     .wrap{
-      max-width:980px;
-      margin:0 auto;
-      padding:22px 16px 120px;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 14px 60px;
     }
 
-    .hero{
-      padding:26px 18px;
-      border-radius:24px;
-      background: linear-gradient(160deg, rgba(0,0,0,.12), rgba(255,255,255,.06));
-      border:1px solid var(--stroke);
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
+    /* Header */
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:6px;
     }
-    .hero:before{
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .brand h1{
+      margin:0;
+      font-size: clamp(30px, 5vw, 46px);
+      letter-spacing: .2px;
+      line-height: 1.0;
+      text-shadow: 0 0 22px rgba(60,242,255,.15), 0 0 28px rgba(157,77,255,.12);
+    }
+    .brand p{
+      margin:0;
+      color:var(--muted);
+      font-size: 14px;
+      line-height:1.25;
+      max-width: 680px;
+    }
+
+    /* tarjetas “app” */
+    .panel{
+      margin-top: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel::before{
       content:"";
-      position:absolute; inset:-80px;
-      background:
-        radial-gradient(120px 120px at 20% 25%, rgba(255,255,255,.15), transparent 60%),
-        radial-gradient(160px 160px at 70% 20%, rgba(255,255,255,.12), transparent 60%),
-        radial-gradient(220px 220px at 55% 70%, rgba(255,255,255,.08), transparent 60%);
-      filter: blur(2px);
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(90deg, rgba(60,242,255,.18), rgba(157,77,255,.14), rgba(255,60,240,.10));
+      filter: blur(18px);
+      opacity:.55;
       pointer-events:none;
     }
-
-    h1{
-      margin:0 0 6px;
-      font-size:40px;
-      letter-spacing:.2px;
-      font-weight:900;
+    .panel > .inner{
+      position:relative;
+      padding: 18px;
     }
-    .sub{
+
+    /* Roles grid */
+    .roles-title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 12px;
+    }
+    .roles-title h2{
       margin:0;
-      font-size:16px;
-      color:var(--muted);
-      font-weight:700;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .badge{
+      font-size: 12px;
+      color: rgba(234,242,255,.85);
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 6px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
     }
 
     .grid{
       display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-      margin-top:16px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 720px){
+      .grid{ grid-template-columns: 1fr; }
     }
 
-    @media (min-width:720px){
-      .grid{grid-template-columns:1fr 1fr;}
-    }
-
-    .card{
-      background: var(--card);
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      padding:14px;
-      box-shadow: 0 10px 28px rgba(0,0,0,.25);
-    }
-
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-    .spacer{height:14px;}
-
-    /* ==== BOTONES NEGROS + TEXTO BLANCO NEGRILLA ==== */
-    .btn{
+    /* Botón tarjeta neon */
+    .roleCard{
       appearance:none;
-      border:none;
-      background: var(--black);
-      color:#fff;
-      font-weight:900;
-      font-size:16px;
-      padding:14px 14px;
-      border-radius:16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.15));
+      border-radius: 18px;
+      padding: 16px 14px;
+      color: var(--txt);
       width:100%;
       cursor:pointer;
-      box-shadow: 0 10px 22px rgba(0,0,0,.35);
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 12px 26px rgba(0,0,0,.35);
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      min-height: 132px;
+    }
+    .roleCard:focus{ outline:none; box-shadow: var(--shadow), var(--ring); }
+    .roleCard:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.35); }
+    .roleCard:active{ transform: translateY(0px) scale(.99); }
+
+    .roleCard::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(280px 170px at 30% 20%, rgba(60,242,255,.22), transparent 62%),
+                  radial-gradient(260px 160px at 80% 30%, rgba(157,77,255,.20), transparent 65%),
+                  radial-gradient(280px 180px at 50% 90%, rgba(255,60,240,.10), transparent 70%);
+      opacity:.9;
+      pointer-events:none;
+      transform: translateZ(0);
+    }
+    .roleCard::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.10) 40%, transparent 70%);
+      transform: translateX(-120%);
+      animation: shine 3.2s ease-in-out infinite;
+      opacity:.45;
+      pointer-events:none;
+    }
+    @keyframes shine{
+      0%{ transform: translateX(-120%); }
+      55%{ transform: translateX(120%); }
+      100%{ transform: translateX(120%); }
+    }
+
+    .roleContent{
+      position:relative;
       display:flex;
+      flex-direction:column;
       align-items:center;
       justify-content:center;
       gap:10px;
+      text-align:center;
+      min-height: 100%;
     }
-    .btn:active{transform: scale(.99);}
-    .btn.small{padding:10px 12px; font-size:14px; border-radius:14px; width:auto;}
-    .btn.full{width:100%;}
-    .btn.ghost{
-      background: transparent;
-      border:1px solid rgba(255,255,255,.24);
-      box-shadow:none;
+    .iconBubble{
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 0 0 1px rgba(60,242,255,.10), 0 0 22px rgba(60,242,255,.10);
+      font-size: 26px;
     }
-
-    /* ==== INPUTS NEGROS + TEXTO BLANCO NEGRILLA ==== */
-    input, textarea, select{
-      width:100%;
-      padding:14px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.18);
-      outline:none;
-      background: #000;
-      color:#fff;
-      font-weight:900;
-      font-size:16px;
-      box-shadow: inset 0 0 0 9999px rgba(0,0,0,0);
-    }
-    input::placeholder, textarea::placeholder{
-      color:rgba(255,255,255,.65);
-      font-weight:900;
-    }
-    textarea{min-height:110px; resize:vertical;}
-
-    .title{
-      font-weight:1000;
+    .roleLabel{
+      font-size: 17px;
+      font-weight: 900;
       letter-spacing:.2px;
-      margin:0 0 10px;
-      font-size:18px;
+      text-transform: none;
+      text-shadow: 0 0 14px rgba(60,242,255,.10);
     }
-    .muted{color:var(--muted); font-weight:800; font-size:14px;}
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.20);
-      font-weight:900;
-      font-size:12px;
-      color:#fff;
+    .roleHint{
+      margin-top:-4px;
+      font-size: 12px;
+      color: rgba(234,242,255,.75);
     }
 
-    .tabs{
+    /* Login */
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .loginBox{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+    }
+    @media (max-width: 860px){
+      .loginBox{ grid-template-columns: 1fr; }
+    }
+    .card{
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius2);
+      padding: 14px;
+      backdrop-filter: blur(10px);
+    }
+    .card h3{
+      margin: 0 0 10px;
+      font-size: 15px;
+      letter-spacing:.2px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin: 10px 0;
+    }
+    label{
+      font-size: 12px;
+      color: rgba(234,242,255,.75);
+    }
+    input{
+      width:100%;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      padding: 12px 12px;
+      color: var(--txt);
+      font-size: 15px;
+      font-weight: 700;
+      outline:none;
+      transition: border-color .12s ease, box-shadow .12s ease;
+    }
+    input:focus{
+      border-color: rgba(60,242,255,.45);
+      box-shadow: var(--ring);
+    }
+    .btnRow{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin-top:12px;
+      margin-top: 10px;
     }
-    .tab{
-      flex:1;
-      min-width:160px;
-      padding:12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.20);
-      color:#fff;
-      font-weight:1000;
-      text-align:center;
+
+    .btn{
+      appearance:none;
+      border:none;
       cursor:pointer;
-    }
-    .tab.active{
-      background:#000;
-      border-color: rgba(255,255,255,.22);
-      box-shadow: 0 10px 22px rgba(0,0,0,.35);
-    }
-
-    .hidden{display:none !important;}
-
-    .list{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .item{
-      background: rgba(0,0,0,.22);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:18px;
-      padding:12px;
-    }
-    .item h3{
-      margin:0 0 8px;
-      font-weight:1000;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 900;
       letter-spacing:.2px;
-    }
-    .kv{display:grid; grid-template-columns:1fr 1fr; gap:8px; font-weight:900;}
-    .kv div{color:rgba(255,255,255,.88);}
-
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.14);
-      margin:12px 0;
-    }
-
-    /* ===== MODAL SCANNER ===== */
-    .modalOverlay{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.72);
-      display:flex;
+      color: var(--txt);
+      background: rgba(0,0,0,.50);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 12px 22px rgba(0,0,0,.35);
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      display:inline-flex;
       align-items:center;
-      justify-content:center;
-      padding:16px;
-      z-index:9999;
+      gap:10px;
     }
-    .modal{
-      width:min(880px, 100%);
-      background: rgba(10,10,10,.92);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:22px;
-      box-shadow: var(--shadow);
-      overflow:hidden;
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.35); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.28));
+      border-color: rgba(60,242,255,.26);
+      box-shadow: 0 16px 28px rgba(0,0,0,.40), 0 0 26px rgba(60,242,255,.10);
     }
-    .modalHeader{
+    .btn.ghost{
+      background: rgba(255,255,255,.06);
+    }
+
+    .small{
+      font-size: 12px;
+      color: rgba(234,242,255,.75);
+      line-height: 1.25;
+    }
+    .note{
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: rgba(234,242,255,.8);
+      font-size: 12px;
+    }
+
+    /* App area */
+    .appHeader{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:12px 14px;
-      border-bottom:1px solid rgba(255,255,255,.14);
-      font-weight:1000;
+      gap:10px;
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      backdrop-filter: blur(10px);
     }
-    .modalBody{padding:12px 14px 14px;}
-    video{
-      width:100%;
-      border-radius:18px;
-      background:#000;
-      border:1px solid rgba(255,255,255,.16);
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(234,242,255,.90);
+      font-size: 12px;
+      font-weight: 800;
     }
+    .menuGrid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+    }
+    @media (max-width: 860px){
+      .menuGrid{ grid-template-columns: 1fr; }
+    }
+    .menuBtn{
+      min-height: 86px;
+      justify-content:center;
+    }
+    .menuBtn .big{
+      font-size: 16px;
+      font-weight: 900;
+    }
+    .hidden{ display:none !important; }
 
-    /* Firma */
-    .sigWrap{
-      background:#000;
-      border:1px dashed rgba(255,255,255,.35);
-      border-radius:18px;
-      padding:10px;
-    }
-    #sigCanvas{
-      width:100%;
-      height:170px;
-      background:#000;
-      border-radius:14px;
-      touch-action:none;
-      display:block;
-    }
-
+    /* Toast */
     .toast{
-      position:fixed;
-      left:50%;
-      bottom:18px;
-      transform:translateX(-50%);
-      background:#000;
-      color:#fff;
-      border:1px solid rgba(255,255,255,.2);
-      padding:10px 12px;
-      border-radius:14px;
-      font-weight:1000;
-      z-index:99999;
-      box-shadow: 0 10px 20px rgba(0,0,0,.35);
-      display:none;
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(234,242,255,.92);
+      padding: 10px 12px;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 40px rgba(0,0,0,.45);
+      max-width: min(520px, 92vw);
+      font-size: 13px;
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 50;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-6px);
+    }
+/* flotación suave para tarjetas */
+    .float{
+      animation: float 4.2s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-4px); }
     }
   </style>
 </head>
 
-<body>
+<body class="bg-orbs">
+  <div class="scanline"></div>
+
   <div class="wrap">
-
-    <!-- LOCK SCREEN -->
-    <div id="screenLock" class="hero">
-      <h1>Technology Expert’s</h1>
-      <p class="sub">Acceso protegido (Admin PIN)</p>
-
-      <div class="spacer"></div>
-
-      <div class="card">
-        <div class="title">Ingresa el PIN</div>
-        <input id="pinInput" placeholder="PIN (ej: 1234)" inputmode="numeric" />
-        <div class="spacer"></div>
-        <button class="btn" id="btnUnlock">🔓 Entrar</button>
-        <div class="spacer"></div>
-        <p class="muted" style="margin:0">PIN por defecto: <b>1234</b> (cámbialo al entrar).</p>
+    <div class="top">
+      <div class="brand">
+        <h1>Technology Expert’s</h1>
+        <p>Ingreso por rol. Todo en un solo archivo (sin servidor por ahora). Diseñado para PC, Android y iPhone.</p>
       </div>
     </div>
 
-    <!-- HOME -->
-    <div id="screenHome" class="hero hidden">
-      <div class="row" style="justify-content:space-between; align-items:flex-start">
-        <div>
-          <h1>Technology Expert’s</h1>
-          <p class="sub">Órdenes + Ventas + Inventario. Todo en un solo archivo. Sin servidor (por ahora).</p>
+    <!-- PANTALLA 1: ROLES -->
+    <section id="viewRoles" class="panel">
+      <div class="inner">
+        <div class="roles-title">
+          <h2>¿Quién va a ingresar?</h2>
+          <span class="badge">Neon Tech • Opción 1A</span>
         </div>
-        <div class="row">
-          <button class="btn small" id="btnChangePin">🔑 Cambiar PIN</button>
-          <button class="btn small" id="btnLogout">🚪 Salir</button>
-        </div>
-      </div>
-
-      <div class="spacer"></div>
-
-      <div class="grid">
-        <button class="btn" id="goOrden">🧾 Orden de servicio</button>
-        <button class="btn" id="goVentas">💳 Ventas</button>
-      </div>
-
-      <div class="spacer"></div>
-
-      <div class="card">
-        <div class="title">Herramientas (para PC / respaldo)</div>
-        <div class="row">
-          <button class="btn small" id="btnBackup">📦 Backup JSON</button>
-          <button class="btn small" id="btnImport">📥 Importar JSON</button>
-          <button class="btn small" id="btnCsvOrden">⬇️ CSV Órdenes</button>
-          <button class="btn small" id="btnCsvVentas">⬇️ CSV Ventas</button>
-          <button class="btn small" id="btnCsvInv">⬇️ CSV Inventario</button>
-        </div>
-        <div class="divider"></div>
-
-        <div class="title">Búsqueda rápida (global)</div>
-        <input id="qGlobal" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, IMEI, código..." />
-        <p class="muted">Tip: escribe “2100” o un IMEI o un código de barras y te filtra.</p>
-
-        <div class="divider"></div>
-        <button class="btn" id="goInventario">📦 Inventario</button>
-      </div>
-    </div>
-
-    <!-- ORDEN -->
-    <div id="screenOrden" class="hidden">
-      <div class="hero">
-        <div class="row" style="justify-content:space-between">
-          <div>
-            <h1 style="font-size:34px;margin-bottom:2px">Orden de Servicio</h1>
-            <div class="tag" id="ordenNumeroTag">Orden #—</div>
-          </div>
-          <button class="btn small ghost" id="backFromOrden">⬅️ Volver</button>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Datos del cliente</div>
-          <input id="o_cliente" placeholder="Nombre del cliente" />
-          <div class="spacer"></div>
-          <input id="o_cedula" placeholder="Cédula" inputmode="numeric" />
-          <div class="spacer"></div>
-          <input id="o_tel" placeholder="Celular" inputmode="tel" />
-          <div class="spacer"></div>
-          <input id="o_email" type="email" list="emailDomains" placeholder="Correo electrónico (sugerencias al escribir @)" />
-          <datalist id="emailDomains"></datalist>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Equipo</div>
-          <input id="o_marca" list="brandList" placeholder="Marca del celular (autocompleta y aprende)" />
-          <datalist id="brandList"></datalist>
-
-          <div class="spacer"></div>
-          <input id="o_modelo" placeholder="Modelo del celular (texto normal)" />
-          <div class="spacer"></div>
-          <textarea id="o_falla" placeholder="Falla reportada"></textarea>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Firma del cliente (OBLIGATORIA)</div>
-          <p class="muted">Firma con el dedo. Si no firmas, NO deja guardar.</p>
-          <div class="sigWrap">
-            <canvas id="sigCanvas"></canvas>
-          </div>
-          <div class="spacer"></div>
-          <div class="row">
-            <button class="btn small" id="sigClear">🧽 Borrar firma</button>
-            <button class="btn small" id="sigUndo">↩️ Deshacer</button>
-          </div>
-        </div>
-
-        <div class="spacer"></div>
 
         <div class="grid">
-          <button class="btn" id="o_guardar">💾 Guardar orden</button>
-          <button class="btn" id="o_nueva">🆕 Nueva orden (limpiar)</button>
+          <button class="roleCard float" onclick="pickRole('admin')" aria-label="Ingresar como Administrador">
+            <div class="roleContent">
+              <div class="iconBubble">🛡️</div>
+              <div class="roleLabel">Administrador</div>
+              <div class="roleHint">Configuración • Exportar • Control</div>
+            </div>
+          </button>
+
+          <button class="roleCard float" style="animation-delay:.2s" onclick="pickRole('ventas')" aria-label="Ingresar como Ventas">
+            <div class="roleContent">
+              <div class="iconBubble">💳</div>
+              <div class="roleLabel">Ventas</div>
+              <div class="roleHint">Registrar ventas • IMEI • Tickets</div>
+            </div>
+          </button>
+
+          <button class="roleCard float" style="animation-delay:.35s" onclick="pickRole('tecnico')" aria-label="Ingresar como Técnico">
+            <div class="roleContent">
+              <div class="iconBubble">🛠️</div>
+              <div class="roleLabel">Técnico</div>
+              <div class="roleHint">Órdenes • Firma • Diagnóstico</div>
+            </div>
+          </button>
         </div>
 
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Órdenes guardadas</div>
-          <div class="row">
-            <button class="btn small" id="o_borrarTodo">🗑️ Borrar todas las órdenes</button>
-          </div>
-          <div class="spacer"></div>
-          <div id="ordenList" class="list"></div>
-        </div>
-      </div>
-    </div>
-<!-- VENTAS -->
-    <div id="screenVentas" class="hidden">
-      <div class="hero">
-        <div class="row" style="justify-content:space-between">
-          <div>
-            <h1 style="font-size:34px;margin-bottom:2px">Ventas</h1>
-            <div class="tag" id="ventaNumeroTag">Venta #—</div>
-          </div>
-          <button class="btn small ghost" id="backFromVentas">⬅️ Volver</button>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Datos del comprador</div>
-          <input id="v_cliente" placeholder="Nombre del cliente" />
-          <div class="spacer"></div>
-          <input id="v_cedula" placeholder="Cédula" inputmode="numeric" />
-          <div class="spacer"></div>
-          <input id="v_tel" placeholder="Celular" inputmode="tel" />
-          <div class="spacer"></div>
-          <input id="v_email" type="email" list="emailDomains" placeholder="Correo electrónico" />
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Datos de la venta</div>
-          <input id="v_producto" placeholder="Producto / Equipo" />
-          <div class="spacer"></div>
-          <input id="v_marca" list="brandList" placeholder="Marca (autocompleta y aprende)" />
-          <div class="spacer"></div>
-          <input id="v_modelo" placeholder="Modelo" />
-          <div class="spacer"></div>
-
-          <div class="row">
-            <button class="btn small" id="scanImei1">📷 Escanear IMEI 1</button>
-            <button class="btn small" id="scanImei2">📷 Escanear IMEI 2</button>
+        <div class="loginBox">
+          <div class="card">
+            <h3>Acceso con usuario y contraseña</h3>
+            <div class="note">
+              Si quieres, después agregamos: “Crear usuarios”, “Cambiar contraseñas”, y bloqueo por intentos (sin servidor).
+            </div>
+            <div class="small" style="margin-top:10px">
+              Tip: en iPhone/Android esto queda tipo “app” si lo agregas a pantalla de inicio.
+            </div>
           </div>
 
-          <div class="spacer"></div>
-          <input id="v_imei1" placeholder="IMEI 1 (opcional si no aplica)" inputmode="numeric" />
-          <div class="spacer"></div>
-          <input id="v_imei2" placeholder="IMEI 2 (si el equipo trae 2 IMEI)" inputmode="numeric" />
-
-          <div class="spacer"></div>
-          <input id="v_precio" placeholder="Precio" inputmode="decimal" />
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Términos (obligatorio aceptar)</div>
-          <p class="muted" style="margin-top:0">
-            El cliente declara que registrará el/los IMEI ante el operador que va a usar.
-            <b>Technology Expert’s NO se hace responsable</b> si el cliente no registra el IMEI y el operador no lo admite en su base de datos.
-          </p>
-          <label class="row" style="gap:10px; align-items:center; font-weight:1000">
-            <input id="v_acepta" type="checkbox" style="width:24px;height:24px; accent-color:#fff;" />
-            Acepto términos y condiciones
-          </label>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="grid">
-          <button class="btn" id="v_guardar">💾 Guardar venta</button>
-          <button class="btn" id="v_nueva">🆕 Nueva venta (limpiar)</button>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Ventas guardadas</div>
-          <div class="row">
-            <button class="btn small" id="v_borrarTodo">🗑️ Borrar todas las ventas</button>
-          </div>
-          <div class="spacer"></div>
-          <div id="ventaList" class="list"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- INVENTARIO -->
-    <div id="screenInv" class="hidden">
-      <div class="hero">
-        <div class="row" style="justify-content:space-between">
-          <div>
-            <h1 style="font-size:34px;margin-bottom:2px">Inventario</h1>
-            <div class="tag" id="invCountTag">Productos: 0</div>
-          </div>
-          <button class="btn small ghost" id="backFromInv">⬅️ Volver</button>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div class="card">
-          <div class="title">Agregar / Buscar por código</div>
-
-          <div class="row">
-            <button class="btn small" id="invScan">📷 Escanear código (QR / Barras)</button>
-            <button class="btn small" id="invNew">➕ Nuevo producto</button>
-          </div>
-
-          <div class="spacer"></div>
-          <input id="invSearch" placeholder="Buscar por código o nombre..." />
-          <div class="spacer"></div>
-          <div id="invList" class="list"></div>
-        </div>
-
-        <div class="spacer"></div>
-
-        <div id="invFormBox" class="card hidden">
-          <div class="title">Producto</div>
-
-          <input id="p_code" placeholder="Código (QR / barras / manual)" />
-          <div class="spacer"></div>
-          <input id="p_name" placeholder="Nombre del producto" />
-          <div class="spacer"></div>
-          <input id="p_brand" list="brandList" placeholder="Marca (autocompleta y aprende)" />
-          <div class="spacer"></div>
-          <input id="p_price" placeholder="Precio venta" inputmode="decimal" />
-          <div class="spacer"></div>
-          <input id="p_stock" placeholder="Stock" inputmode="numeric" />
-
-          <div class="spacer"></div>
-
-          <!-- FOTO OPCIONAL -->
-          <div class="card" style="margin-top:10px">
-            <div class="title">Foto del producto (OPCIONAL)</div>
-            <input id="p_photo" type="file" accept="image/*" capture="environment" />
-            <div class="spacer"></div>
-            <img id="p_photoPreview" style="max-width:100%; border-radius:14px; display:none; border:1px solid rgba(255,255,255,.2);" />
-            <div class="spacer"></div>
-            <button class="btn small" id="p_photoClear" type="button">🗑️ Quitar foto</button>
-          </div>
-
-          <div class="spacer"></div>
-          <div class="row">
-            <button class="btn small" id="p_save">💾 Guardar</button>
-            <button class="btn small" id="p_cancel">✖️ Cancelar</button>
+          <div class="card">
+            <h3>Usuarios por defecto</h3>
+            <div class="small">
+              Admin: <b>admin</b> / <b>admin123</b><br/>
+              Ventas: <b>ventas</b> / <b>ventas123</b><br/>
+              Técnico: <b>tecnico</b> / <b>tecnico123</b>
+            </div>
+            <div class="btnRow" style="margin-top:12px">
+              <button class="btn ghost" onclick="resetUsers()">♻️ Restaurar usuarios</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-  </div>
+    <!-- PANTALLA 2: LOGIN -->
+    <section id="viewLogin" class="panel hidden">
+      <div class="inner">
+        <div class="roles-title">
+          <h2 id="loginTitle">Ingresar</h2>
+          <span class="badge" id="roleBadge">Rol</span>
+        </div>
 
-  <!-- MODAL SCANNER -->
-  <div id="scanModal" class="modalOverlay hidden">
-    <div class="modal">
-      <div class="modalHeader">
-        <div id="scanTitle">Escáner</div>
-        <button class="btn small" id="scanClose">✖️ Cerrar</button>
-      </div>
-      <div class="modalBody">
-        <p class="muted" id="scanHint" style="margin-top:0">Apunta al código. Detecta QR y varios códigos de barras (1D).</p>
-        <video id="scanVideo" playsinline></video>
-        <div class="spacer"></div>
-        <div class="row" style="justify-content:space-between">
-          <button class="btn small" id="scanFlip">🔁 Cambiar cámara</button>
-          <div class="tag" id="scanStatus">Listo</div>
+        <div class="loginBox">
+          <div class="card">
+            <h3>Credenciales</h3>
+
+            <div class="field">
+              <label for="user">Usuario</label>
+              <input id="user" autocomplete="username" placeholder="Escribe tu usuario" />
+            </div>
+
+            <div class="field">
+              <label for="pass">Contraseña</label>
+              <input id="pass" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña" />
+            </div>
+
+            <div class="btnRow">
+              <button class="btn primary" onclick="doLogin()">🔓 Entrar</button>
+              <button class="btn ghost" onclick="goRoles()">⬅️ Volver</button>
+            </div>
+
+            <div class="small" style="margin-top:10px">
+              Si la contraseña está mal, no entra. (Luego le metemos seguridad extra).
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Consejo rápido</h3>
+            <div class="note">
+              Si estás en el celular: para evitar que el teclado tape campos,
+              usamos diseño compacto y botones grandes.
+            </div>
+            <div class="small" style="margin-top:10px">
+              ¿Quieres que al entrar muestre un “panel” distinto según rol? (Admin vs Ventas vs Técnico).
+              Ya está listo para eso.
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- PANTALLA 3: APP (placeholder, luego conectamos órdenes/ventas/inventario) -->
+    <section id="viewApp" class="panel hidden">
+      <div class="inner">
+        <div class="appHeader">
+          <div class="pill" id="sessionPill">✅ Sesión</div>
+          <div class="btnRow" style="margin:0">
+            <button class="btn ghost" onclick="logout()">🚪 Salir</button>
+          </div>
+        </div>
+
+        <div class="menuGrid">
+          <button class="btn primary menuBtn" onclick="toast('Aquí entraremos a Orden de Servicio (modo Técnico).')">
+            <span class="big">🧾 Orden de servicio</span>
+          </button>
+
+          <button class="btn primary menuBtn" onclick="toast('Aquí entraremos a Ventas (IMEI 1/2 + términos).')">
+            <span class="big">💳 Ventas</span>
+          </button>
+
+          <button class="btn primary menuBtn" onclick="toast('Aquí entraremos a Inventario (barcode/QR + foto opcional).')">
+            <span class="big">📦 Inventario</span>
+          </button>
+        </div>
+
+        <div style="margin-top:12px" class="card">
+          <h3>Lo siguiente que hacemos (ya con sesión)</h3>
+          <div class="small">
+            1) Que TODO (botones/campos) siga este estilo Neon Tech en Órdenes/Ventas/Inventario. <br/>
+            2) Scanner con cámara (barcode + QR) sin depender de internet. <br/>
+            3) Numeración ascendente: OS desde 2100+, Ventas desde 315+. <br/>
+            4) Firma obligatoria en Orden de Servicio. <br/>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div id="toast" class="toast"></div>
 
-<script>
-/* ===========================
-   CONFIG
-=========================== */
-const START_ORDEN = 2100; // Orden # inicial
-const START_VENTA = 315;  // Venta # inicial
-const DEFAULT_PIN = "1234";
-
-/* ===========================
-   STORAGE KEYS
-=========================== */
-const LS = {
-  ordenes: "te_ordenes",
-  ventas: "te_ventas",
-  inventario: "te_inventario",
-  contOrden: "te_cont_orden",
-  contVenta: "te_cont_venta",
-  brands: "te_brands",
-  pin: "te_admin_pin",
-  session: "te_session_ok"
-};
-
-function getArr(key){ try{return JSON.parse(localStorage.getItem(key))||[]}catch(e){return[]} }
-function setArr(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
-function getNum(key, fallback){ const n = Number(localStorage.getItem(key)); return Number.isFinite(n) && n>0 ? n : fallback; }
-function setNum(key,val){ localStorage.setItem(key, String(val)); }
-
-function esc(s){ return (s??"").toString().replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
-
-function toast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg;
-  t.style.display="block";
-  clearTimeout(window.__toastT);
-  window.__toastT=setTimeout(()=>t.style.display="none", 2200);
-}
-
-/* ===========================
-   LOCK / PIN
-=========================== */
-const screenLock = document.getElementById("screenLock");
-const screenHome = document.getElementById("screenHome");
-
-const pinInput = document.getElementById("pinInput");
-document.getElementById("btnUnlock").onclick = unlock;
-
-function getPin(){
-  return localStorage.getItem(LS.pin) || DEFAULT_PIN;
-}
-function setPin(pin){
-  localStorage.setItem(LS.pin, pin);
-}
-function sessionOk(){
-  return localStorage.getItem(LS.session) === "1";
-}
-function setSession(ok){
-  localStorage.setItem(LS.session, ok ? "1" : "0");
-}
-
-function showLock(){
-  screenLock.classList.remove("hidden");
-  screenHome.classList.add("hidden");
-  setSession(false);
-  pinInput.value="";
-  pinInput.focus();
-}
-function showHome(){
-  screenLock.classList.add("hidden");
-  screenHome.classList.remove("hidden");
-}
-
-function unlock(){
-  const pin = (pinInput.value||"").trim();
-  if(pin !== getPin()){
-    alert("PIN incorrecto.");
-    return;
-  }
-  setSession(true);
-  showHome();
-  toast("Bienvenido ✅");
-}
-
-document.getElementById("btnLogout").onclick=()=>{
-  showLock();
-  toast("Sesión cerrada");
-};
-
-document.getElementById("btnChangePin").onclick=()=>{
-  const current = prompt("PIN actual:");
-  if(current===null) return;
-  if(current.trim() !== getPin()){
-    alert("PIN actual incorrecto.");
-    return;
-  }
-  const n1 = prompt("Nuevo PIN (mínimo 4 números):");
-  if(n1===null) return;
-  const n = n1.trim();
-  if(n.length < 4){
-    alert("El PIN debe tener mínimo 4 números.");
-    return;
-  }
-  const n2 = prompt("Confirma el nuevo PIN:");
-  if(n2===null) return;
-  if(n2.trim() !== n){
-    alert("No coincide.");
-    return;
-  }
-  setPin(n);
-  toast("PIN actualizado ✅");
-};
-
-/* ===========================
-   NAV
-=========================== */
-const screenOrden = document.getElementById("screenOrden");
-const screenVentas = document.getElementById("screenVentas");
-const screenInv = document.getElementById("screenInv");
-
-function showScreen(s){
-  [screenHome,screenOrden,screenVentas,screenInv].forEach(x=>x.classList.add("hidden"));
-  s.classList.remove("hidden");
-}
-
-document.getElementById("goOrden").onclick=()=>{ showScreen(screenOrden); updateOrdenTag(); renderOrdenes(); };
-document.getElementById("goVentas").onclick=()=>{ showScreen(screenVentas); updateVentaTag(); renderVentas(); };
-document.getElementById("goInventario").onclick=()=>{ showScreen(screenInv); renderInv(); };
-
-document.getElementById("backFromOrden").onclick=()=>showScreen(screenHome);
-document.getElementById("backFromVentas").onclick=()=>showScreen(screenHome);
-document.getElementById("backFromInv").onclick=()=>showScreen(screenHome);
-
-/* ===========================
-   EMAIL DATALIST
-=========================== */
-const emailDomains = ["gmail.com","hotmail.com","outlook.com","icloud.com","yahoo.com","live.com","proton.me","protonmail.com"];
-function buildEmailDatalist(){
-  const dl=document.getElementById("emailDomains");
-  dl.innerHTML="";
-  emailDomains.forEach(d=>{
-    const opt=document.createElement("option");
-    opt.value="@"+d;
-    dl.appendChild(opt);
-  });
-}
-buildEmailDatalist();
-
-/* ===========================
-   BRANDS (autocompleta + aprende)
-=========================== */
-const defaultBrands = [
-  "Samsung","Xiaomi","Redmi","POCO","Realme","Huawei","Honor","Motorola","Nokia",
-  "Apple","iPhone","iPad","Tecno","Infinix","Itel","OPPO","Vivo","OnePlus",
-  "ZTE","Alcatel","Sony","LG","Google Pixel","Asus","Lenovo","TCL","Meizu",
-  "BlackBerry","HTC","Micromax","Blu","Cubot","Doogee","Ulefone","Umidigi",
-  "Nothing","Meitu","CAT","Fairphone","Sharp","Panasonic","Philips","Sagem",
-  "QMobile","Lava","Karbonn","Inoi","Wiko","HMD","Hisense","Azumi","Lanix"
-];
-
-function getBrands(){
-  const learned = getArr(LS.brands);
-  const all = Array.from(new Set([...defaultBrands, ...learned]));
-  all.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
-  return all;
-}
-function learnBrand(name){
-  const clean=(name||"").trim();
-  if(!clean) return;
-  const learned=getArr(LS.brands);
-  const lowAll=getBrands().map(x=>x.toLowerCase());
-  if(lowAll.includes(clean.toLowerCase())) return;
-  learned.push(clean);
-  setArr(LS.brands, learned);
-  buildBrandDatalist();
-}
-function buildBrandDatalist(){
-  const dl=document.getElementById("brandList");
-  dl.innerHTML="";
-  getBrands().forEach(b=>{
-    const opt=document.createElement("option");
-    opt.value=b;
-    dl.appendChild(opt);
-  });
-}
-buildBrandDatalist();
-/* ===========================
-   ORDENES
-=========================== */
-const ordenNumeroTag = document.getElementById("ordenNumeroTag");
-const o_cliente = document.getElementById("o_cliente");
-const o_cedula = document.getElementById("o_cedula");
-const o_tel    = document.getElementById("o_tel");
-const o_email  = document.getElementById("o_email");
-const o_marca  = document.getElementById("o_marca");
-const o_modelo = document.getElementById("o_modelo");
-const o_falla  = document.getElementById("o_falla");
-const ordenList = document.getElementById("ordenList");
-
-function nextOrdenNumber(){
-  return getNum(LS.contOrden, START_ORDEN);
-}
-function updateOrdenTag(){
-  ordenNumeroTag.textContent = "Orden #"+ nextOrdenNumber();
-}
-
-function clearOrdenForm(){
-  o_cliente.value=""; o_cedula.value=""; o_tel.value=""; o_email.value="";
-  o_marca.value=""; o_modelo.value=""; o_falla.value="";
-  clearSignature();
-  o_cliente.focus();
-  updateOrdenTag();
-}
-
-document.getElementById("o_nueva").onclick=()=>{ clearOrdenForm(); toast("Campos limpios ✅"); };
-
-document.getElementById("o_guardar").onclick=()=>{
-  if(!o_cliente.value.trim() || !o_cedula.value.trim() || !o_tel.value.trim() || !o_email.value.trim() ||
-     !o_marca.value.trim() || !o_modelo.value.trim() || !o_falla.value.trim()){
-    alert("Completa todos los campos.");
-    return;
-  }
-  if(!hasSignature()){
-    alert("La firma es obligatoria para guardar la orden.");
-    return;
-  }
-
-  const num = nextOrdenNumber();
-  const ordenes = getArr(LS.ordenes);
-
-  const item = {
-    num,
-    cliente: o_cliente.value.trim(),
-    cedula: o_cedula.value.trim(),
-    tel: o_tel.value.trim(),
-    email: o_email.value.trim(),
-    marca: o_marca.value.trim(),
-    modelo: o_modelo.value.trim(),
-    falla: o_falla.value.trim(),
-    firma: signatureDataURL(),
-    fecha: new Date().toLocaleString()
-  };
-
-  ordenes.push(item);
-  setArr(LS.ordenes, ordenes);
-  setNum(LS.contOrden, num+1);
-
-  learnBrand(item.marca);
-
-  renderOrdenes();
-  clearOrdenForm();
-  toast("Orden guardada ✅");
-};
-
-document.getElementById("o_borrarTodo").onclick=()=>{
-  if(confirm("¿Seguro que quieres borrar TODAS las órdenes?")){
-    setArr(LS.ordenes, []);
-    renderOrdenes();
-    toast("Órdenes borradas");
-  }
-};
-
-function deleteOrden(num){
-  const ordenes = getArr(LS.ordenes).filter(o=>o.num!==num);
-  setArr(LS.ordenes, ordenes);
-  renderOrdenes();
-  toast("Orden eliminada");
-}
-
-function renderOrdenes(){
-  const q=(document.getElementById("qGlobal").value||"").trim().toLowerCase();
-  const ordenes = getArr(LS.ordenes).slice().sort((a,b)=>a.num-b.num);
-
-  let arr=ordenes;
-  if(q){
-    arr=arr.filter(o=>{
-      return [
-        o.num, o.cliente, o.cedula, o.tel, o.email, o.marca, o.modelo, o.falla, o.fecha
-      ].join(" ").toLowerCase().includes(q);
-    });
-  }
-
-  ordenList.innerHTML = arr.length ? "" : `<div class="muted">No hay órdenes.</div>`;
-
-  arr.forEach(o=>{
-    const html = `
-      <div class="item">
-        <h3>Orden #${o.num}</h3>
-        <div class="kv">
-          <div>Cliente: ${esc(o.cliente)}</div><div>Cédula: ${esc(o.cedula)}</div>
-          <div>Tel: ${esc(o.tel)}</div><div>Email: ${esc(o.email)}</div>
-          <div>Marca: ${esc(o.marca)}</div><div>Modelo: ${esc(o.modelo)}</div>
-        </div>
-        <div class="divider"></div>
-        <div style="font-weight:1000">Falla:</div>
-        <div style="font-weight:900;color:rgba(255,255,255,.88)">${esc(o.falla)}</div>
-
-        <div class="divider"></div>
-        <div class="row" style="justify-content:space-between">
-          <div class="muted">${esc(o.fecha)}</div>
-          <div class="row">
-            <button class="btn small" onclick="window.__showFirma(${o.num})">✍️ Ver firma</button>
-            <button class="btn small" onclick="window.__delOrden(${o.num})">🗑️ Borrar</button>
-          </div>
-        </div>
-      </div>
-    `;
-    ordenList.insertAdjacentHTML("beforeend", html);
-  });
-
-  updateOrdenTag();
-}
-window.__delOrden = deleteOrden;
-
-window.__showFirma = (num)=>{
-  const o = getArr(LS.ordenes).find(x=>x.num===num);
-  if(!o || !o.firma){ alert("No hay firma."); return; }
-  const w = window.open("", "_blank");
-  w.document.write(`<title>Firma Orden #${num}</title><img style="max-width:100%;background:#000" src="${o.firma}"/>`);
-};
-
-/* ===========================
-   VENTAS
-=========================== */
-const ventaNumeroTag = document.getElementById("ventaNumeroTag");
-const v_cliente = document.getElementById("v_cliente");
-const v_cedula  = document.getElementById("v_cedula");
-const v_tel     = document.getElementById("v_tel");
-const v_email   = document.getElementById("v_email");
-const v_producto= document.getElementById("v_producto");
-const v_marca   = document.getElementById("v_marca");
-const v_modelo  = document.getElementById("v_modelo");
-const v_imei1   = document.getElementById("v_imei1");
-const v_imei2   = document.getElementById("v_imei2");
-const v_precio  = document.getElementById("v_precio");
-const v_acepta  = document.getElementById("v_acepta");
-const ventaList = document.getElementById("ventaList");
-
-function nextVentaNumber(){
-  return getNum(LS.contVenta, START_VENTA);
-}
-function updateVentaTag(){
-  ventaNumeroTag.textContent = "Venta #"+ nextVentaNumber();
-}
-
-function clearVentaForm(){
-  v_cliente.value=""; v_cedula.value=""; v_tel.value=""; v_email.value="";
-  v_producto.value=""; v_marca.value=""; v_modelo.value=""; v_imei1.value=""; v_imei2.value=""; v_precio.value="";
-  v_acepta.checked=false;
-  v_cliente.focus();
-  updateVentaTag();
-}
-
-document.getElementById("v_nueva").onclick=()=>{ clearVentaForm(); toast("Campos limpios ✅"); };
-
-document.getElementById("v_guardar").onclick=()=>{
-  if(!v_cliente.value.trim() || !v_cedula.value.trim() || !v_tel.value.trim() || !v_email.value.trim() ||
-     !v_producto.value.trim() || !v_marca.value.trim() || !v_modelo.value.trim() || !v_precio.value.trim()){
-    alert("Completa todos los campos de la venta.");
-    return;
-  }
-  if(!v_acepta.checked){
-    alert("Debes aceptar los términos para guardar la venta.");
-    return;
-  }
-
-  const num = nextVentaNumber();
-  const ventas = getArr(LS.ventas);
-
-  const item = {
-    num,
-    cliente: v_cliente.value.trim(),
-    cedula: v_cedula.value.trim(),
-    tel: v_tel.value.trim(),
-    email: v_email.value.trim(),
-    producto: v_producto.value.trim(),
-    marca: v_marca.value.trim(),
-    modelo: v_modelo.value.trim(),
-    imei1: v_imei1.value.trim(),
-    imei2: v_imei2.value.trim(),
-    precio: v_precio.value.trim(),
-    fecha: new Date().toLocaleString(),
-    terminos: true
-  };
-
-  ventas.push(item);
-  setArr(LS.ventas, ventas);
-  setNum(LS.contVenta, num+1);
-
-  learnBrand(item.marca);
-
-  renderVentas();
-  clearVentaForm();
-  toast("Venta guardada ✅");
-};
-
-document.getElementById("v_borrarTodo").onclick=()=>{
-  if(confirm("¿Seguro que quieres borrar TODAS las ventas?")){
-    setArr(LS.ventas, []);
-    renderVentas();
-    toast("Ventas borradas");
-  }
-};
-
-function deleteVenta(num){
-  const ventas = getArr(LS.ventas).filter(v=>v.num!==num);
-  setArr(LS.ventas, ventas);
-  renderVentas();
-  toast("Venta eliminada");
-}
-window.__delVenta = deleteVenta;
-
-function renderVentas(){
-  const q=(document.getElementById("qGlobal").value||"").trim().toLowerCase();
-  const ventas = getArr(LS.ventas).slice().sort((a,b)=>a.num-b.num);
-
-  let arr=ventas;
-  if(q){
-    arr=arr.filter(v=>{
-      return [
-        v.num, v.cliente, v.cedula, v.tel, v.email, v.producto, v.marca, v.modelo, v.imei1, v.imei2, v.precio, v.fecha
-      ].join(" ").toLowerCase().includes(q);
-    });
-  }
-
-  ventaList.innerHTML = arr.length ? "" : `<div class="muted">No hay ventas.</div>`;
-
-  arr.forEach(v=>{
-    const html = `
-      <div class="item">
-        <h3>Venta #${v.num}</h3>
-        <div class="kv">
-          <div>Cliente: ${esc(v.cliente)}</div><div>Cédula: ${esc(v.cedula)}</div>
-          <div>Tel: ${esc(v.tel)}</div><div>Email: ${esc(v.email)}</div>
-          <div>Producto: ${esc(v.producto)}</div><div>Precio: ${esc(v.precio)}</div>
-          <div>Marca: ${esc(v.marca)}</div><div>Modelo: ${esc(v.modelo)}</div>
-          <div>IMEI1: ${esc(v.imei1||"-")}</div><div>IMEI2: ${esc(v.imei2||"-")}</div>
-        </div>
-        <div class="divider"></div>
-        <div class="row" style="justify-content:space-between">
-          <div class="muted">${esc(v.fecha)}</div>
-          <button class="btn small" onclick="window.__delVenta(${v.num})">🗑️ Borrar</button>
-        </div>
-      </div>
-    `;
-    ventaList.insertAdjacentHTML("beforeend", html);
-  });
-
-  updateVentaTag();
-}
-
-/* ===========================
-   INVENTARIO
-=========================== */
-const invCountTag=document.getElementById("invCountTag");
-const invSearch=document.getElementById("invSearch");
-const invList=document.getElementById("invList");
-const invFormBox=document.getElementById("invFormBox");
-
-const p_code=document.getElementById("p_code");
-const p_name=document.getElementById("p_name");
-const p_brand=document.getElementById("p_brand");
-const p_price=document.getElementById("p_price");
-const p_stock=document.getElementById("p_stock");
-
-const p_photo = document.getElementById("p_photo");
-const p_photoPreview = document.getElementById("p_photoPreview");
-const p_photoClear = document.getElementById("p_photoClear");
-let currentPhotoData = "";
-
-let editingCode=null;
-
-document.getElementById("invNew").onclick=()=>openProductForm(null);
-document.getElementById("p_cancel").onclick=()=>closeProductForm();
-
-document.getElementById("p_save").onclick=()=>{
-  const code=p_code.value.trim();
-  const name=p_name.value.trim();
-  if(!code || !name){
-    alert("Código y Nombre son obligatorios.");
-    return;
-  }
-
-  const inv=getArr(LS.inventario);
-  const idx=inv.findIndex(x=>x.code===code);
-
-  const prod={
-    code,
-    name,
-    brand: p_brand.value.trim(),
-    price: p_price.value.trim(),
-    stock: p_stock.value.trim(),
-    photo: currentPhotoData || ""
-  };
-
-  if(editingCode && editingCode!==code){
-    const oldIdx=inv.findIndex(x=>x.code===editingCode);
-    if(oldIdx>=0) inv.splice(oldIdx,1);
-  }
-
-  if(idx>=0) inv[idx]=prod;
-  else inv.push(prod);
-
-  setArr(LS.inventario, inv);
-  learnBrand(prod.brand);
-
-  closeProductForm();
-  renderInv();
-  toast("Producto guardado ✅");
-};
-
-function openProductForm(codeOrNull){
-  invFormBox.classList.remove("hidden");
-  editingCode = codeOrNull;
-
-  const inv=getArr(LS.inventario);
-  const p = codeOrNull ? inv.find(x=>x.code===codeOrNull) : null;
-
-  if(p){
-    p_code.value=p.code;
-    p_name.value=p.name;
-    p_brand.value=p.brand||"";
-    p_price.value=p.price||"";
-    p_stock.value=p.stock||"";
-    currentPhotoData = p.photo || "";
-    showPhotoPreview(currentPhotoData);
-  }else{
-    p_code.value="";
-    p_name.value="";
-    p_brand.value="";
-    p_price.value="";
-    p_stock.value="";
-    currentPhotoData = "";
-    showPhotoPreview("");
-  }
-  p_code.focus();
-}
-
-function closeProductForm(){
-  invFormBox.classList.add("hidden");
-  editingCode=null;
-}
-
-function deleteProduct(code){
-  const inv=getArr(LS.inventario).filter(p=>p.code!==code);
-  setArr(LS.inventario, inv);
-  renderInv();
-  toast("Producto eliminado");
-}
-window.__delProd = deleteProduct;
-
-function renderInv(){
-  const q=(invSearch.value||"").trim().toLowerCase();
-  const inv=getArr(LS.inventario).slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"",'es',{sensitivity:'base'}));
-
-  invCountTag.textContent="Productos: "+inv.length;
-
-  let arr=inv;
-  if(q){
-    arr=arr.filter(p=>(p.code+" "+p.name+" "+(p.brand||"")).toLowerCase().includes(q));
-  }
-
-  invList.innerHTML = arr.length ? "" : `<div class="muted">No hay productos.</div>`;
-
-  arr.forEach(p=>{
-    const safeCode = (p.code||"").replace(/'/g,"&#039;");
-    const photoHtml = p.photo ? `<img src="${p.photo}" style="width:100%;max-height:220px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.18);margin:10px 0;">` : "";
-    invList.insertAdjacentHTML("beforeend", `
-      <div class="item">
-        <h3>${esc(p.name)}</h3>
-        <div class="muted">Código: <b>${esc(p.code)}</b></div>
-        ${photoHtml}
-        <div class="kv" style="margin-top:8px">
-          <div>Marca: ${esc(p.brand||"-")}</div>
-          <div>Precio: ${esc(p.price||"-")}</div>
-          <div>Stock: ${esc(p.stock||"-")}</div>
-          <div></div>
-        </div>
-        <div class="divider"></div>
-        <div class="row">
-          <button class="btn small" onclick="window.__editProd('${safeCode}')">✏️ Editar</button>
-          <button class="btn small" onclick="window.__delProd('${safeCode}')">🗑️ Borrar</button>
-        </div>
-      </div>
-    `);
-  });
-}
-window.__editProd=(code)=>openProductForm(code);
-
-invSearch.addEventListener("input", renderInv);
-
-/* Foto (opcional) */
-async function fileToSmallDataURL(file, maxW=900, quality=0.75){
-  return new Promise((resolve,reject)=>{
-    const reader = new FileReader();
-    reader.onload = ()=>{
-      const img = new Image();
-      img.onload = ()=>{
-        const scale = Math.min(1, maxW / img.width);
-        const w = Math.round(img.width * scale);
-        const h = Math.round(img.height * scale);
-
-        const c = document.createElement("canvas");
-        c.width = w; c.height = h;
-        const cx = c.getContext("2d");
-        cx.drawImage(img,0,0,w,h);
-
-        const data = c.toDataURL("image/jpeg", quality);
-        resolve(data);
-      };
-      img.onerror = reject;
-      img.src = reader.result;
+  <script>
+    // =========================
+    //  CONFIG / STORAGE
+    // =========================
+    const LS = {
+      users: "te_users_v1",
+      session: "te_session_v1"
     };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-function showPhotoPreview(data){
-  if(!data){
-    p_photoPreview.style.display="none";
-    p_photoPreview.src="";
-    return;
-  }
-  p_photoPreview.src=data;
-  p_photoPreview.style.display="block";
-}
-p_photo?.addEventListener("change", async ()=>{
-  const file=p_photo.files?.[0];
-  if(!file) return;
-  currentPhotoData = await fileToSmallDataURL(file, 900, 0.75);
-  showPhotoPreview(currentPhotoData);
-  toast("Foto cargada ✅");
-});
-p_photoClear?.addEventListener("click", ()=>{
-  currentPhotoData="";
-  if(p_photo) p_photo.value="";
-  showPhotoPreview("");
-  toast("Foto eliminada");
-});
-/* ===========================
-   GLOBAL SEARCH
-=========================== */
-document.getElementById("qGlobal").addEventListener("input", ()=>{
-  renderOrdenes();
-  renderVentas();
-});
 
-/* ===========================
-   BACKUP JSON / IMPORT / CSV
-=========================== */
-document.getElementById("btnBackup").onclick=()=>{
-  const data={
-    ordenes:getArr(LS.ordenes),
-    ventas:getArr(LS.ventas),
-    inventario:getArr(LS.inventario),
-    contOrden:getNum(LS.contOrden, START_ORDEN),
-    contVenta:getNum(LS.contVenta, START_VENTA),
-    brands:getArr(LS.brands),
-    pin:getPin(),
-    exportedAt:new Date().toISOString()
-  };
-  downloadFile("backup_technology_experts.json", JSON.stringify(data,null,2), "application/json");
-};
+    const ROLE_META = {
+      admin:  { label:"Administrador", icon:"🛡️" },
+      ventas: { label:"Ventas",        icon:"💳" },
+      tecnico:{ label:"Técnico",       icon:"🛠️" }
+    };
 
-document.getElementById("btnImport").onclick=async ()=>{
-  const file = await pickFile(".json,application/json");
-  if(!file) return;
-  const txt = await file.text();
-  let data;
-  try{ data=JSON.parse(txt); }catch(e){ alert("JSON inválido."); return; }
-
-  if(data.ordenes) setArr(LS.ordenes, data.ordenes);
-  if(data.ventas) setArr(LS.ventas, data.ventas);
-  if(data.inventario) setArr(LS.inventario, data.inventario);
-  if(data.contOrden) setNum(LS.contOrden, Number(data.contOrden));
-  if(data.contVenta) setNum(LS.contVenta, Number(data.contVenta));
-  if(data.brands) setArr(LS.brands, data.brands);
-  if(data.pin) localStorage.setItem(LS.pin, data.pin);
-
-  buildBrandDatalist();
-  renderOrdenes(); renderVentas(); renderInv();
-  toast("Backup importado ✅");
-};
-
-document.getElementById("btnCsvOrden").onclick=()=>{
-  const arr=getArr(LS.ordenes).slice().sort((a,b)=>a.num-b.num);
-  const rows=[["num","cliente","cedula","tel","email","marca","modelo","falla","fecha"]];
-  arr.forEach(o=>rows.push([o.num,o.cliente,o.cedula,o.tel,o.email,o.marca,o.modelo,o.falla,o.fecha]));
-  downloadCSV("ordenes.csv", rows);
-};
-document.getElementById("btnCsvVentas").onclick=()=>{
-  const arr=getArr(LS.ventas).slice().sort((a,b)=>a.num-b.num);
-  const rows=[["num","cliente","cedula","tel","email","producto","marca","modelo","imei1","imei2","precio","fecha"]];
-  arr.forEach(v=>rows.push([v.num,v.cliente,v.cedula,v.tel,v.email,v.producto,v.marca,v.modelo,v.imei1,v.imei2,v.precio,v.fecha]));
-  downloadCSV("ventas.csv", rows);
-};
-document.getElementById("btnCsvInv").onclick=()=>{
-  const arr=getArr(LS.inventario);
-  const rows=[["code","name","brand","price","stock"]];
-  arr.forEach(p=>rows.push([p.code,p.name,p.brand,p.price,p.stock]));
-  downloadCSV("inventario.csv", rows);
-};
-
-function downloadCSV(name, rows){
-  const csv = rows.map(r=>r.map(x=>{
-    const s=(x??"").toString().replaceAll('"','""');
-    return `"${s}"`;
-  }).join(",")).join("\n");
-  downloadFile(name, csv, "text/csv;charset=utf-8");
-}
-function downloadFile(name, content, type){
-  const blob=new Blob([content],{type});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url; a.download=name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-function pickFile(accept){
-  return new Promise((resolve)=>{
-    const i=document.createElement("input");
-    i.type="file";
-    i.accept=accept;
-    i.onchange=()=>resolve(i.files?.[0]||null);
-    i.click();
-  });
-}
-
-/* ===========================
-   SCANNER (QR + 1D)
-=========================== */
-const scanModal=document.getElementById("scanModal");
-const scanClose=document.getElementById("scanClose");
-const scanVideo=document.getElementById("scanVideo");
-const scanTitle=document.getElementById("scanTitle");
-const scanStatus=document.getElementById("scanStatus");
-const scanFlip=document.getElementById("scanFlip");
-
-let scanStream=null;
-let scanActive=false;
-let scanFacing="environment";
-let scanCallback=null;
-
-function supportsBarcodeDetector(){
-  return ("BarcodeDetector" in window);
-}
-
-async function openScanner(title, callback){
-  if(!supportsBarcodeDetector()){
-    alert("Tu navegador no soporta BarcodeDetector. Usa Chrome actualizado.");
-    return;
-  }
-  scanTitle.textContent=title;
-  scanCallback=callback;
-  scanModal.classList.remove("hidden");
-  scanStatus.textContent="Abriendo cámara…";
-
-  try{
-    await startCamera();
-    scanActive=true;
-    scanStatus.textContent="Escaneando…";
-    tickScan();
-  }catch(e){
-    console.error(e);
-    alert("No se pudo abrir la cámara. Revisa permisos de cámara en el navegador.");
-    closeScanner();
-  }
-}
-
-async function startCamera(){
-  stopCamera();
-  const constraints={
-    audio:false,
-    video:{
-      facingMode: scanFacing,
-      width:{ideal:1280},
-      height:{ideal:720}
+    function loadUsers(){
+      const raw = localStorage.getItem(LS.users);
+      if(!raw) return null;
+      try { return JSON.parse(raw); } catch { return null; }
     }
-  };
-  scanStream = await navigator.mediaDevices.getUserMedia(constraints);
-  scanVideo.srcObject=scanStream;
-  await scanVideo.play();
-}
+    function saveUsers(u){
+      localStorage.setItem(LS.users, JSON.stringify(u));
+    }
+    function ensureUsers(){
+      let u = loadUsers();
+      if(u) return u;
+      u = {
+        admin:  { username:"admin",   password:"admin123" },
+        ventas: { username:"ventas",  password:"ventas123" },
+        tecnico:{ username:"tecnico", password:"tecnico123" }
+      };
+      saveUsers(u);
+      return u;
+    }
 
-function stopCamera(){
-  if(scanStream){
-    scanStream.getTracks().forEach(t=>t.stop());
-    scanStream=null;
-  }
-}
+    function saveSession(session){
+      localStorage.setItem(LS.session, JSON.stringify(session));
+    }
+    function loadSession(){
+      const raw = localStorage.getItem(LS.session);
+      if(!raw) return null;
+      try { return JSON.parse(raw); } catch { return null; }
+    }
+    function clearSession(){
+      localStorage.removeItem(LS.session);
+    }
 
-function closeScanner(){
-  scanActive=false;
-  scanModal.classList.add("hidden");
-  stopCamera();
-  scanCallback=null;
-}
+    // =========================
+    //  UI HELPERS
+    // =========================
+    const viewRoles = document.getElementById("viewRoles");
+    const viewLogin = document.getElementById("viewLogin");
+    const viewApp   = document.getElementById("viewApp");
 
-scanClose.onclick=closeScanner;
-scanFlip.onclick=async ()=>{
-  scanFacing = (scanFacing==="environment") ? "user" : "environment";
-  scanStatus.textContent="Cambiando…";
-  await startCamera();
-  scanStatus.textContent="Escaneando…";
-};
+    const loginTitle = document.getElementById("loginTitle");
+    const roleBadge  = document.getElementById("roleBadge");
+    const sessionPill= document.getElementById("sessionPill");
 
-async function tickScan(){
-  if(!scanActive) return;
+    const userInput = document.getElementById("user");
+    const passInput = document.getElementById("pass");
 
-  try{
-    const detector = new BarcodeDetector({
-      formats: ["qr_code","ean_13","ean_8","upc_a","upc_e","code_128","code_39","codabar","itf"]
-    });
+    let selectedRole = null;
 
-    const codes = await detector.detect(scanVideo);
-    if(codes && codes.length){
-      const raw = (codes[0].rawValue || "").trim();
-      if(raw){
-        scanStatus.textContent="Detectado ✅";
-        if(navigator.vibrate) navigator.vibrate(80);
-        const cb=scanCallback;
-        closeScanner();
-        cb(raw);
+    function show(which){
+      viewRoles.classList.toggle("hidden", which !== "roles");
+      viewLogin.classList.toggle("hidden", which !== "login");
+      viewApp.classList.toggle("hidden",   which !== "app");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function toast(msg){
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(window.__t);
+      window.__t = setTimeout(()=>el.classList.remove("show"), 2400);
+    }
+
+    // =========================
+    //  FLOW
+    // =========================
+    ensureUsers();
+
+    function pickRole(role){
+      selectedRole = role;
+      const meta = ROLE_META[role] || { label:"Acceso", icon:"🔐" };
+      loginTitle.textContent = `Ingresar • ${meta.label}`;
+      roleBadge.textContent = `${meta.icon} ${meta.label}`;
+      userInput.value = "";
+      passInput.value = "";
+      show("login");
+      setTimeout(()=>userInput.focus(), 50);
+    }
+
+    function goRoles(){
+      selectedRole = null;
+      show("roles");
+    }
+
+    function doLogin(){
+      const users = ensureUsers();
+      if(!selectedRole){
+        toast("Primero elige un rol.");
+        show("roles");
         return;
       }
+
+      const u = (userInput.value || "").trim();
+      const p = (passInput.value || "").trim();
+      if(!u || !p){
+        toast("Completa usuario y contraseña.");
+        return;
+      }
+
+      // Validación: el rol exige sus credenciales
+      const ref = users[selectedRole];
+      if(!ref){
+        toast("Rol inválido.");
+        return;
+      }
+
+      if(u === ref.username && p === ref.password){
+        const meta = ROLE_META[selectedRole];
+        saveSession({ role: selectedRole, username: u, at: Date.now() });
+        sessionPill.textContent = `✅ Sesión: ${meta.icon} ${meta.label} • ${u}`;
+        show("app");
+        toast("Listo. Sesión iniciada.");
+      } else {
+        toast("Usuario o contraseña incorrectos.");
+      }
     }
-  }catch(e){
-    console.error(e);
-    scanStatus.textContent="Error lector";
-  }
 
-  requestAnimationFrame(tickScan);
-}
+    function logout(){
+      clearSession();
+      toast("Sesión cerrada.");
+      goRoles();
+    }
 
-/* Hooks */
-document.getElementById("invScan").onclick=()=>{
-  openScanner("Escanear código (Inventario)", (value)=>{
-    const inv=getArr(LS.inventario);
-    const exists=inv.find(p=>p.code===value);
-    openProductForm(exists? value : null);
-    p_code.value=value;
-    toast("Código: "+value);
-  });
-};
-document.getElementById("scanImei1").onclick=()=>{
-  openScanner("Escanear IMEI 1", (v)=>{ v_imei1.value=v; toast("IMEI 1 listo ✅"); });
-};
-document.getElementById("scanImei2").onclick=()=>{
-  openScanner("Escanear IMEI 2", (v)=>{ v_imei2.value=v; toast("IMEI 2 listo ✅"); });
-};
+    function resetUsers(){
+      localStorage.removeItem(LS.users);
+      ensureUsers();
+      toast("Usuarios por defecto restaurados.");
+    }
 
-/* ===========================
-   FIRMA
-=========================== */
-const sigCanvas = document.getElementById("sigCanvas");
-const sigClearBtn = document.getElementById("sigClear");
-const sigUndoBtn = document.getElementById("sigUndo");
-
-let sigCtx = sigCanvas.getContext("2d");
-let drawing=false;
-let points=[];
-let strokes=[];
-
-function resizeSigCanvas(){
-  const rect = sigCanvas.getBoundingClientRect();
-  const ratio = Math.max(1, window.devicePixelRatio || 1);
-  sigCanvas.width = Math.floor(rect.width * ratio);
-  sigCanvas.height = Math.floor(rect.height * ratio);
-  sigCtx.setTransform(ratio,0,0,ratio,0,0);
-  redrawSignature();
-}
-
-function redrawSignature(){
-  const ctx=sigCtx;
-  ctx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
-  ctx.fillStyle="#000";
-  ctx.fillRect(0,0,sigCanvas.width,sigCanvas.height);
-
-  ctx.strokeStyle="#fff";
-  ctx.lineWidth=3.2;
-  ctx.lineCap="round";
-  ctx.lineJoin="round";
-
-  strokes.forEach(st=>{
-    ctx.beginPath();
-    st.forEach((p,i)=>{
-      if(i===0) ctx.moveTo(p.x,p.y);
-      else ctx.lineTo(p.x,p.y);
+    // Enter para iniciar sesión
+    passInput.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter") doLogin();
     });
-    ctx.stroke();
-  });
-}
+    userInput.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter") passInput.focus();
+    });
 
-function clearSignature(){ strokes=[]; redrawSignature(); }
-function undoSignature(){ strokes.pop(); redrawSignature(); }
-function hasSignature(){ return strokes.length>0 && strokes.some(s=>s.length>2); }
-function signatureDataURL(){ return sigCanvas.toDataURL("image/png"); }
-
-function getPos(e){
-  const rect=sigCanvas.getBoundingClientRect();
-  const touch = e.touches ? e.touches[0] : null;
-  const x = (touch ? touch.clientX : e.clientX) - rect.left;
-  const y = (touch ? touch.clientY : e.clientY) - rect.top;
-  return {x,y};
-}
-
-function startDraw(e){
-  drawing=true;
-  points=[];
-  const p=getPos(e);
-  points.push(p);
-  e.preventDefault?.();
-}
-function moveDraw(e){
-  if(!drawing) return;
-  const p=getPos(e);
-  points.push(p);
-  redrawSignature();
-  sigCtx.strokeStyle="#fff";
-  sigCtx.lineWidth=3.2;
-  sigCtx.beginPath();
-  points.forEach((pt,i)=>{
-    if(i===0) sigCtx.moveTo(pt.x,pt.y);
-    else sigCtx.lineTo(pt.x,pt.y);
-  });
-  sigCtx.stroke();
-  e.preventDefault?.();
-}
-function endDraw(){
-  if(!drawing) return;
-  drawing=false;
-  if(points.length>1) strokes.push(points);
-  points=[];
-  redrawSignature();
-}
-
-sigCanvas.addEventListener("mousedown", startDraw);
-sigCanvas.addEventListener("mousemove", moveDraw);
-window.addEventListener("mouseup", endDraw);
-
-sigCanvas.addEventListener("touchstart", startDraw, {passive:false});
-sigCanvas.addEventListener("touchmove", moveDraw, {passive:false});
-sigCanvas.addEventListener("touchend", endDraw);
-
-sigClearBtn.onclick=()=>{ clearSignature(); toast("Firma borrada"); };
-sigUndoBtn.onclick=()=>{ undoSignature(); toast("Deshacer"); };
-
-window.addEventListener("resize", resizeSigCanvas);
-setTimeout(resizeSigCanvas, 50);
-
-/* ===========================
-   INIT
-=========================== */
-function init(){
-  if(!localStorage.getItem(LS.contOrden)) setNum(LS.contOrden, START_ORDEN);
-  if(!localStorage.getItem(LS.contVenta)) setNum(LS.contVenta, START_VENTA);
-  if(!localStorage.getItem(LS.pin)) setPin(DEFAULT_PIN);
-  if(!localStorage.getItem(LS.session)) setSession(false);
-
-  updateOrdenTag();
-  updateVentaTag();
-  renderOrdenes();
-  renderVentas();
-  renderInv();
-
-  // Si la sesión NO está ok, bloquea
-  if(!sessionOk()){
-    showLock();
-  }else{
-    showHome();
-  }
-}
-init();
-</script>
+    // Auto-restore session
+    (function boot(){
+      const s = loadSession();
+      if(!s || !s.role) return;
+      const meta = ROLE_META[s.role] || { label:"", icon:"✅" };
+      sessionPill.textContent = `✅ Sesión: ${meta.icon} ${meta.label} • ${s.username || ""}`;
+      show("app");
+    })();
+  </script>
 </body>
 </html>
-
-
-
-
