@@ -1,10 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Technology Expert's</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#070B24" />
+  <title>Technology Expert’s</title>
 
   <style>
     :root{
@@ -12,51 +12,38 @@
       --bg1:#060b28;
       --bg2:#070f3a;
 
-      --neonA:#3CF2FF;   /* cian */
-      --neonB:#9D4DFF;   /* morado */
-      --neonC:#3BFF7A;   /* verde */
-      --neonD:#FF3CF0;   /* fucsia */
+      /* Neon Tech (Colores A) */
+      --neonCyan:#3CF2FF;
+      --neonBlue:#4B6BFF;
 
       --txt:#EAF2FF;
-      --muted:rgba(234,242,255,.7);
+      --muted:rgba(234,242,255,.72);
+
       --glass:rgba(255,255,255,.06);
-      --glass2:rgba(255,255,255,.09);
+      --stroke:rgba(255,255,255,.12);
 
       --shadow: 0 18px 55px rgba(0,0,0,.55);
       --radius: 22px;
       --radius2: 16px;
-      --ring: 0 0 0 2px rgba(60,242,255,.25), 0 0 0 6px rgba(157,77,255,.14);
+
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
-    *{ box-sizing:border-box; }
+    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     html,body{ height:100%; }
     body{
       margin:0;
       font-family:var(--font);
       color:var(--txt);
       background:
-        radial-gradient(1200px 800px at 20% 0%, rgba(157,77,255,.20), transparent 55%),
-        radial-gradient(900px 700px at 90% 20%, rgba(60,242,255,.18), transparent 52%),
-        radial-gradient(800px 600px at 30% 100%, rgba(59,255,122,.10), transparent 55%),
+        radial-gradient(1200px 800px at 18% 0%, rgba(75,107,255,.20), transparent 55%),
+        radial-gradient(1000px 700px at 92% 18%, rgba(60,242,255,.18), transparent 52%),
         linear-gradient(180deg, var(--bg0), var(--bg1) 35%, var(--bg2));
       overflow-x:hidden;
+      padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
     }
 
-    /* fondo con “orbes” + scanline suave */
-    .bg-orbs::before, .bg-orbs::after{
-      content:"";
-      position:fixed;
-      inset:-40vh -30vw;
-      pointer-events:none;
-      z-index:-2;
-      background:
-        radial-gradient(300px 240px at 18% 22%, rgba(60,242,255,.24), transparent 65%),
-        radial-gradient(340px 280px at 82% 28%, rgba(157,77,255,.22), transparent 68%),
-        radial-gradient(380px 320px at 52% 80%, rgba(255,60,240,.12), transparent 70%);
-      filter: blur(2px);
-      transform: translateZ(0);
-    }
+    /* scanline suave */
     .scanline{
       position:fixed;
       inset:0;
@@ -67,7 +54,7 @@
         rgba(255,255,255,.03),
         rgba(255,255,255,.03) 1px,
         transparent 1px,
-        transparent 6px
+        transparent 7px
       );
       opacity:.10;
       mix-blend-mode: overlay;
@@ -79,80 +66,65 @@
     }
     @media (prefers-reduced-motion: reduce){
       .scanline{ animation:none; }
-      .float{ animation:none !important; }
+      .roleCard::after{ animation:none; }
+      .btn:hover{ transform:none; }
     }
 
     .wrap{
       max-width: 980px;
       margin: 0 auto;
-      padding: 22px 14px 60px;
     }
 
-    /* Header */
-    .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-top:6px;
-    }
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .brand h1{
-      margin:0;
-      font-size: clamp(30px, 5vw, 46px);
-      letter-spacing: .2px;
-      line-height: 1.0;
-      text-shadow: 0 0 22px rgba(60,242,255,.15), 0 0 28px rgba(157,77,255,.12);
-    }
-    .brand p{
-      margin:0;
-      color:var(--muted);
-      font-size: 14px;
-      line-height:1.25;
-      max-width: 680px;
-    }
-
-    /* tarjetas “app” */
+    /* Panel estilo app */
     .panel{
-      margin-top: 18px;
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.12);
+      border: 1px solid var(--stroke);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
+      backdrop-filter: blur(10px);
     }
     .panel::before{
       content:"";
       position:absolute;
       inset:-2px;
-      background: linear-gradient(90deg, rgba(60,242,255,.18), rgba(157,77,255,.14), rgba(255,60,240,.10));
+      background:
+        radial-gradient(320px 240px at 20% 15%, rgba(60,242,255,.18), transparent 62%),
+        radial-gradient(340px 260px at 80% 20%, rgba(75,107,255,.16), transparent 65%);
       filter: blur(18px);
-      opacity:.55;
+      opacity:.75;
       pointer-events:none;
     }
-    .panel > .inner{
+    .inner{
       position:relative;
       padding: 18px;
     }
 
-    /* Roles grid */
-    .roles-title{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom: 12px;
+    .brandTitle{
+      margin: 6px 0 4px;
+      font-size: clamp(30px, 5vw, 46px);
+      letter-spacing: .2px;
+      line-height: 1.0;
+      text-shadow: 0 0 18px rgba(60,242,255,.18), 0 0 26px rgba(75,107,255,.12);
+      font-weight: 950;
     }
-    .roles-title h2{
+    .sub{
       margin:0;
-      font-size: 18px;
-      letter-spacing:.2px;
+      color:var(--muted);
+      font-size: 14px;
+      line-height: 1.25;
+      font-weight: 750;
     }
+
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+
     .badge{
       font-size: 12px;
       color: rgba(234,242,255,.85);
@@ -161,22 +133,25 @@
       padding: 6px 10px;
       border-radius: 999px;
       backdrop-filter: blur(10px);
+      font-weight: 900;
     }
 
-    .grid{
+    /* Roles grid */
+    .gridRoles{
       display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 12px;
+      margin-top: 14px;
     }
-    @media (max-width: 720px){
-      .grid{ grid-template-columns: 1fr; }
+    @media (max-width: 760px){
+      .gridRoles{ grid-template-columns: 1fr; }
     }
 
-    /* Botón tarjeta neon */
+    /* Tarjeta rol Neon Tech (con SVG + texto abajo) */
     .roleCard{
       appearance:none;
       border: 1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.15));
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.12));
       border-radius: 18px;
       padding: 16px 14px;
       color: var(--txt);
@@ -186,22 +161,22 @@
       overflow:hidden;
       box-shadow: 0 12px 26px rgba(0,0,0,.35);
       transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
-      min-height: 132px;
+      min-height: 148px;
+      text-align:center;
     }
-    .roleCard:focus{ outline:none; box-shadow: var(--shadow), var(--ring); }
-    .roleCard:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.35); }
+    .roleCard:focus{ outline:none; box-shadow: var(--shadow), 0 0 0 2px rgba(60,242,255,.25), 0 0 0 6px rgba(75,107,255,.14); }
+    .roleCard:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.45); box-shadow: 0 16px 34px rgba(0,0,0,.45), 0 0 18px rgba(60,242,255,.12); }
     .roleCard:active{ transform: translateY(0px) scale(.99); }
 
     .roleCard::before{
       content:"";
       position:absolute;
       inset:-2px;
-      background: radial-gradient(280px 170px at 30% 20%, rgba(60,242,255,.22), transparent 62%),
-                  radial-gradient(260px 160px at 80% 30%, rgba(157,77,255,.20), transparent 65%),
-                  radial-gradient(280px 180px at 50% 90%, rgba(255,60,240,.10), transparent 70%);
+      background:
+        radial-gradient(280px 190px at 25% 20%, rgba(60,242,255,.22), transparent 62%),
+        radial-gradient(260px 180px at 80% 30%, rgba(75,107,255,.20), transparent 65%);
       opacity:.9;
       pointer-events:none;
-      transform: translateZ(0);
     }
     .roleCard::after{
       content:"";
@@ -209,8 +184,8 @@
       inset:0;
       background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.10) 40%, transparent 70%);
       transform: translateX(-120%);
-      animation: shine 3.2s ease-in-out infinite;
-      opacity:.45;
+      animation: shine 3.0s ease-in-out infinite;
+      opacity:.35;
       pointer-events:none;
     }
     @keyframes shine{
@@ -219,149 +194,134 @@
       100%{ transform: translateX(120%); }
     }
 
-    .roleContent{
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      text-align:center;
-      min-height: 100%;
-    }
-    .iconBubble{
-      width: 56px;
-      height: 56px;
+    .roleIconWrap{
+      width: 64px;
+      height: 64px;
+      margin: 2px auto 10px;
       border-radius: 18px;
       display:grid;
       place-items:center;
-      background: rgba(255,255,255,.07);
+      background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 0 0 1px rgba(60,242,255,.10), 0 0 22px rgba(60,242,255,.10);
-      font-size: 26px;
+      box-shadow: 0 0 0 1px rgba(60,242,255,.10), 0 0 24px rgba(60,242,255,.10);
+      position:relative;
+    }
+    .roleIconWrap svg{
+      width: 42px;
+      height: 42px;
+      filter: drop-shadow(0 0 10px rgba(60,242,255,.25));
     }
     .roleLabel{
       font-size: 17px;
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing:.2px;
-      text-transform: none;
-      text-shadow: 0 0 14px rgba(60,242,255,.10);
+      margin-top:2px;
+      text-shadow: 0 0 14px rgba(60,242,255,.12);
     }
     .roleHint{
-      margin-top:-4px;
+      margin-top:4px;
       font-size: 12px;
       color: rgba(234,242,255,.75);
+      font-weight: 800;
     }
 
-    /* Login */
-    .row{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .loginBox{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 12px;
-    }
-    @media (max-width: 860px){
-      .loginBox{ grid-template-columns: 1fr; }
-    }
+    /* Cards internas */
     .card{
       background: rgba(0,0,0,.22);
       border: 1px solid rgba(255,255,255,.12);
       border-radius: var(--radius2);
       padding: 14px;
       backdrop-filter: blur(10px);
+      box-shadow: 0 10px 22px rgba(0,0,0,.28);
     }
     .card h3{
       margin: 0 0 10px;
       font-size: 15px;
       letter-spacing:.2px;
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      margin: 10px 0;
-    }
-    label{
-      font-size: 12px;
-      color: rgba(234,242,255,.75);
-    }
-    input{
-      width:100%;
-      background: rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 14px;
-      padding: 12px 12px;
-      color: var(--txt);
-      font-size: 15px;
-      font-weight: 700;
-      outline:none;
-      transition: border-color .12s ease, box-shadow .12s ease;
-    }
-    input:focus{
-      border-color: rgba(60,242,255,.45);
-      box-shadow: var(--ring);
-    }
-    .btnRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-
-    .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-weight: 900;
-      letter-spacing:.2px;
-      color: var(--txt);
-      background: rgba(0,0,0,.50);
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 12px 22px rgba(0,0,0,.35);
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.35); }
-    .btn:active{ transform: translateY(0px) scale(.99); }
-    .btn.primary{
-      background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.28));
-      border-color: rgba(60,242,255,.26);
-      box-shadow: 0 16px 28px rgba(0,0,0,.40), 0 0 26px rgba(60,242,255,.10);
-    }
-    .btn.ghost{
-      background: rgba(255,255,255,.06);
-    }
-
-    .small{
-      font-size: 12px;
-      color: rgba(234,242,255,.75);
-      line-height: 1.25;
+      font-weight: 950;
     }
     .note{
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px dashed rgba(255,255,255,.16);
       background: rgba(0,0,0,.18);
-      color: rgba(234,242,255,.8);
+      color: rgba(234,242,255,.82);
       font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
     }
 
-    /* App area */
+    /* Login layout */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    @media (max-width: 860px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
+    label{
+      font-size: 12px;
+      color: rgba(234,242,255,.75);
+      font-weight: 850;
+    }
+    input, textarea, select{
+      width:100%;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      padding: 12px 12px;
+      color: var(--txt);
+      font-size: 15px;
+      font-weight: 800;
+      outline:none;
+      transition: border-color .12s ease, box-shadow .12s ease;
+    }
+    textarea{ min-height: 110px; resize:vertical; }
+    input::placeholder, textarea::placeholder{ color: rgba(234,242,255,.52); }
+    input:focus, textarea:focus, select:focus{
+      border-color: rgba(60,242,255,.55);
+      box-shadow: 0 0 0 2px rgba(60,242,255,.20), 0 0 0 6px rgba(75,107,255,.12);
+    }
+
+    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+
+    /* Botones Neon Tech (opción 1A) */
+    .btn{
+      appearance:none;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 950;
+      letter-spacing:.2px;
+      color: var(--txt);
+      background: linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.30));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 12px 22px rgba(0,0,0,.35), 0 0 0 1px rgba(60,242,255,.08) inset;
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(60,242,255,.45); box-shadow: 0 16px 30px rgba(0,0,0,.45), 0 0 18px rgba(60,242,255,.14); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+    .btn.primary{
+      border-color: rgba(60,242,255,.26);
+      box-shadow: 0 16px 28px rgba(0,0,0,.45), 0 0 24px rgba(60,242,255,.10);
+    }
+    .btn.ghost{ background: rgba(255,255,255,.06); }
+
+    .small{ font-size:12px; color: rgba(234,242,255,.75); font-weight: 800; line-height:1.25; }
+
+    /* App header */
     .appHeader{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 12px 14px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.12);
@@ -378,7 +338,7 @@
       background: rgba(255,255,255,.06);
       color: rgba(234,242,255,.90);
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
     }
     .menuGrid{
       margin-top: 12px;
@@ -389,14 +349,8 @@
     @media (max-width: 860px){
       .menuGrid{ grid-template-columns: 1fr; }
     }
-    .menuBtn{
-      min-height: 86px;
-      justify-content:center;
-    }
-    .menuBtn .big{
-      font-size: 16px;
-      font-weight: 900;
-    }
+    .menuBtn{ width:100%; justify-content:center; min-height: 86px; }
+
     .hidden{ display:none !important; }
 
     /* Toast */
@@ -418,340 +372,326 @@
       pointer-events:none;
       transition: opacity .18s ease, transform .18s ease;
       z-index: 50;
+      font-weight: 900;
     }
     .toast.show{
       opacity: 1;
       transform: translateX(-50%) translateY(-6px);
     }
-
-    /* flotación suave para tarjetas */
-    .float{
-      animation: float 4.2s ease-in-out infinite;
-    }
-    @keyframes float{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(-4px); }
-    }
   </style>
 </head>
 
-<body class="bg-orbs">
-  <div class="scanline"></div>
+<body>
+<div class="scanline"></div>
 
-  <div class="wrap">
-    <div class="top">
-      <div class="brand">
-        <h1>Technology Expert’s</h1>
-        <p>Ingreso por rol. Todo en un solo archivo (sin servidor por ahora). Diseñado para PC, Android y iPhone.</p>
+<div class="wrap">
+  <section class="panel">
+    <div class="inner">
+      <div class="row" style="align-items:flex-end;">
+        <div>
+          <div class="brandTitle">Technology Expert’s</div>
+          <p class="sub">Selecciona tu rol para ingresar. (Diseño Neon Tech • Opción 1 • Colores A • Animación)</p>
+        </div>
+        <span class="badge">PC • Android • iPhone</span>
       </div>
-    </div>
 
-    <!-- PANTALLA 1: ROLES -->
-    <section id="viewRoles" class="panel">
-      <div class="inner">
-        <div class="roles-title">
-          <h2>¿Quién va a ingresar?</h2>
-          <span class="badge">Neon Tech • Opción 1A</span>
+      <!-- VIEW: ROLES -->
+      <div id="viewRoles">
+        <div class="gridRoles">
+          <!-- ADMIN -->
+          <button class="roleCard" type="button" onclick="pickRole('admin')" aria-label="Ingresar como Administrador">
+            <div class="roleIconWrap" aria-hidden="true">
+              <!-- Neon Tech SVG: Shield + check -->
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"
+                      stroke="rgba(60,242,255,.95)" stroke-width="2" />
+                <path d="M9 12l2 2 4-5"
+                      stroke="rgba(75,107,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="roleLabel">Administrador</div>
+            <div class="roleHint">Control total • Exportar • Borrar</div>
+          </button>
+
+          <!-- VENTAS (el estilo que acordamos: Neon Tech, no tarjeta genérica) -->
+          <button class="roleCard" type="button" onclick="pickRole('ventas')" aria-label="Ingresar como Ventas">
+            <div class="roleIconWrap" aria-hidden="true">
+              <!-- Neon Tech SVG: POS / Receipt -->
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 3h10v18l-2-1-2 1-2-1-2 1-2-1-2 1V3z"
+                      stroke="rgba(60,242,255,.95)" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M9 7h6M9 10h6M9 13h4"
+                      stroke="rgba(75,107,255,.95)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="roleLabel">Ventas</div>
+            <div class="roleHint">Facturar • IMEI • Tickets</div>
+          </button>
+
+          <!-- TÉCNICO -->
+          <button class="roleCard" type="button" onclick="pickRole('tecnico')" aria-label="Ingresar como Técnico">
+            <div class="roleIconWrap" aria-hidden="true">
+              <!-- Neon Tech SVG: Wrench -->
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14 7a4 4 0 11-6 3l-5 5 2 2 2-2 1 1-2 2 2 2 5-5a4 4 0 006-3 4 4 0 00-5-5z"
+                      stroke="rgba(60,242,255,.95)" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M8 10l6 6"
+                      stroke="rgba(75,107,255,.95)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="roleLabel">Técnico</div>
+            <div class="roleHint">Órdenes • Firma • Checklist</div>
+          </button>
         </div>
 
-        <div class="grid">
-          <button class="roleCard float" onclick="pickRole('admin')" aria-label="Ingresar como Administrador">
-            <div class="roleContent">
-              <div class="iconBubble">🛡️</div>
-              <div class="roleLabel">Administrador</div>
-              <div class="roleHint">Configuración • Exportar • Control</div>
-            </div>
-          </button>
-
-          <button class="roleCard float" style="animation-delay:.2s" onclick="pickRole('ventas')" aria-label="Ingresar como Ventas">
-            <div class="roleContent">
-              <div class="iconBubble">💳</div>
-              <div class="roleLabel">Ventas</div>
-              <div class="roleHint">Registrar ventas • IMEI • Tickets</div>
-            </div>
-          </button>
-
-          <button class="roleCard float" style="animation-delay:.35s" onclick="pickRole('tecnico')" aria-label="Ingresar como Técnico">
-            <div class="roleContent">
-              <div class="iconBubble">🛠️</div>
-              <div class="roleLabel">Técnico</div>
-              <div class="roleHint">Órdenes • Firma • Diagnóstico</div>
-            </div>
-          </button>
-        </div>
-
-        <div class="loginBox">
+        <div class="grid2">
           <div class="card">
             <h3>Acceso con usuario y contraseña</h3>
             <div class="note">
-              Si quieres, después agregamos: “Crear usuarios”, “Cambiar contraseñas”, y bloqueo por intentos (sin servidor).
-            </div>
-            <div class="small" style="margin-top:10px">
-              Tip: en iPhone/Android esto queda tipo “app” si lo agregas a pantalla de inicio.
+              Por defecto:<br>
+              Admin: <b>admin</b> / <b>admin123</b><br>
+              Ventas: <b>ventas</b> / <b>ventas123</b><br>
+              Técnico: <b>tecnico</b> / <b>tecnico123</b><br><br>
+              (Luego te pongo un panel para que el Admin cambie usuarios/contraseñas sin tocar código.)
             </div>
           </div>
 
           <div class="card">
-            <h3>Usuarios por defecto</h3>
+            <h3>Recomendación en celular</h3>
             <div class="small">
-              Admin: <b>admin</b> / <b>admin123</b><br/>
-              Ventas: <b>ventas</b> / <b>ventas123</b><br/>
-              Técnico: <b>tecnico</b> / <b>tecnico123</b>
+              Si lo quieres como “app” en iPhone/Android: abre en Chrome/Safari y usa “Agregar a pantalla de inicio”.
             </div>
-            <div class="btnRow" style="margin-top:12px">
-              <button class="btn ghost" onclick="resetUsers()">♻️ Restaurar usuarios</button>
+            <div class="btnRow" style="margin-top:12px;">
+              <button class="btn ghost" type="button" onclick="resetUsers()">♻️ Restaurar usuarios</button>
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- PANTALLA 2: LOGIN -->
-    <section id="viewLogin" class="panel hidden">
-      <div class="inner">
-        <div class="roles-title">
-          <h2 id="loginTitle">Ingresar</h2>
+      <!-- VIEW: LOGIN -->
+      <div id="viewLogin" class="hidden">
+        <div class="row" style="margin-top:14px;">
+          <div>
+            <div style="font-weight:950; font-size:18px;" id="loginTitle">Ingresar</div>
+            <div class="small" id="loginHint">—</div>
+          </div>
           <span class="badge" id="roleBadge">Rol</span>
         </div>
 
-        <div class="loginBox">
+        <div class="grid2">
           <div class="card">
             <h3>Credenciales</h3>
-
-            <div class="field">
-              <label for="user">Usuario</label>
-              <input id="user" autocomplete="username" placeholder="Escribe tu usuario" />
-            </div>
-
-            <div class="field">
-              <label for="pass">Contraseña</label>
-              <input id="pass" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña" />
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div>
+                <label for="user">Usuario</label>
+                <input id="user" autocomplete="username" placeholder="Escribe tu usuario" />
+              </div>
+              <div>
+                <label for="pass">Contraseña</label>
+                <input id="pass" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña" />
+              </div>
             </div>
 
             <div class="btnRow">
-              <button class="btn primary" onclick="doLogin()">🔓 Entrar</button>
-              <button class="btn ghost" onclick="goRoles()">⬅️ Volver</button>
+              <button class="btn primary" type="button" onclick="doLogin()">🔓 Entrar</button>
+              <button class="btn ghost" type="button" onclick="goRoles()">⬅️ Volver</button>
             </div>
 
-            <div class="small" style="margin-top:10px">
-              Si la contraseña está mal, no entra. (Luego le metemos seguridad extra).
+            <div class="small" style="margin-top:10px;">
+              Enter en el teclado = entrar.
             </div>
           </div>
 
           <div class="card">
-            <h3>Consejo rápido</h3>
+            <h3>Seguridad</h3>
             <div class="note">
-              Si estás en el celular: para evitar que el teclado tape campos,
-              usamos diseño compacto y botones grandes.
-            </div>
-            <div class="small" style="margin-top:10px">
-              ¿Quieres que al entrar muestre un “panel” distinto según rol? (Admin vs Ventas vs Técnico).
-              Ya está listo para eso.
+              Aquí luego activamos (si quieres): bloqueo por intentos, PIN rápido, y permisos por rol.
+              Todo sin depender de servidor.
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- PANTALLA 3: APP (placeholder, luego conectamos órdenes/ventas/inventario) -->
-    <section id="viewApp" class="panel hidden">
-      <div class="inner">
+      <!-- VIEW: APP HOME -->
+      <div id="viewApp" class="hidden">
         <div class="appHeader">
           <div class="pill" id="sessionPill">✅ Sesión</div>
-          <div class="btnRow" style="margin:0">
-            <button class="btn ghost" onclick="logout()">🚪 Salir</button>
+          <div class="btnRow" style="margin:0;">
+            <button class="btn ghost" type="button" onclick="logout()">🚪 Salir</button>
           </div>
         </div>
 
         <div class="menuGrid">
-          <button class="btn primary menuBtn" onclick="toast('Aquí entraremos a Orden de Servicio (modo Técnico).')">
-            <span class="big">🧾 Orden de servicio</span>
+          <button class="btn primary menuBtn" type="button" onclick="toast('Siguiente: conectamos Orden de Servicio con firma obligatoria.')">
+            🧾 Orden de servicio
           </button>
 
-          <button class="btn primary menuBtn" onclick="toast('Aquí entraremos a Ventas (IMEI 1/2 + términos).')">
-            <span class="big">💳 Ventas</span>
+          <button class="btn primary menuBtn" type="button" onclick="toast('Siguiente: conectamos Ventas con IMEI 1/2 y términos.')">
+            💳 Ventas
           </button>
 
-          <button class="btn primary menuBtn" onclick="toast('Aquí entraremos a Inventario (barcode/QR + foto opcional).')">
-            <span class="big">📦 Inventario</span>
+          <button class="btn primary menuBtn" type="button" onclick="toast('Siguiente: conectamos Inventario con escáner y foto opcional.')">
+            📦 Inventario
           </button>
         </div>
 
-        <div style="margin-top:12px" class="card">
-          <h3>Lo siguiente que hacemos (ya con sesión)</h3>
+        <div style="margin-top:12px;" class="card">
+          <h3>Confirmación de diseño</h3>
           <div class="small">
-            1) Que TODO (botones/campos) siga este estilo Neon Tech en Órdenes/Ventas/Inventario. <br/>
-            2) Scanner con cámara (barcode + QR) sin depender de internet. <br/>
-            3) Numeración ascendente: OS desde 2100+, Ventas desde 315+. <br/>
-            4) Firma obligatoria en Orden de Servicio. <br/>
+            Ya quedó el inicio con íconos Neon Tech (SVG) + texto abajo.<br>
+            Si en tu celular todavía ves algo viejo: borra caché del navegador o recarga fuerte (Android: mantener recargar / iPhone: cerrar pestaña y abrir de nuevo).
           </div>
         </div>
       </div>
-    </section>
-  </div>
 
-  <div id="toast" class="toast"></div>
+    </div>
+  </section>
+</div>
 
-  <script>
-    // =========================
-    //  CONFIG / STORAGE
-    // =========================
-    const LS = {
-      users: "te_users_v1",
-      session: "te_session_v1"
+<div id="toast" class="toast"></div>
+
+<script>
+  const LS = {
+    users: "te_users_v2",
+    session: "te_session_v2"
+  };
+
+  const ROLE_META = {
+    admin:  { label:"Administrador", hint:"Control total" },
+    ventas: { label:"Ventas",        hint:"Facturar y ventas" },
+    tecnico:{ label:"Técnico",       hint:"Órdenes y reparación" }
+  };
+
+  function loadUsers(){
+    const raw = localStorage.getItem(LS.users);
+    if(!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+  }
+  function saveUsers(u){ localStorage.setItem(LS.users, JSON.stringify(u)); }
+  function ensureUsers(){
+    let u = loadUsers();
+    if(u) return u;
+    u = {
+      admin:  { username:"admin",   password:"admin123" },
+      ventas: { username:"ventas",  password:"ventas123" },
+      tecnico:{ username:"tecnico", password:"tecnico123" }
     };
-
-    const ROLE_META = {
-      admin:  { label:"Administrador", icon:"🛡️" },
-      ventas: { label:"Ventas",        icon:"💳" },
-      tecnico:{ label:"Técnico",       icon:"🛠️" }
-    };
-
-    function loadUsers(){
-      const raw = localStorage.getItem(LS.users);
-      if(!raw) return null;
-      try { return JSON.parse(raw); } catch { return null; }
-    }
-    function saveUsers(u){
-      localStorage.setItem(LS.users, JSON.stringify(u));
-    }
-    function ensureUsers(){
-      let u = loadUsers();
-      if(u) return u;
-      u = {
-        admin:  { username:"admin",   password:"admin123" },
-        ventas: { username:"ventas",  password:"ventas123" },
-        tecnico:{ username:"tecnico", password:"tecnico123" }
-      };
-      saveUsers(u);
-      return u;
-    }
-
-    function saveSession(session){
-      localStorage.setItem(LS.session, JSON.stringify(session));
-    }
-    function loadSession(){
-      const raw = localStorage.getItem(LS.session);
-      if(!raw) return null;
-      try { return JSON.parse(raw); } catch { return null; }
-    }
-    function clearSession(){
-      localStorage.removeItem(LS.session);
-    }
-
-    // =========================
-    //  UI HELPERS
-    // =========================
-    const viewRoles = document.getElementById("viewRoles");
-    const viewLogin = document.getElementById("viewLogin");
-    const viewApp   = document.getElementById("viewApp");
-
-    const loginTitle = document.getElementById("loginTitle");
-    const roleBadge  = document.getElementById("roleBadge");
-    const sessionPill= document.getElementById("sessionPill");
-
-    const userInput = document.getElementById("user");
-    const passInput = document.getElementById("pass");
-
-    let selectedRole = null;
-
-    function show(which){
-      viewRoles.classList.toggle("hidden", which !== "roles");
-      viewLogin.classList.toggle("hidden", which !== "login");
-      viewApp.classList.toggle("hidden",   which !== "app");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function toast(msg){
-      const el = document.getElementById("toast");
-      el.textContent = msg;
-      el.classList.add("show");
-      clearTimeout(window.__t);
-      window.__t = setTimeout(()=>el.classList.remove("show"), 2400);
-    }
-
-    // =========================
-    //  FLOW
-    // =========================
+    saveUsers(u);
+    return u;
+  }
+  function resetUsers(){
+    localStorage.removeItem(LS.users);
     ensureUsers();
+    toast("Usuarios por defecto restaurados ✅");
+  }
 
-    function pickRole(role){
-      selectedRole = role;
-      const meta = ROLE_META[role] || { label:"Acceso", icon:"🔐" };
-      loginTitle.textContent = `Ingresar • ${meta.label}`;
-      roleBadge.textContent = `${meta.icon} ${meta.label}`;
-      userInput.value = "";
-      passInput.value = "";
-      show("login");
-      setTimeout(()=>userInput.focus(), 50);
-    }
+  function saveSession(session){ localStorage.setItem(LS.session, JSON.stringify(session)); }
+  function loadSession(){
+    const raw = localStorage.getItem(LS.session);
+    if(!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+  }
+  function clearSession(){ localStorage.removeItem(LS.session); }
 
-    function goRoles(){
-      selectedRole = null;
+  const viewRoles = document.getElementById("viewRoles");
+  const viewLogin = document.getElementById("viewLogin");
+  const viewApp   = document.getElementById("viewApp");
+
+  const loginTitle = document.getElementById("loginTitle");
+  const loginHint  = document.getElementById("loginHint");
+  const roleBadge  = document.getElementById("roleBadge");
+  const sessionPill= document.getElementById("sessionPill");
+
+  const userInput = document.getElementById("user");
+  const passInput = document.getElementById("pass");
+
+  let selectedRole = null;
+
+  function show(which){
+    viewRoles.classList.toggle("hidden", which !== "roles");
+    viewLogin.classList.toggle("hidden", which !== "login");
+    viewApp.classList.toggle("hidden",   which !== "app");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function toast(msg){
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(window.__t);
+    window.__t = setTimeout(()=>el.classList.remove("show"), 2400);
+  }
+
+  function pickRole(role){
+    ensureUsers();
+    selectedRole = role;
+    const meta = ROLE_META[role] || { label:"Acceso", hint:"" };
+    loginTitle.textContent = `Ingresar • ${meta.label}`;
+    loginHint.textContent = meta.hint || "";
+    roleBadge.textContent = meta.label;
+    userInput.value = "";
+    passInput.value = "";
+    show("login");
+    setTimeout(()=>userInput.focus(), 60);
+  }
+
+  function goRoles(){
+    selectedRole = null;
+    show("roles");
+  }
+
+  function doLogin(){
+    const users = ensureUsers();
+    if(!selectedRole){
+      toast("Primero elige un rol.");
       show("roles");
+      return;
     }
-
-    function doLogin(){
-      const users = ensureUsers();
-      if(!selectedRole){
-        toast("Primero elige un rol.");
-        show("roles");
-        return;
-      }
-
-      const u = (userInput.value || "").trim();
-      const p = (passInput.value || "").trim();
-      if(!u || !p){
-        toast("Completa usuario y contraseña.");
-        return;
-      }
-
-      // Validación: el rol exige sus credenciales
-      const ref = users[selectedRole];
-      if(!ref){
-        toast("Rol inválido.");
-        return;
-      }
-
-      if(u === ref.username && p === ref.password){
-        const meta = ROLE_META[selectedRole];
-        saveSession({ role: selectedRole, username: u, at: Date.now() });
-        sessionPill.textContent = `✅ Sesión: ${meta.icon} ${meta.label} • ${u}`;
-        show("app");
-        toast("Listo. Sesión iniciada.");
-      } else {
-        toast("Usuario o contraseña incorrectos.");
-      }
+    const u = (userInput.value || "").trim();
+    const p = (passInput.value || "").trim();
+    if(!u || !p){
+      toast("Completa usuario y contraseña.");
+      return;
     }
-
-    function logout(){
-      clearSession();
-      toast("Sesión cerrada.");
-      goRoles();
+    const ref = users[selectedRole];
+    if(!ref){
+      toast("Rol inválido.");
+      return;
     }
-
-    function resetUsers(){
-      localStorage.removeItem(LS.users);
-      ensureUsers();
-      toast("Usuarios por defecto restaurados.");
-    }
-
-    // Enter para iniciar sesión
-    passInput.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter") doLogin();
-    });
-    userInput.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter") passInput.focus();
-    });
-
-    // Auto-restore session
-    (function boot(){
-      const s = loadSession();
-      if(!s || !s.role) return;
-      const meta = ROLE_META[s.role] || { label:"", icon:"✅" };
-      sessionPill.textContent = `✅ Sesión: ${meta.icon} ${meta.label} • ${s.username || ""}`;
+    if(u === ref.username && p === ref.password){
+      saveSession({ role: selectedRole, username: u, at: Date.now() });
+      const meta = ROLE_META[selectedRole];
+      sessionPill.textContent = `✅ Sesión: ${meta.label} • ${u}`;
       show("app");
-    })();
-  </script>
+      toast("Sesión iniciada ✅");
+    } else {
+      toast("Usuario o contraseña incorrectos.");
+    }
+  }
+
+  function logout(){
+    clearSession();
+    toast("Sesión cerrada.");
+    goRoles();
+  }
+
+  // Enter para iniciar sesión
+  passInput.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter") doLogin();
+  });
+  userInput.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter") passInput.focus();
+  });
+
+  // Boot
+  (function boot(){
+    ensureUsers();
+    const s = loadSession();
+    if(!s || !s.role) return;
+    const meta = ROLE_META[s.role] || { label:"Usuario" };
+    sessionPill.textContent = `✅ Sesión: ${meta.label} • ${s.username || ""}`;
+    show("app");
+  })();
+</script>
 </body>
 </html>
