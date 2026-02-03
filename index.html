@@ -2,315 +2,230 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Technology Expert’s</title>
+
+  <!-- ZXing: cámara para QR + códigos de barras 1D -->
+  <script src="https://unpkg.com/@zxing/browser@0.1.5/umd/index.min.js"></script>
+  <!-- QR generator (para imprimir/etiqueta) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <style>
     :root{
-      --blue1:#0b2dff; /* azul rey */
+      --blue1:#0b2dff;
       --blue2:#001b8f;
-      --black:#0b0b0b;
+      --black:#000000;
       --white:#ffffff;
-      --card: rgba(255,255,255,.10);
+      --glass: rgba(255,255,255,.10);
       --stroke: rgba(255,255,255,.18);
-      --shadow: 0 18px 40px rgba(0,0,0,.20);
+      --shadow: 0 18px 40px rgba(0,0,0,.22);
+      --radius: 22px;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.14), transparent 60%),
-                  radial-gradient(900px 520px at 80% 30%, rgba(255,255,255,.10), transparent 55%),
-                  linear-gradient(180deg, var(--blue1), var(--blue2));
-      color: var(--white);
+      color:var(--white);
       min-height:100vh;
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(900px 520px at 80% 30%, rgba(255,255,255,.10), transparent 55%),
+        linear-gradient(180deg, var(--blue1), var(--blue2));
     }
 
-    .wrap{
-      width: min(980px, 92vw);
-      margin: 0 auto;
-      padding: 26px 0 40px;
-    }
-
-    .hero{
-      padding: 26px 18px 18px;
-    }
+    .wrap{width:min(980px,92vw); margin:0 auto; padding:26px 0 42px;}
+    .hero{padding:22px 16px 16px;}
     .brand{
-      font-size: 44px;
-      line-height: 1.05;
-      font-weight: 900;
-      letter-spacing: .2px;
       margin:0 0 6px;
-      text-shadow: 0 10px 30px rgba(0,0,0,.20);
+      font-size:44px; line-height:1.05;
+      font-weight:900;
+      letter-spacing:.2px;
+      text-shadow:0 10px 30px rgba(0,0,0,.20);
     }
-    .subtitle{
-      margin:0;
-      opacity:.92;
-      font-weight: 700;
-      font-size: 15px;
-    }
+    .subtitle{margin:0; opacity:.93; font-weight:800; font-size:15px;}
 
     .glass{
-      margin-top: 16px;
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      border-radius: 22px;
-      padding: 14px;
-      box-shadow: var(--shadow);
+      margin-top:14px;
+      background:var(--glass);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:var(--shadow);
       backdrop-filter: blur(10px);
     }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .panel{
+      margin-top:16px;
+      background: rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:var(--radius);
+      padding:16px;
     }
+    .panel h2{margin:0 0 8px; font-size:28px; font-weight:900;}
+    .panel h3{margin:16px 0 10px; font-size:18px; font-weight:900;}
+    .hidden{display:none !important;}
 
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:12px;}
+    @media (max-width:600px){ .grid2{grid-template-columns:1fr;} .brand{font-size:38px;} }
+
+    /* BOTONES: negros + letras blancas en negrilla */
     .btn{
-      width: 100%;
-      border: 0;
-      border-radius: 16px;
-      padding: 14px 14px;
+      width:100%;
+      border:0;
+      border-radius:16px;
+      padding:14px 14px;
       background: var(--black);
       color: var(--white);
-      font-weight: 900;
-      font-size: 16px;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+      user-select:none;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-      cursor:pointer;
-      user-select:none;
       box-shadow: 0 10px 26px rgba(0,0,0,.18);
     }
-    .btn:active{ transform: scale(.99); }
+    .btn:active{transform:scale(.99);}
     .btn.secondary{
       background: rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.20);
-    }
-    .btn.small{
-      border-radius: 999px;
-      padding: 10px 12px;
-      font-size: 13px;
-      justify-content: center;
+      border:1px solid rgba(255,255,255,.22);
       box-shadow:none;
-      border: 1px solid rgba(255,255,255,.20);
-      background: rgba(0,0,0,.25);
     }
     .btn.row{
-      justify-content: space-between;
-      padding: 16px 18px;
-      font-size: 17px;
-      border-radius: 18px;
+      justify-content:space-between;
+      padding:16px 18px;
+      border-radius:18px;
+      font-size:17px;
     }
+    .btn.small{
+      padding:10px 12px;
+      font-size:13px;
+      border-radius:999px;
+      box-shadow:none;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.30);
+      justify-content:center;
+    }
+    .btn.danger{background:#b00000;}
 
-    .pillRow{
-      display:flex;
-      gap:10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .sectionTitle{
-      font-weight: 900;
-      font-size: 18px;
-      margin: 0 0 10px;
-    }
-
-    .hidden{ display:none !important; }
-
-    .panel{
-      margin-top: 16px;
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 22px;
-      padding: 16px;
-    }
-
-    .panel h2{
-      margin: 0 0 8px;
-      font-size: 28px;
-      font-weight: 900;
-    }
-    .panel h3{
-      margin: 16px 0 10px;
-      font-size: 18px;
-      font-weight: 900;
-    }
+    .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+    .actionsRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
 
     .badgeNum{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
+      padding:10px 12px;
+      border-radius:14px;
       background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.20);
-      font-weight: 900;
-      margin: 10px 0 4px;
+      border:1px solid rgba(255,255,255,.20);
+      font-weight:900;
+      margin:10px 0 4px;
     }
-    .bigNum{
-      font-size: 20px;
-      letter-spacing: .4px;
-    }
+    .bigNum{font-size:20px; letter-spacing:.4px;}
 
-    .inputs{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    input, textarea, select{
+    .inputs{display:grid; grid-template-columns:1fr; gap:10px;}
+    .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    @media (max-width:600px){ .row2{grid-template-columns:1fr;} }
+
+    input,textarea,select{
       width:100%;
-      padding: 14px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.22);
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.10);
-      color: #fff;
-      font-weight: 800;
-      outline: none;
-      font-size: 15px;
+      color:#fff;
+      font-weight:900;
+      outline:none;
+      font-size:15px;
     }
-    textarea{ min-height: 86px; resize: vertical; }
-    input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.80); font-weight: 800; }
-    label.smallNote{
-      display:block;
-      margin-top: 6px;
-      opacity:.9;
-      font-weight: 700;
-      font-size: 13px;
-    }
+    textarea{min-height:86px; resize:vertical;}
+    input::placeholder,textarea::placeholder{color:rgba(255,255,255,.82); font-weight:900;}
 
-    .row2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 600px){
-      .grid2{ grid-template-columns:1fr; }
-      .row2{ grid-template-columns:1fr; }
-      .brand{ font-size: 38px; }
-    }
-
-    .actionsRow{
-      display:flex;
-      gap:10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .list{
-      margin-top: 10px;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-    }
     .card{
       background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 18px;
-      padding: 14px;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:18px;
+      padding:14px;
     }
-    .card .title{
-      font-weight: 900;
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-    .kv{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 2px;
-      font-weight: 800;
-      opacity: .98;
-    }
-    .muted{ opacity: .9; font-weight: 800; }
+    .title{font-weight:900; font-size:16px; margin-bottom:6px;}
+    .kv{display:grid; grid-template-columns:1fr; gap:2px; font-weight:900; opacity:.98;}
+    .muted{opacity:.9; font-weight:900;}
 
     .sigBox{
       background: rgba(255,255,255,.08);
-      border: 2px dashed rgba(255,255,255,.35);
-      border-radius: 16px;
+      border:2px dashed rgba(255,255,255,.35);
+      border-radius:16px;
       overflow:hidden;
     }
-    canvas{
-      width:100%;
-      height: 180px;
-      display:block;
-      background: rgba(0,0,0,.08);
-      touch-action: none;
-    }
+    canvas{width:100%; height:180px; display:block; background:rgba(0,0,0,.08); touch-action:none;}
 
-    .danger{
-      background:#c20000;
-    }
-
+    /* QR output */
     .qrBox{
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 16px;
+      margin-top:10px;
+      padding:10px;
+      border-radius:16px;
       background: rgba(0,0,0,.20);
-      border: 1px solid rgba(255,255,255,.20);
+      border:1px solid rgba(255,255,255,.20);
       display:flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .qrRow{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-      justify-content: space-between;
-    }
-    .qrImg{
-      background:#fff;
-      border-radius: 12px;
-      padding: 8px;
-      width: 220px;
-      max-width: 100%;
-    }
-    .qrImg svg{ width:100%; height:auto; display:block; }
-
-    .searchBox{
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
-    }
-    .tip{
-      margin-top: 6px;
-      font-weight: 800;
-      opacity: .9;
-      font-size: 13px;
-    }
-
-    .tabbar{
-      margin-top: 12px;
-      display:flex;
+      flex-direction:column;
       gap:10px;
-      flex-wrap: wrap;
     }
-    .tabbtn{
-      flex: 1;
-      min-width: 180px;
+    .qrRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;}
+    .qrImg{background:#fff; border-radius:12px; padding:8px; width:220px; max-width:100%;}
+    .qrImg canvas{width:100% !important; height:auto !important; background:#fff !important;}
+
+    /* Modal scanner */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      z-index:9999;
     }
-    .tabbtn.active{
-      outline: 2px solid rgba(255,255,255,.35);
+    .modal.active{display:flex;}
+    .modalCard{
+      width:min(520px, 96vw);
+      background:#fff;
+      color:#0b1220;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
     }
+    .modalTop{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 14px;
+      font-weight:900;
+      background:#f3f4f6;
+    }
+    .xBtn{
+      border:0;
+      border-radius:12px;
+      padding:8px 10px;
+      font-weight:900;
+      cursor:pointer;
+      background:#e5e7eb;
+    }
+    .modalBody{padding:12px 14px;}
+    video{width:100%; border-radius:14px; background:#000;}
 
     .toast{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 18px;
-      background: rgba(0,0,0,.80);
+      position:fixed;
+      left:50%; transform:translateX(-50%);
+      bottom:18px;
+      background: rgba(0,0,0,.85);
       color:#fff;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      font-weight: 800;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      font-weight:900;
       display:none;
-      z-index: 99;
-      max-width: 92vw;
+      z-index:99999;
+      max-width:92vw;
+      text-align:center;
     }
   </style>
 </head>
@@ -319,79 +234,76 @@
   <div class="wrap">
     <div class="hero">
       <h1 class="brand">Technology Expert’s</h1>
-      <p class="subtitle">Órdenes + ventas. Sin servidores (por ahora). Exporta CSV y Backup JSON para la PC.</p>
+      <p class="subtitle">Órdenes + Ventas + Inventario. Todo en un solo archivo. Sin servidor (por ahora).</p>
 
+      <!-- HOME -->
       <div id="home" class="glass">
         <div class="grid2">
           <button class="btn row" id="goOrden">🧾 <span>Orden de servicio</span> <span>›</span></button>
-          <button class="btn row secondary" id="goVentas">💳 <span>Ventas</span> <span>›</span></button>
+          <button class="btn row" id="goVentas">💳 <span>Ventas</span> <span>›</span></button>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn row" id="goInventario">📦 <span>Inventario</span> <span>›</span></button>
         </div>
 
         <div class="pillRow">
           <button class="btn small" id="adminBtn">🔒 Admin PIN</button>
-          <button class="btn small" id="scanBtn">📷 Escanear (QR / Barras)</button>
+          <button class="btn small" id="openScannerHome">📷 Escanear (QR / Barras)</button>
+          <button class="btn small" id="backupBtn">📦 Backup JSON</button>
           <button class="btn small" id="exportOrdenCsv">⬇️ CSV Órdenes</button>
           <button class="btn small" id="exportVentaCsv">⬇️ CSV Ventas</button>
-          <button class="btn small" id="backupBtn">📦 Backup JSON</button>
-          <button class="btn small" id="importBtn">📥 Importar Backup</button>
+          <button class="btn small" id="exportInvCsv">⬇️ CSV Inventario</button>
         </div>
 
-        <div class="searchBox">
-          <input id="globalSearch" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, modelo, IMEI..." />
-          <div class="tip">Tip: escribe “2100” (orden) o un IMEI y te lo filtra.</div>
+        <div class="card" style="margin-top:12px">
+          <div class="title">Búsqueda rápida</div>
+          <input id="globalSearch" placeholder="Buscar por #, nombre, cédula, tel, correo, marca, IMEI, código producto..." />
         </div>
       </div>
 
+      <!-- RESULTS -->
       <div id="resultsPanel" class="panel hidden">
-        <h2>Resultados</h2>
         <div class="actionsRow">
-          <button class="btn small" id="backHome1">⬅️ Volver</button>
-          <button class="btn small danger" id="clearSearch">🧹 Limpiar búsqueda</button>
+          <button class="btn small" id="backHomeResults">⬅️ Inicio</button>
+          <button class="btn small danger" id="clearSearch">🧹 Limpiar</button>
         </div>
-        <div id="resultsList" class="list"></div>
+        <h2>Resultados</h2>
+        <div id="resultsList" class="kv"></div>
       </div>
-
-      <!-- ORDEN -->
+       <!-- ORDEN -->
       <div id="ordenPanel" class="panel hidden">
         <div class="actionsRow">
-          <button class="btn small" id="backHome2">⬅️ Inicio</button>
-          <button class="btn small secondary" id="ordenNueva">🆕 Nueva orden (limpiar)</button>
+          <button class="btn small" id="backHomeOrden">⬅️ Inicio</button>
+          <button class="btn small secondary" id="ordenNueva">🆕 Nueva orden</button>
         </div>
 
         <h2>Orden de Servicio</h2>
-        <div class="badgeNum">
-          <span>🧾 Número:</span>
-          <span class="bigNum" id="ordenNumLabel">#----</span>
-        </div>
+        <div class="badgeNum"><span>🧾 Número:</span> <span class="bigNum" id="ordenNumLabel">#----</span></div>
 
         <h3>Datos del cliente</h3>
         <div class="inputs">
           <input id="o_cliente" placeholder="Nombre del cliente" autocomplete="name" />
           <div class="row2">
             <input id="o_cedula" placeholder="Cédula" inputmode="numeric" />
-            <input id="o_tel" placeholder="Celular" inputmode="tel" autocomplete="tel" />
+            <input id="o_tel" placeholder="Celular" inputmode="tel" />
           </div>
-
           <input id="o_correo" placeholder="Correo electrónico" autocomplete="email" list="emailDomains" />
           <datalist id="emailDomains"></datalist>
         </div>
 
         <h3>Equipo</h3>
         <div class="inputs">
-          <input id="o_marca" placeholder="Marca del celular" list="brandList" />
+          <input id="o_marca" placeholder="Marca (Samsung, Xiaomi, iPhone...)" list="brandList" />
           <datalist id="brandList"></datalist>
-
-          <input id="o_modelo" placeholder="Modelo del celular" />
+          <input id="o_modelo" placeholder="Modelo (ej: A21s, Redmi Note 12...)" />
           <textarea id="o_falla" placeholder="Falla reportada"></textarea>
         </div>
 
         <h3>Firma del cliente (OBLIGATORIA)</h3>
-        <label class="smallNote">Firma con el dedo. Si no firmas, NO deja guardar.</label>
-        <div class="sigBox">
-          <canvas id="sigCanvas"></canvas>
-        </div>
+        <div class="sigBox"><canvas id="sigCanvas"></canvas></div>
         <div class="actionsRow">
-          <button class="btn secondary" id="clearSig">🧼 Borrar firma</button>
+          <button class="btn small secondary" id="clearSig">🧼 Borrar firma</button>
           <button class="btn" id="guardarOrden">💾 Guardar orden</button>
         </div>
 
@@ -404,200 +316,250 @@
         </div>
 
         <h3>Órdenes guardadas</h3>
-        <div id="ordenList" class="list"></div>
+        <input id="o_search" placeholder="Buscar orden..." />
+        <div id="ordenList" class="kv" style="margin-top:10px"></div>
       </div>
 
       <!-- VENTAS -->
       <div id="ventaPanel" class="panel hidden">
         <div class="actionsRow">
-          <button class="btn small" id="backHome3">⬅️ Inicio</button>
-          <button class="btn small secondary" id="ventaNueva">🆕 Nueva venta (limpiar)</button>
+          <button class="btn small" id="backHomeVenta">⬅️ Inicio</button>
+          <button class="btn small secondary" id="ventaNueva">🆕 Nueva venta</button>
         </div>
 
         <h2>Ventas</h2>
-        <div class="badgeNum">
-          <span>💳 Número:</span>
-          <span class="bigNum" id="ventaNumLabel">#----</span>
+        <div class="badgeNum"><span>💳 Número:</span> <span class="bigNum" id="ventaNumLabel">#----</span></div>
+
+        <h3>Cliente</h3>
+        <div class="inputs">
+          <input id="v_cliente" placeholder="Nombre del cliente" autocomplete="name" />
+          <div class="row2">
+            <input id="v_cedula" placeholder="Cédula" inputmode="numeric" />
+            <input id="v_tel" placeholder="Celular" inputmode="tel" />
+          </div>
         </div>
 
-        <div class="tabbar">
-          <button class="btn tabbtn active" id="tabVentaForm">📝 Nueva venta</button>
-          <button class="btn tabbtn secondary" id="tabVentaList">📚 Ver ventas</button>
-        </div>
+        <h3>Tipo de venta</h3>
+        <select id="v_tipo">
+          <option value="celular">Venta de celular</option>
+          <option value="accesorio">Accesorio / repuesto</option>
+          <option value="servicio">Servicio</option>
+          <option value="otro">Otro</option>
+        </select>
 
-        <div id="ventaForm">
-          <h3>Cliente</h3>
+        <div id="ventaCelularBox">
+          <h3>Datos del celular (IMEI)</h3>
           <div class="inputs">
-            <input id="v_cliente" placeholder="Nombre del cliente" autocomplete="name" />
+            <input id="v_marca" placeholder="Marca" list="brandList" />
+            <input id="v_modelo" placeholder="Modelo" />
             <div class="row2">
-              <input id="v_cedula" placeholder="Cédula" inputmode="numeric" />
-              <input id="v_tel" placeholder="Celular" inputmode="tel" autocomplete="tel" />
+              <button class="btn small" id="scanImei1">📷 Escanear IMEI1</button>
+              <button class="btn small" id="scanImei2">📷 Escanear IMEI2</button>
             </div>
+            <input id="v_imei1" placeholder="IMEI 1 (obligatorio)" inputmode="numeric" />
+            <input id="v_imei2" placeholder="IMEI 2 (opcional)" inputmode="numeric" />
           </div>
 
-          <h3>Tipo de venta</h3>
-          <div class="inputs">
-            <select id="v_tipo">
-              <option value="celular">Venta de celular</option>
-              <option value="accesorio">Accesorio / repuesto</option>
-              <option value="servicio">Servicio</option>
-              <option value="otro">Otro</option>
+          <h3>Términos IMEI (OBLIGATORIO aceptar)</h3>
+          <div class="card">
+            <div class="kv">
+              <div>• El cliente reconoce que debe registrar el/los IMEI ante el operador.</div>
+              <div>• <b>No respondemos si el cliente NO registra los IMEI en la base de datos del operador.</b></div>
+            </div>
+          </div>
+          <label style="display:block; margin-top:8px; font-weight:900;">
+            <input type="checkbox" id="v_terms" />
+            Acepto los términos para esta venta de celular
+          </label>
+        </div>
+
+        <h3>Producto / Pago</h3>
+        <div class="inputs">
+          <input id="v_desc" placeholder="Descripción (ej: Samsung A15 128GB / Cable USB / etc.)" />
+          <div class="row2">
+            <input id="v_total" placeholder="Total ($)" inputmode="decimal" />
+            <select id="v_pago">
+              <option value="efectivo">Efectivo</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="tarjeta">Tarjeta</option>
             </select>
           </div>
 
-          <div id="ventaCelularBox">
-            <h3>Datos del celular (IMEI)</h3>
-            <div class="inputs">
-              <input id="v_marca" placeholder="Marca" list="brandList" />
-              <input id="v_modelo" placeholder="Modelo" />
-              <input id="v_imei1" placeholder="IMEI 1 (obligatorio)" inputmode="numeric" />
-              <input id="v_imei2" placeholder="IMEI 2 (opcional)" inputmode="numeric" />
-            </div>
-
-            <h3>Términos y condiciones (OBLIGATORIO aceptar)</h3>
-            <div class="card">
-              <div class="kv">
-                <div>• El cliente reconoce que debe registrar el/los IMEI ante el operador que va a usar.</div>
-                <div>• <b>No nos hacemos responsables si el cliente no registra los IMEI en la base de datos del operador.</b></div>
-              </div>
-            </div>
-            <label class="smallNote">
-              <input type="checkbox" id="v_terms" />
-              Acepto los términos para esta venta de celular
-            </label>
-          </div>
-
-          <h3>Pago</h3>
-          <div class="inputs">
-            <input id="v_desc" placeholder="Descripción (ej: Samsung A15 128GB)" />
+          <div class="card">
+            <div class="title">Agregar desde inventario (por código)</div>
             <div class="row2">
-              <input id="v_total" placeholder="Total ($)" inputmode="decimal" />
-              <select id="v_pago">
-                <option value="efectivo">Efectivo</option>
-                <option value="transferencia">Transferencia</option>
-                <option value="tarjeta">Tarjeta</option>
-              </select>
+              <button class="btn small" id="scanToAddSale">📷 Escanear código</button>
+              <input id="saleCodeSearch" placeholder="Código (EAN/QR) y Enter" />
             </div>
+            <div class="kv" id="saleAddInfo" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+        <div class="actionsRow">
+          <button class="btn" id="guardarVenta">💾 Guardar venta</button>
+        </div>
+
+        <div id="ventaQrBox" class="qrBox hidden">
+          <div class="qrRow">
+            <div class="muted" id="ventaQrText">QR venta</div>
+            <button class="btn small" id="printVenta">🖨️ Imprimir</button>
+          </div>
+          <div class="qrImg" id="ventaQrImg"></div>
+        </div>
+
+        <h3>Ventas guardadas</h3>
+        <input id="v_search" placeholder="Buscar venta..." />
+        <div id="ventaList" class="kv" style="margin-top:10px"></div>
+      </div>
+
+      <!-- INVENTARIO -->
+      <div id="invPanel" class="panel hidden">
+        <div class="actionsRow">
+          <button class="btn small" id="backHomeInv">⬅️ Inicio</button>
+          <button class="btn small secondary" id="invNewBtn">🆕 Nuevo producto</button>
+        </div>
+
+        <h2>Inventario</h2>
+
+        <!-- Primera pantalla inventario: escanear + buscar -->
+        <div class="card">
+          <div class="title">Buscar / Agregar por código</div>
+          <div class="row2">
+            <button class="btn" id="invScanBtn">📷 Escanear código</button>
+            <input id="invCodeSearch" placeholder="Código (EAN/QR) y Enter" />
+          </div>
+          <div class="kv" id="invSearchInfo" style="margin-top:10px"></div>
+        </div>
+
+        <!-- Formulario producto -->
+        <div id="invFormBox" class="card hidden" style="margin-top:12px;">
+          <div class="title" id="invFormTitle">Producto</div>
+
+          <div class="inputs">
+            <input id="p_code" placeholder="Código (EAN/QR)" />
+            <input id="p_name" placeholder="Nombre / Descripción" />
+            <div class="row2">
+              <input id="p_cat" placeholder="Categoría (Celulares/PC/Consolas)" />
+              <input id="p_subcat" placeholder="Subcategoría (cables/accesorios/etc.)" />
+            </div>
+            <div class="row2">
+              <input id="p_price" placeholder="Precio venta ($)" inputmode="decimal" />
+              <input id="p_stock" placeholder="Cantidad (stock)" inputmode="numeric" />
+            </div>
+
+            <!-- costo solo admin -->
+            <input id="p_cost" placeholder="Costo ($) - solo admin" inputmode="decimal" />
           </div>
 
           <div class="actionsRow">
-            <button class="btn" id="guardarVenta">💾 Guardar venta</button>
-          </div>
-
-          <div id="ventaQrBox" class="qrBox hidden">
-            <div class="qrRow">
-              <div class="muted" id="ventaQrText">QR venta</div>
-              <button class="btn small" id="printVenta">🖨️ Imprimir</button>
-            </div>
-            <div class="qrImg" id="ventaQrImg"></div>
+            <button class="btn small secondary" id="invCancelBtn">Cancelar</button>
+            <button class="btn" id="invSaveBtn">💾 Guardar producto</button>
           </div>
         </div>
 
-        <div id="ventaListPanel" class="hidden">
-          <h3>Ventas guardadas</h3>
-          <div id="ventaList" class="list"></div>
-        </div>
+        <h3>Productos</h3>
+        <input id="invSearchText" placeholder="Buscar por nombre/categoría/código..." />
+        <div id="invList" class="kv" style="margin-top:10px"></div>
       </div>
 
       <!-- ADMIN -->
       <div id="adminPanel" class="panel hidden">
         <div class="actionsRow">
-          <button class="btn small" id="backHome4">⬅️ Inicio</button>
+          <button class="btn small" id="backHomeAdmin">⬅️ Inicio</button>
         </div>
+
         <h2>Admin (PIN)</h2>
-        <div class="inputs">
-          <input id="pinInput" placeholder="PIN" inputmode="numeric" />
-          <button class="btn" id="pinEnter">Entrar</button>
-          <label class="smallNote">PIN por defecto: <b>1234</b> (puedes cambiarlo aquí adentro).</label>
-        </div>
-
-        <div id="adminTools" class="hidden">
-          <h3>Herramientas</h3>
-          <div class="pillRow">
-            <button class="btn small" id="changePinBtn">🔁 Cambiar PIN</button>
-            <button class="btn small danger" id="wipeAllBtn">🧨 Borrar TODO (órdenes + ventas)</button>
-          </div>
-
-          <h3>Importar / Exportar</h3>
-          <div class="pillRow">
-            <button class="btn small" id="exportOrdenCsv2">⬇️ CSV Órdenes</button>
-            <button class="btn small" id="exportVentaCsv2">⬇️ CSV Ventas</button>
-            <button class="btn small" id="backupBtn2">📦 Backup JSON</button>
-            <button class="btn small" id="importBtn2">📥 Importar Backup</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- SCANNER (solo ayuda: pega manual) -->
-      <div id="scanPanel" class="panel hidden">
-        <div class="actionsRow">
-          <button class="btn small" id="backHome5">⬅️ Inicio</button>
-        </div>
-        <h2>Escanear (QR / Barras)</h2>
         <div class="card">
           <div class="kv">
-            <div>📌 En celular: usa la cámara/lector del teléfono para copiar el código y pégalo aquí.</div>
-            <div>📌 Para PC: cuando tengas PC lo conectamos con lector USB (actúa como teclado).</div>
+            <div>PIN por defecto: <b>1234</b></div>
+            <div>Con admin puedes: ver costos, borrar, exportar e importar.</div>
           </div>
         </div>
-        <div class="inputs">
-          <input id="scanInput" placeholder="Pega aquí el código (QR o barras 1D)" />
-          <button class="btn" id="scanSearch">Buscar en sistema</button>
+
+        <div class="inputs" style="margin-top:10px">
+          <input id="pinInput" placeholder="PIN" inputmode="numeric" />
+          <button class="btn" id="pinEnter">Entrar</button>
+        </div>
+
+        <div id="adminTools" class="card hidden" style="margin-top:12px">
+          <div class="title">Herramientas admin</div>
+          <div class="pillRow">
+            <button class="btn small" id="changePinBtn">🔁 Cambiar PIN</button>
+            <button class="btn small danger" id="wipeAllBtn">🧨 Borrar TODO</button>
+          </div>
+          <div class="pillRow">
+            <button class="btn small" id="backupBtn2">📦 Backup JSON</button>
+            <button class="btn small" id="exportInvCsv2">⬇️ CSV Inventario</button>
+            <button class="btn small" id="exportOrdenCsv2">⬇️ CSV Órdenes</button>
+            <button class="btn small" id="exportVentaCsv2">⬇️ CSV Ventas</button>
+          </div>
         </div>
       </div>
 
       <input id="importFile" type="file" accept="application/json" class="hidden" />
 
-      <div class="toast" id="toast"></div>
-
     </div>
   </div>
 
+  <!-- SCANNER MODAL -->
+  <div id="scannerModal" class="modal">
+    <div class="modalCard">
+      <div class="modalTop">
+        <div>Escanear (QR / Barras)</div>
+        <button class="xBtn" id="closeScannerBtn">✖</button>
+      </div>
+      <div class="modalBody">
+        <video id="scannerVideo" muted playsinline></video>
+        <div style="margin-top:10px; font-weight:900; font-size:13px; color:#111827;">
+          Consejo: para códigos 1D (EAN/UPC) usa buena luz y enfoca las “rayitas”.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
 <script>
-/** ==========================
-    STORAGE KEYS
-========================== */
+  /* =========================
+   STORAGE
+========================= */
 const LS = {
-  orders: "te_orders",
-  sales: "te_sales",
-  orderCounter: "te_orderCounter",
-  saleCounter: "te_saleCounter",
-  pin: "te_adminPin",
-  brands: "te_brands_learned"
+  orders: "te_orders_v2",
+  sales: "te_sales_v2",
+  products: "te_products_v2",
+  orderCounter: "te_orderCounter_v2",
+  saleCounter: "te_saleCounter_v2",
+  pin: "te_adminPin_v2",
+  brands: "te_brands_v2",
+  adminSession: "te_adminSession_v2"
 };
 
-// defaults
-function getCounter(key, fallback){
-  const v = Number(localStorage.getItem(key));
-  return Number.isFinite(v) && v>0 ? v : fallback;
-}
-function setCounter(key, val){
-  localStorage.setItem(key, String(val));
-}
-
-function getArr(key){
-  try{ return JSON.parse(localStorage.getItem(key) || "[]"); } catch(e){ return []; }
-}
-function setArr(key, arr){
-  localStorage.setItem(key, JSON.stringify(arr));
-}
+function getArr(key){ try{ return JSON.parse(localStorage.getItem(key) || "[]"); }catch(e){ return []; } }
+function setArr(key, arr){ localStorage.setItem(key, JSON.stringify(arr)); }
+function getNum(key, fallback){ const v = Number(localStorage.getItem(key)); return Number.isFinite(v) && v>0 ? v : fallback; }
+function setNum(key, v){ localStorage.setItem(key, String(v)); }
+function nowISO(){ return new Date().toISOString(); }
+function fmtDate(iso){ try{ return new Date(iso).toLocaleString("es-CO"); }catch(e){ return iso||""; } }
+function esc(s){ return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"); }
 
 function toast(msg){
   const t = document.getElementById("toast");
   t.textContent = msg;
   t.style.display = "block";
   clearTimeout(toast._tm);
-  toast._tm = setTimeout(()=> t.style.display="none", 2200);
+  toast._tm = setTimeout(()=>t.style.display="none", 2200);
 }
 
-/** ==========================
-    EMAIL SUGGESTIONS (datalist)
-========================== */
-const emailDomains = [
-  "gmail.com","hotmail.com","outlook.com","icloud.com","yahoo.com",
-  "live.com","proton.me","protonmail.com"
-];
-function buildEmailDatalist(){
+/* defaults */
+if(!localStorage.getItem(LS.orderCounter)) setNum(LS.orderCounter, 2100);
+if(!localStorage.getItem(LS.saleCounter)) setNum(LS.saleCounter, 315);
+if(!localStorage.getItem(LS.pin)) localStorage.setItem(LS.pin, "1234");
+
+/* =========================
+   EMAIL + BRANDS
+========================= */
+const emailDomains = ["gmail.com","hotmail.com","outlook.com","icloud.com","yahoo.com","live.com","proton.me","protonmail.com"];
+(function buildEmailDL(){
   const dl = document.getElementById("emailDomains");
   dl.innerHTML = "";
   emailDomains.forEach(d=>{
@@ -605,39 +567,30 @@ function buildEmailDatalist(){
     opt.value = "@"+d;
     dl.appendChild(opt);
   });
-}
-buildEmailDatalist();
+})();
 
-/** ==========================
-    BRAND AUTOCOMPLETE + LEARN
-========================== */
 const defaultBrands = [
-  "Samsung","Xiaomi","Redmi","POCO","Realme","Huawei","Honor","Motorola","Nokia",
-  "Apple","iPhone","iPad","Tecno","Infinix","Itel","OPPO","Vivo","OnePlus",
-  "ZTE","Alcatel","Sony","LG","Google Pixel","Asus","Lenovo","TCL","Meizu",
-  "BlackBerry","HTC","Micromax","Blu","Cubot","Doogee","Ulefone","Umidigi",
-  "Nothing","Meitu","CAT","Fairphone","Sharp","Panasonic","Philips","Sagem",
-  "Gionee","Wiko","Lava","Karbonn","QMobile","Coolpad","Hisense","Haier",
-  "LeEco","Razer","Essential","InFocus","Kyocera","Fujitsu","NEC"
+ "Samsung","Xiaomi","Redmi","POCO","Realme","Huawei","Honor","Motorola","Nokia",
+ "Apple","iPhone","Tecno","Infinix","Itel","OPPO","Vivo","OnePlus","Sony","LG","Google Pixel","Asus","Lenovo","TCL"
 ];
 
 function getBrands(){
   const learned = getArr(LS.brands);
   const all = Array.from(new Set([...defaultBrands, ...learned]));
-  all.sort((a,b)=>a.localeCompare(b, "es", {sensitivity:"base"}));
+  all.sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
   return all;
 }
-function setLearnedBrand(name){
-  const clean = (name||"").trim();
-  if(!clean) return;
-  const lowerAll = getBrands().map(x=>x.toLowerCase());
-  if(lowerAll.includes(clean.toLowerCase())) return;
+function learnBrand(b){
+  const v = (b||"").trim();
+  if(!v) return;
   const learned = getArr(LS.brands);
-  learned.push(clean);
+  const exists = [...defaultBrands, ...learned].some(x=>x.toLowerCase()===v.toLowerCase());
+  if(exists) return;
+  learned.push(v);
   setArr(LS.brands, learned);
-  buildBrandDatalist();
+  buildBrandDL();
 }
-function buildBrandDatalist(){
+function buildBrandDL(){
   const dl = document.getElementById("brandList");
   dl.innerHTML = "";
   getBrands().forEach(b=>{
@@ -646,367 +599,458 @@ function buildBrandDatalist(){
     dl.appendChild(opt);
   });
 }
-buildBrandDatalist();
+buildBrandDL();
 
-/** ==========================
-    PANELS NAV
-========================== */
+/* =========================
+   NAV
+========================= */
 const home = document.getElementById("home");
 const resultsPanel = document.getElementById("resultsPanel");
 const ordenPanel = document.getElementById("ordenPanel");
 const ventaPanel = document.getElementById("ventaPanel");
+const invPanel = document.getElementById("invPanel");
 const adminPanel = document.getElementById("adminPanel");
-const scanPanel = document.getElementById("scanPanel");
 
 function hideAll(){
   home.classList.add("hidden");
   resultsPanel.classList.add("hidden");
   ordenPanel.classList.add("hidden");
   ventaPanel.classList.add("hidden");
+  invPanel.classList.add("hidden");
   adminPanel.classList.add("hidden");
-  scanPanel.classList.add("hidden");
 }
-function showHome(){
-  hideAll();
-  home.classList.remove("hidden");
-}
-function showOrden(){
-  hideAll();
-  ordenPanel.classList.remove("hidden");
-  refreshOrderNumberLabel();
-  renderOrders();
-}
-function showVentas(){
-  hideAll();
-  ventaPanel.classList.remove("hidden");
-  refreshSaleNumberLabel();
-  renderSales();
-  showVentaTab("form");
-}
-function showAdmin(){
-  hideAll();
-  adminPanel.classList.remove("hidden");
-  document.getElementById("pinInput").value = "";
-  document.getElementById("adminTools").classList.add("hidden");
-}
-function showScan(){
-  hideAll();
-  scanPanel.classList.remove("hidden");
-  document.getElementById("scanInput").value = "";
-}
-function showResults(){
-  hideAll();
-  resultsPanel.classList.remove("hidden");
-}
+function showHome(){ hideAll(); home.classList.remove("hidden"); }
+function showOrden(){ hideAll(); ordenPanel.classList.remove("hidden"); refreshOrderLabel(); resizeSig(); renderOrders(); }
+function showVenta(){ hideAll(); ventaPanel.classList.remove("hidden"); refreshSaleLabel(); renderSales(); }
+function showInv(){ hideAll(); invPanel.classList.remove("hidden"); renderProducts(); clearInvSearchInfo(); }
+function showAdmin(){ hideAll(); adminPanel.classList.remove("hidden"); document.getElementById("pinInput").value=""; document.getElementById("adminTools").classList.add("hidden"); }
 
 document.getElementById("goOrden").onclick = showOrden;
-document.getElementById("goVentas").onclick = showVentas;
+document.getElementById("goVentas").onclick = showVenta;
+document.getElementById("goInventario").onclick = showInv;
 document.getElementById("adminBtn").onclick = showAdmin;
-document.getElementById("scanBtn").onclick = showScan;
 
-document.getElementById("backHome1").onclick = showHome;
-document.getElementById("backHome2").onclick = showHome;
-document.getElementById("backHome3").onclick = showHome;
-document.getElementById("backHome4").onclick = showHome;
-document.getElementById("backHome5").onclick = showHome;
+document.getElementById("backHomeResults").onclick = showHome;
+document.getElementById("backHomeOrden").onclick = showHome;
+document.getElementById("backHomeVenta").onclick = showHome;
+document.getElementById("backHomeInv").onclick = showHome;
+document.getElementById("backHomeAdmin").onclick = showHome;
 
-/** ==========================
-    COUNTERS
-========================== */
-function getNextOrderNumber(){
-  return getCounter(LS.orderCounter, 2100);
+/* =========================
+   GLOBAL SEARCH
+========================= */
+const globalSearch = document.getElementById("globalSearch");
+globalSearch.addEventListener("input", ()=>{
+  const q = globalSearch.value.trim();
+  if(!q){ resultsPanel.classList.add("hidden"); return; }
+  const res = globalSearchAll(q);
+  renderResults(q, res);
+});
+
+document.getElementById("backHomeResults").onclick = showHome;
+document.getElementById("clearSearch").onclick = ()=>{ globalSearch.value=""; showHome(); };
+
+function globalSearchAll(q){
+  const f = q.toLowerCase();
+  const orders = getArr(LS.orders).filter(o => JSON.stringify(o).toLowerCase().includes(f));
+  const sales  = getArr(LS.sales).filter(s => JSON.stringify(s).toLowerCase().includes(f));
+  const products = getArr(LS.products).filter(p => JSON.stringify(p).toLowerCase().includes(f));
+  return {orders, sales, products};
 }
-function getNextSaleNumber(){
-  return getCounter(LS.saleCounter, 315);
-}
-function refreshOrderNumberLabel(){
-  document.getElementById("ordenNumLabel").textContent = "#"+getNextOrderNumber();
-}
-function refreshSaleNumberLabel(){
-  document.getElementById("ventaNumLabel").textContent = "#"+getNextSaleNumber();
+function renderResults(q, res){
+  hideAll(); resultsPanel.classList.remove("hidden");
+  const box = document.getElementById("resultsList");
+  let html = `<div style="font-weight:900;margin-bottom:8px">Búsqueda: "${esc(q)}"</div>`;
+  html += `<div>Órdenes: ${res.orders.length} • Ventas: ${res.sales.length} • Inventario: ${res.products.length}</div><br/>`;
+
+  if(res.products.length){
+    html += `<div style="font-weight:900;margin:10px 0 6px">📦 Inventario</div>`;
+    res.products.slice(0,10).forEach(p=>{
+      html += `<div>• ${esc(p.code)} — ${esc(p.name)} (stock: ${esc(p.stock)})</div>`;
+    });
+  }
+  if(res.orders.length){
+    html += `<div style="font-weight:900;margin:10px 0 6px">🧾 Órdenes</div>`;
+    res.orders.slice(0,10).forEach(o=>{
+      html += `<div>• #${o.numero} — ${esc(o.cliente)} — ${esc(o.marca)} ${esc(o.modelo)}</div>`;
+    });
+  }
+  if(res.sales.length){
+    html += `<div style="font-weight:900;margin:10px 0 6px">💳 Ventas</div>`;
+    res.sales.slice(0,10).forEach(s=>{
+      html += `<div>• #${s.numero} — ${esc(s.cliente)} — ${esc(s.descripcion)} ${s.imei1?("— IMEI: "+esc(s.imei1)):""}</div>`;
+    });
+  }
+
+  if(!res.products.length && !res.orders.length && !res.sales.length){
+    html += `<div>No hay coincidencias.</div>`;
+  }
+
+  box.innerHTML = html;
 }
 
-/** ==========================
-    SIGNATURE (mandatory for orders)
-========================== */
+/* =========================
+   SCANNER (ZXing camera)
+========================= */
+let zxingReader = null;
+let zxingControls = null;
+let scanTarget = null; // {type:'input'|'fn', id|fn}
+
+const scannerModal = document.getElementById("scannerModal");
+const scannerVideo = document.getElementById("scannerVideo");
+document.getElementById("closeScannerBtn").onclick = closeScanner;
+
+async function openScannerToInput(inputId){
+  scanTarget = {type:"input", id: inputId};
+  await openScanner();
+}
+async function openScannerToFunction(fn){
+  scanTarget = {type:"fn", fn};
+  await openScanner();
+}
+
+async function openScanner(){
+  try{
+    scannerModal.classList.add("active");
+    if(!window.ZXing || !ZXing.BrowserMultiFormatReader){
+      alert("No cargó el lector. Revisa internet.");
+      closeScanner();
+      return;
+    }
+    if(!zxingReader) zxingReader = new ZXing.BrowserMultiFormatReader();
+
+    const devices = await ZXing.BrowserCodeReader.listVideoInputDevices();
+    const backCam = devices.find(d=>/back|rear|environment/i.test(d.label));
+    const deviceId = (backCam || devices[0])?.deviceId;
+
+    if(!deviceId){
+      alert("No se encontró cámara. Da permisos a la cámara.");
+      closeScanner();
+      return;
+    }
+
+    zxingControls = await zxingReader.decodeFromVideoDevice(
+      deviceId,
+      scannerVideo,
+      (result, err) => {
+        if(result){
+          const text = result.getText();
+          if(scanTarget?.type==="input"){
+            const el = document.getElementById(scanTarget.id);
+            if(el){
+              el.value = text;
+              el.dispatchEvent(new Event("input",{bubbles:true}));
+              el.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+            }
+          } else if(scanTarget?.type==="fn"){
+            scanTarget.fn(text);
+          }
+          if(navigator.vibrate) navigator.vibrate(70);
+          toast("Escaneado: " + text);
+          closeScanner();
+        }
+      }
+    );
+
+  }catch(e){
+    console.error(e);
+    alert("Error abriendo el escáner. Revisa permisos de cámara.");
+    closeScanner();
+  }
+}
+
+function closeScanner(){
+  scannerModal.classList.remove("active");
+  try{
+    if(zxingControls){ zxingControls.stop(); zxingControls=null; }
+  }catch(e){}
+}
+
+document.getElementById("openScannerHome").onclick = ()=>openScannerToFunction((code)=>{
+  // búsqueda global al escanear desde home
+  globalSearch.value = code;
+  const res = globalSearchAll(code);
+  renderResults(code, res);
+});
+  /* =========================
+   QR OUTPUT (qrcodejs)
+========================= */
+function renderQR(containerId, text){
+  const box = document.getElementById(containerId);
+  box.innerHTML = "";
+  new QRCode(box, {text, width:220, height:220});
+}
+
+/* =========================
+   SIGNATURE (Orden)
+========================= */
 const canvas = document.getElementById("sigCanvas");
 const ctx = canvas.getContext("2d");
-let drawing = false;
-let hasSignature = false;
+let drawing=false, hasSig=false;
 
-function resizeCanvas(){
-  // match display size
+function resizeSig(){
   const rect = canvas.getBoundingClientRect();
-  const ratio = window.devicePixelRatio || 1;
-  canvas.width = Math.floor(rect.width * ratio);
-  canvas.height = Math.floor(rect.height * ratio);
-  ctx.setTransform(ratio,0,0,ratio,0,0);
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.floor(rect.width * dpr);
+  canvas.height = Math.floor(rect.height * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.lineWidth = 3;
   ctx.lineCap = "round";
   ctx.strokeStyle = "#111";
-  // keep background transparent (we'll place on white in print)
-  redrawSigBackground();
 }
-function redrawSigBackground(){
-  // draw faint white bg
-  ctx.save();
-  ctx.globalAlpha = 0.0;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.restore();
-}
-window.addEventListener("resize", resizeCanvas);
-setTimeout(resizeCanvas, 100);
+window.addEventListener("resize", ()=>{ if(!ordenPanel.classList.contains("hidden")) resizeSig(); });
 
-function getPos(e){
-  const rect = canvas.getBoundingClientRect();
-  if(e.touches && e.touches[0]){
-    return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
-  }
-  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+function pos(e){
+  const r = canvas.getBoundingClientRect();
+  const t = (e.touches && e.touches[0]) ? e.touches[0] : e;
+  return {x: t.clientX - r.left, y: t.clientY - r.top};
 }
-
-function startDraw(e){
-  drawing = true;
-  const p = getPos(e);
+function start(e){
+  drawing=true;
+  const p = pos(e);
   ctx.beginPath();
-  ctx.moveTo(p.x, p.y);
+  ctx.moveTo(p.x,p.y);
   e.preventDefault?.();
 }
-function moveDraw(e){
+function move(e){
   if(!drawing) return;
-  const p = getPos(e);
-  ctx.lineTo(p.x, p.y);
+  const p = pos(e);
+  ctx.lineTo(p.x,p.y);
   ctx.stroke();
-  hasSignature = true;
+  hasSig=true;
   e.preventDefault?.();
 }
-function endDraw(){
-  drawing = false;
-}
+function end(){ drawing=false; }
 
-canvas.addEventListener("mousedown", startDraw);
-canvas.addEventListener("mousemove", moveDraw);
-window.addEventListener("mouseup", endDraw);
-
-canvas.addEventListener("touchstart", startDraw, {passive:false});
-canvas.addEventListener("touchmove", moveDraw, {passive:false});
-canvas.addEventListener("touchend", endDraw);
+canvas.addEventListener("mousedown", start);
+canvas.addEventListener("mousemove", move);
+window.addEventListener("mouseup", end);
+canvas.addEventListener("touchstart", start, {passive:false});
+canvas.addEventListener("touchmove", move, {passive:false});
+canvas.addEventListener("touchend", end);
 
 document.getElementById("clearSig").onclick = ()=>{
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  hasSignature = false;
+  hasSig=false;
   toast("Firma borrada");
 };
+function sigData(){ return canvas.toDataURL("image/png"); }
 
-function signatureToDataURL(){
-  // export
-  return canvas.toDataURL("image/png");
-}
+/* =========================
+   ORDERS
+========================= */
+const o_cliente=document.getElementById("o_cliente");
+const o_cedula=document.getElementById("o_cedula");
+const o_tel=document.getElementById("o_tel");
+const o_correo=document.getElementById("o_correo");
+const o_marca=document.getElementById("o_marca");
+const o_modelo=document.getElementById("o_modelo");
+const o_falla=document.getElementById("o_falla");
 
-/** ==========================
-    ORDER FORM
-========================== */
-const o_cliente = document.getElementById("o_cliente");
-const o_cedula = document.getElementById("o_cedula");
-const o_tel = document.getElementById("o_tel");
-const o_correo = document.getElementById("o_correo");
-const o_marca = document.getElementById("o_marca");
-const o_modelo = document.getElementById("o_modelo");
-const o_falla = document.getElementById("o_falla");
+function nextOrder(){ return getNum(LS.orderCounter,2100); }
+function refreshOrderLabel(){ document.getElementById("ordenNumLabel").textContent = "#" + nextOrder(); }
 
 document.getElementById("ordenNueva").onclick = ()=>{
-  o_cliente.value = "";
-  o_cedula.value = "";
-  o_tel.value = "";
-  o_correo.value = "";
-  o_marca.value = "";
-  o_modelo.value = "";
-  o_falla.value = "";
+  [o_cliente,o_cedula,o_tel,o_correo,o_marca,o_modelo,o_falla].forEach(x=>x.value="");
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  hasSignature = false;
-  o_cliente.focus();
-  refreshOrderNumberLabel();
+  hasSig=false;
   document.getElementById("ordenQrBox").classList.add("hidden");
-  toast("Lista nueva orden");
+  refreshOrderLabel();
+  o_cliente.focus();
+  toast("Nueva orden lista");
 };
 
 document.getElementById("guardarOrden").onclick = ()=>{
-  // required fields
-  if(!o_cliente.value.trim() || !o_cedula.value.trim() || !o_tel.value.trim() || !o_correo.value.trim()
-     || !o_marca.value.trim() || !o_modelo.value.trim() || !o_falla.value.trim()){
+  if(!o_cliente.value.trim()||!o_cedula.value.trim()||!o_tel.value.trim()||!o_correo.value.trim()||!o_marca.value.trim()||!o_modelo.value.trim()||!o_falla.value.trim()){
     alert("Completa todos los campos de la orden.");
     return;
   }
-  if(!hasSignature){
+  if(!hasSig){
     alert("La firma es obligatoria para guardar la orden.");
     return;
   }
 
-  const num = getNextOrderNumber();
+  const num = nextOrder();
   const orders = getArr(LS.orders);
-
   const order = {
-    type: "orden",
-    numero: num,
-    cliente: o_cliente.value.trim(),
-    cedula: o_cedula.value.trim(),
-    telefono: o_tel.value.trim(),
-    correo: o_correo.value.trim(),
-    marca: o_marca.value.trim(),
-    modelo: o_modelo.value.trim(),
-    falla: o_falla.value.trim(),
-    firmaPng: signatureToDataURL(),
-    fechaISO: new Date().toISOString()
+    numero:num,
+    fechaISO: nowISO(),
+    cliente:o_cliente.value.trim(),
+    cedula:o_cedula.value.trim(),
+    tel:o_tel.value.trim(),
+    correo:o_correo.value.trim(),
+    marca:o_marca.value.trim(),
+    modelo:o_modelo.value.trim(),
+    falla:o_falla.value.trim(),
+    firmaPng: sigData()
   };
-
   orders.push(order);
-  // keep asc
   orders.sort((a,b)=>a.numero-b.numero);
   setArr(LS.orders, orders);
+  setNum(LS.orderCounter, num+1);
+  learnBrand(order.marca);
 
-  // increment counter
-  setCounter(LS.orderCounter, num+1);
-
-  // learn brand
-  setLearnedBrand(order.marca);
-
-  toast("Orden guardada #"+num);
-  refreshOrderNumberLabel();
+  toast("Orden guardada #" + num);
+  refreshOrderLabel();
   renderOrders();
 
-  // show QR
-  showQR("orden", order);
+  // QR
+  const text = `ORDEN#${order.numero} | ${order.cliente} | ${order.cedula} | ${order.tel} | ${order.marca} ${order.modelo}`;
+  document.getElementById("ordenQrText").textContent = "QR Orden #" + order.numero;
+  document.getElementById("ordenQrBox").classList.remove("hidden");
+  renderQR("ordenQrImg", text);
 };
 
-function renderOrders(filter=""){
-  const list = document.getElementById("ordenList");
-  list.innerHTML = "";
+document.getElementById("o_search").addEventListener("input", renderOrders);
+
+function renderOrders(){
+  const q = (document.getElementById("o_search").value||"").trim().toLowerCase();
   const orders = getArr(LS.orders);
+  const filtered = q ? orders.filter(o=>JSON.stringify(o).toLowerCase().includes(q)) : orders;
 
-  const f = (filter||"").trim().toLowerCase();
-  const data = f ? orders.filter(o => orderMatches(o,f)) : orders;
+  const box = document.getElementById("ordenList");
+  if(!filtered.length){ box.innerHTML = "<div>No hay órdenes.</div>"; return; }
 
-  data.forEach(o=>{
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const t = document.createElement("div");
-    t.className = "title";
-    t.textContent = "Orden #"+o.numero;
-
-    const kv = document.createElement("div");
-    kv.className = "kv";
-    kv.innerHTML = `
-      <div>Cliente: <span class="muted">${escapeHtml(o.cliente)}</span></div>
-      <div>Cédula: <span class="muted">${escapeHtml(o.cedula)}</span></div>
-      <div>Tel: <span class="muted">${escapeHtml(o.telefono)}</span></div>
-      <div>Email: <span class="muted">${escapeHtml(o.correo)}</span></div>
-      <div style="margin-top:6px">Marca: <span class="muted">${escapeHtml(o.marca)}</span></div>
-      <div>Modelo: <span class="muted">${escapeHtml(o.modelo)}</span></div>
-      <div>Falla: <span class="muted">${escapeHtml(o.falla)}</span></div>
-      <div style="margin-top:6px">Fecha: <span class="muted">${formatDate(o.fechaISO)}</span></div>
-    `;
-
-    const row = document.createElement("div");
-    row.className = "actionsRow";
-
-    const qrBtn = document.createElement("button");
-    qrBtn.className = "btn small";
-    qrBtn.textContent = "🔳 QR";
-    qrBtn.onclick = ()=> showQR("orden", o);
-
-    const delBtn = document.createElement("button");
-    delBtn.className = "btn small danger";
-    delBtn.textContent = "🗑️ Borrar";
-    delBtn.onclick = ()=>{
-      if(!confirm("¿Borrar la orden #"+o.numero+"?")) return;
-      const all = getArr(LS.orders).filter(x=>x.numero!==o.numero);
-      setArr(LS.orders, all);
-      renderOrders(filter);
-      toast("Orden borrada");
-    };
-
-    row.appendChild(qrBtn);
-    row.appendChild(delBtn);
-
-    card.appendChild(t);
-    card.appendChild(kv);
-    card.appendChild(row);
-    list.appendChild(card);
-  });
-
-  if(data.length===0){
-    const empty = document.createElement("div");
-    empty.className="card";
-    empty.innerHTML = `<div class="kv">No hay órdenes.</div>`;
-    list.appendChild(empty);
-  }
+  box.innerHTML = filtered.map(o=>`
+    <div class="card" style="margin-bottom:10px">
+      <div class="title">Orden #${o.numero}</div>
+      <div class="kv">
+        <div>Cliente: <span class="muted">${esc(o.cliente)}</span></div>
+        <div>Cédula: <span class="muted">${esc(o.cedula)}</span></div>
+        <div>Tel: <span class="muted">${esc(o.tel)}</span></div>
+        <div>Correo: <span class="muted">${esc(o.correo)}</span></div>
+        <div style="margin-top:6px">Equipo: <span class="muted">${esc(o.marca)} ${esc(o.modelo)}</span></div>
+        <div>Falla: <span class="muted">${esc(o.falla)}</span></div>
+        <div style="margin-top:6px">Fecha: <span class="muted">${fmtDate(o.fechaISO)}</span></div>
+      </div>
+      <div class="actionsRow">
+        <button class="btn small" onclick="showOrderQR(${o.numero})">🔳 QR</button>
+        <button class="btn small secondary" onclick="showOrderSig(${o.numero})">✍️ Firma</button>
+        <button class="btn small danger" onclick="deleteOrder(${o.numero})">🗑️ Borrar</button>
+      </div>
+    </div>
+  `).join("");
 }
 
-/** ==========================
-    SALES
-========================== */
-const tabVentaForm = document.getElementById("tabVentaForm");
-const tabVentaList = document.getElementById("tabVentaList");
-const ventaForm = document.getElementById("ventaForm");
-const ventaListPanel = document.getElementById("ventaListPanel");
+window.showOrderQR = (numero)=>{
+  const o = getArr(LS.orders).find(x=>x.numero===numero);
+  if(!o) return;
+  const text = `ORDEN#${o.numero} | ${o.cliente} | ${o.cedula} | ${o.tel} | ${o.marca} ${o.modelo}`;
+  document.getElementById("ordenQrText").textContent = "QR Orden #" + o.numero;
+  document.getElementById("ordenQrBox").classList.remove("hidden");
+  renderQR("ordenQrImg", text);
+  toast("QR de orden listo");
+};
 
-function showVentaTab(which){
-  if(which==="form"){
-    tabVentaForm.classList.add("active");
-    tabVentaList.classList.remove("active");
-    ventaForm.classList.remove("hidden");
-    ventaListPanel.classList.add("hidden");
-  }else{
-    tabVentaForm.classList.remove("active");
-    tabVentaList.classList.add("active");
-    ventaForm.classList.add("hidden");
-    ventaListPanel.classList.remove("hidden");
-  }
+window.showOrderSig = (numero)=>{
+  const o = getArr(LS.orders).find(x=>x.numero===numero);
+  if(!o || !o.firmaPng){ alert("No hay firma."); return; }
+  // usar QR box para mostrar la firma
+  document.getElementById("ordenQrText").textContent = "Firma Orden #" + o.numero;
+  document.getElementById("ordenQrBox").classList.remove("hidden");
+  const box = document.getElementById("ordenQrImg");
+  box.innerHTML = `<img src="${o.firmaPng}" style="max-width:100%;border-radius:12px">`;
+};
+
+window.deleteOrder = (numero)=>{
+  if(!confirm("¿Borrar orden #" + numero + "?")) return;
+  const orders = getArr(LS.orders).filter(x=>x.numero!==numero);
+  setArr(LS.orders, orders);
+  renderOrders();
+  toast("Orden borrada");
+};
+
+/* Print */
+document.getElementById("printOrden").onclick = ()=>printBox("ordenQrText","ordenQrImg");
+
+function printBox(titleId, contentId){
+  const title = document.getElementById(titleId).textContent;
+  const content = document.getElementById(contentId).innerHTML;
+  const w = window.open("", "_blank");
+  w.document.write(`
+    <html><head><title>${esc(title)}</title>
+    <style>
+      body{font-family:Arial,sans-serif;padding:18px;}
+      .box{border:1px solid #ddd;padding:12px;border-radius:10px;max-width:420px;}
+      h2{margin:0 0 10px;}
+      img,canvas{max-width:100%;}
+    </style></head><body>
+      <div class="box">
+        <h2>${esc(title)}</h2>
+        ${content}
+      </div>
+    </body></html>
+  `);
+  w.document.close(); w.focus(); w.print();
 }
-tabVentaForm.onclick = ()=>showVentaTab("form");
-tabVentaList.onclick = ()=>{ showVentaTab("list"); renderSales(); };
 
-const v_cliente = document.getElementById("v_cliente");
-const v_cedula  = document.getElementById("v_cedula");
-const v_tel     = document.getElementById("v_tel");
-const v_tipo    = document.getElementById("v_tipo");
+/* =========================
+   SALES
+========================= */
+const v_cliente=document.getElementById("v_cliente");
+const v_cedula=document.getElementById("v_cedula");
+const v_tel=document.getElementById("v_tel");
+const v_tipo=document.getElementById("v_tipo");
+const ventaCelularBox=document.getElementById("ventaCelularBox");
+const v_marca=document.getElementById("v_marca");
+const v_modelo=document.getElementById("v_modelo");
+const v_imei1=document.getElementById("v_imei1");
+const v_imei2=document.getElementById("v_imei2");
+const v_terms=document.getElementById("v_terms");
+const v_desc=document.getElementById("v_desc");
+const v_total=document.getElementById("v_total");
+const v_pago=document.getElementById("v_pago");
 
-const ventaCelularBox = document.getElementById("ventaCelularBox");
-const v_marca  = document.getElementById("v_marca");
-const v_modelo = document.getElementById("v_modelo");
-const v_imei1  = document.getElementById("v_imei1");
-const v_imei2  = document.getElementById("v_imei2");
-const v_terms  = document.getElementById("v_terms");
-
-const v_desc   = document.getElementById("v_desc");
-const v_total  = document.getElementById("v_total");
-const v_pago   = document.getElementById("v_pago");
+function nextSale(){ return getNum(LS.saleCounter,315); }
+function refreshSaleLabel(){ document.getElementById("ventaNumLabel").textContent = "#" + nextSale(); }
 
 v_tipo.onchange = ()=>{
-  const t = v_tipo.value;
-  ventaCelularBox.classList.toggle("hidden", t!=="celular");
+  const isCel = v_tipo.value==="celular";
+  ventaCelularBox.classList.toggle("hidden", !isCel);
 };
 
 document.getElementById("ventaNueva").onclick = ()=>{
-  v_cliente.value = "";
-  v_cedula.value = "";
-  v_tel.value = "";
-  v_tipo.value = "celular";
-  v_marca.value = "";
-  v_modelo.value = "";
-  v_imei1.value = "";
-  v_imei2.value = "";
-  v_terms.checked = false;
-  v_desc.value = "";
-  v_total.value = "";
-  v_pago.value = "efectivo";
-  document.getElementById("ventaQrBox").classList.add("hidden");
-  refreshSaleNumberLabel();
-  v_cliente.focus();
+  [v_cliente,v_cedula,v_tel,v_marca,v_modelo,v_imei1,v_imei2,v_desc,v_total].forEach(x=>x.value="");
+  v_tipo.value="celular";
+  v_pago.value="efectivo";
+  v_terms.checked=false;
   ventaCelularBox.classList.remove("hidden");
-  toast("Lista nueva venta");
+  document.getElementById("ventaQrBox").classList.add("hidden");
+  refreshSaleLabel();
+  v_cliente.focus();
+  toast("Nueva venta lista");
 };
+
+document.getElementById("scanImei1").onclick = ()=>openScannerToInput("v_imei1");
+document.getElementById("scanImei2").onclick = ()=>openScannerToInput("v_imei2");
+
+document.getElementById("scanToAddSale").onclick = ()=>openScannerToFunction((code)=>{
+  document.getElementById("saleCodeSearch").value = code;
+  tryAddProductToSaleByCode(code);
+});
+
+document.getElementById("saleCodeSearch").addEventListener("keydown",(e)=>{
+  if(e.key==="Enter"){
+    tryAddProductToSaleByCode(e.target.value.trim());
+  }
+});
+
+function tryAddProductToSaleByCode(code){
+  if(!code) return;
+  const p = getArr(LS.products).find(x=>String(x.code)===String(code));
+  const info = document.getElementById("saleAddInfo");
+  if(!p){
+    info.innerHTML = `No existe producto con código <b>${esc(code)}</b>. Ve a Inventario para crearlo.`;
+    return;
+  }
+  // autollenar descripción + total si está vacío
+  info.innerHTML = `Producto encontrado: <b>${esc(p.name)}</b> (stock: ${esc(p.stock)}) — precio: <b>${esc(p.price)}</b>`;
+  if(!v_desc.value.trim()) v_desc.value = p.name;
+  if(!v_total.value.trim()) v_total.value = p.price;
+
+  // bajar stock solo cuando guardas la venta (para no descontar por error)
+  info.dataset.pendingCode = code;
+}
 
 document.getElementById("guardarVenta").onclick = ()=>{
   if(!v_cliente.value.trim() || !v_cedula.value.trim() || !v_tel.value.trim() || !v_desc.value.trim() || !v_total.value.trim()){
@@ -1015,363 +1059,401 @@ document.getElementById("guardarVenta").onclick = ()=>{
   }
 
   const tipo = v_tipo.value;
-
   if(tipo==="celular"){
-    if(!v_marca.value.trim() || !v_modelo.value.trim()){
-      alert("En venta de celular: completa marca y modelo.");
-      return;
-    }
-    if(!v_imei1.value.trim()){
-      alert("IMEI 1 es obligatorio.");
-      return;
-    }
-    if(!v_terms.checked){
-      alert("Debes aceptar los términos de IMEI para guardar la venta.");
-      return;
+    if(!v_marca.value.trim() || !v_modelo.value.trim()){ alert("En venta de celular: completa marca y modelo."); return; }
+    if(!v_imei1.value.trim()){ alert("IMEI 1 es obligatorio."); return; }
+    if(!v_terms.checked){ alert("Debes aceptar los términos IMEI."); return; }
+    learnBrand(v_marca.value.trim());
+  }
+
+  const num = nextSale();
+  const sales = getArr(LS.sales);
+
+  // si viene desde inventario, descontar stock
+  const info = document.getElementById("saleAddInfo");
+  const pendingCode = info.dataset.pendingCode || "";
+  if(pendingCode){
+    const products = getArr(LS.products);
+    const idx = products.findIndex(x=>String(x.code)===String(pendingCode));
+    if(idx>=0){
+      const st = Number(products[idx].stock || 0);
+      if(st<=0){
+        alert("Ese producto está sin stock.");
+        return;
+      }
+      products[idx].stock = String(st-1);
+      setArr(LS.products, products);
+      renderProducts();
     }
   }
 
-  const num = getNextSaleNumber();
-  const sales = getArr(LS.sales);
-
   const sale = {
-    type: "venta",
-    numero: num,
-    cliente: v_cliente.value.trim(),
-    cedula: v_cedula.value.trim(),
-    telefono: v_tel.value.trim(),
+    numero:num,
+    fechaISO: nowISO(),
+    cliente:v_cliente.value.trim(),
+    cedula:v_cedula.value.trim(),
+    tel:v_tel.value.trim(),
     tipo,
     marca: tipo==="celular" ? v_marca.value.trim() : "",
     modelo: tipo==="celular" ? v_modelo.value.trim() : "",
-    imei1:  tipo==="celular" ? v_imei1.value.trim() : "",
-    imei2:  tipo==="celular" ? v_imei2.value.trim() : "",
+    imei1: tipo==="celular" ? v_imei1.value.trim() : "",
+    imei2: tipo==="celular" ? v_imei2.value.trim() : "",
     termsIMEI: tipo==="celular" ? true : false,
     descripcion: v_desc.value.trim(),
     total: v_total.value.trim(),
-    pago: v_pago.value,
-    fechaISO: new Date().toISOString()
+    pago: v_pago.value
   };
 
   sales.push(sale);
   sales.sort((a,b)=>a.numero-b.numero);
   setArr(LS.sales, sales);
-  setCounter(LS.saleCounter, num+1);
+  setNum(LS.saleCounter, num+1);
 
-  // learn brand if any
-  if(sale.marca) setLearnedBrand(sale.marca);
+  // QR
+  const text = `VENTA#${sale.numero} | ${sale.cliente} | ${sale.descripcion} | $${sale.total} | ${sale.pago} | IMEI1:${sale.imei1||""} IMEI2:${sale.imei2||""}`;
+  document.getElementById("ventaQrText").textContent = "QR Venta #" + sale.numero;
+  document.getElementById("ventaQrBox").classList.remove("hidden");
+  renderQR("ventaQrImg", text);
 
-  toast("Venta guardada #"+num);
-  refreshSaleNumberLabel();
+  // limpiar "pendiente"
+  info.innerHTML = "";
+  info.dataset.pendingCode = "";
+
+  toast("Venta guardada #" + num);
+  refreshSaleLabel();
   renderSales();
-  showQR("venta", sale);
 };
 
-function renderSales(filter=""){
-  const list = document.getElementById("ventaList");
-  list.innerHTML = "";
+document.getElementById("v_search").addEventListener("input", renderSales);
+function renderSales(){
+  const q = (document.getElementById("v_search").value||"").trim().toLowerCase();
   const sales = getArr(LS.sales);
+  const filtered = q ? sales.filter(s=>JSON.stringify(s).toLowerCase().includes(q)) : sales;
 
-  const f = (filter||"").trim().toLowerCase();
-  const data = f ? sales.filter(s => saleMatches(s,f)) : sales;
+  const box = document.getElementById("ventaList");
+  if(!filtered.length){ box.innerHTML = "<div>No hay ventas.</div>"; return; }
 
-  data.forEach(s=>{
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const t = document.createElement("div");
-    t.className = "title";
-    t.textContent = "Venta #"+s.numero;
-
-    const kv = document.createElement("div");
-    kv.className = "kv";
-    kv.innerHTML = `
-      <div>Cliente: <span class="muted">${escapeHtml(s.cliente)}</span></div>
-      <div>Cédula: <span class="muted">${escapeHtml(s.cedula)}</span></div>
-      <div>Tel: <span class="muted">${escapeHtml(s.telefono)}</span></div>
-      <div style="margin-top:6px">Tipo: <span class="muted">${escapeHtml(s.tipo)}</span></div>
-      ${s.tipo==="celular" ? `
-        <div>Marca: <span class="muted">${escapeHtml(s.marca)}</span></div>
-        <div>Modelo: <span class="muted">${escapeHtml(s.modelo)}</span></div>
-        <div>IMEI1: <span class="muted">${escapeHtml(s.imei1)}</span></div>
-        ${s.imei2 ? `<div>IMEI2: <span class="muted">${escapeHtml(s.imei2)}</span></div>` : ``}
-        <div style="margin-top:6px"><b>Terminos IMEI:</b> <span class="muted">Aceptados</span></div>
-      ` : ``}
-      <div style="margin-top:6px">Descripción: <span class="muted">${escapeHtml(s.descripcion)}</span></div>
-      <div>Total: <span class="muted">${escapeHtml(s.total)}</span></div>
-      <div>Pago: <span class="muted">${escapeHtml(s.pago)}</span></div>
-      <div style="margin-top:6px">Fecha: <span class="muted">${formatDate(s.fechaISO)}</span></div>
-    `;
-
-    const row = document.createElement("div");
-    row.className = "actionsRow";
-
-    const qrBtn = document.createElement("button");
-    qrBtn.className = "btn small";
-    qrBtn.textContent = "🔳 QR";
-    qrBtn.onclick = ()=> showQR("venta", s);
-
-    const delBtn = document.createElement("button");
-    delBtn.className = "btn small danger";
-    delBtn.textContent = "🗑️ Borrar";
-    delBtn.onclick = ()=>{
-      if(!confirm("¿Borrar la venta #"+s.numero+"?")) return;
-      const all = getArr(LS.sales).filter(x=>x.numero!==s.numero);
-      setArr(LS.sales, all);
-      renderSales(filter);
-      toast("Venta borrada");
-    };
-
-    row.appendChild(qrBtn);
-    row.appendChild(delBtn);
-
-    card.appendChild(t);
-    card.appendChild(kv);
-    card.appendChild(row);
-    list.appendChild(card);
-  });
-
-  if(data.length===0){
-    const empty = document.createElement("div");
-    empty.className="card";
-    empty.innerHTML = `<div class="kv">No hay ventas.</div>`;
-    list.appendChild(empty);
-  }
+  box.innerHTML = filtered.map(s=>`
+    <div class="card" style="margin-bottom:10px">
+      <div class="title">Venta #${s.numero}</div>
+      <div class="kv">
+        <div>Cliente: <span class="muted">${esc(s.cliente)}</span></div>
+        <div>Cédula: <span class="muted">${esc(s.cedula)}</span></div>
+        <div>Tel: <span class="muted">${esc(s.tel)}</span></div>
+        <div style="margin-top:6px">Tipo: <span class="muted">${esc(s.tipo)}</span></div>
+        ${s.tipo==="celular" ? `
+          <div>Equipo: <span class="muted">${esc(s.marca)} ${esc(s.modelo)}</span></div>
+          <div>IMEI1: <span class="muted">${esc(s.imei1)}</span></div>
+          ${s.imei2 ? `<div>IMEI2: <span class="muted">${esc(s.imei2)}</span></div>` : ``}
+          <div><b>Términos IMEI:</b> <span class="muted">Aceptados</span></div>
+        ` : ``}
+        <div style="margin-top:6px">Descripción: <span class="muted">${esc(s.descripcion)}</span></div>
+        <div>Total: <span class="muted">${esc(s.total)}</span></div>
+        <div>Pago: <span class="muted">${esc(s.pago)}</span></div>
+        <div style="margin-top:6px">Fecha: <span class="muted">${fmtDate(s.fechaISO)}</span></div>
+      </div>
+      <div class="actionsRow">
+        <button class="btn small" onclick="showSaleQR(${s.numero})">🔳 QR</button>
+        <button class="btn small danger" onclick="deleteSale(${s.numero})">🗑️ Borrar</button>
+      </div>
+    </div>
+  `).join("");
 }
 
-/** ==========================
-    GLOBAL SEARCH
-========================== */
-const globalSearch = document.getElementById("globalSearch");
-globalSearch.addEventListener("input", ()=>{
-  const q = globalSearch.value.trim();
-  if(!q){
-    resultsPanel.classList.add("hidden");
-    return;
-  }
-  const res = globalSearchAll(q);
-  renderResults(res, q);
+window.showSaleQR = (numero)=>{
+  const s = getArr(LS.sales).find(x=>x.numero===numero);
+  if(!s) return;
+  const text = `VENTA#${s.numero} | ${s.cliente} | ${s.descripcion} | $${s.total} | ${s.pago} | IMEI1:${s.imei1||""} IMEI2:${s.imei2||""}`;
+  document.getElementById("ventaQrText").textContent = "QR Venta #" + s.numero;
+  document.getElementById("ventaQrBox").classList.remove("hidden");
+  renderQR("ventaQrImg", text);
+  toast("QR de venta listo");
+};
+
+window.deleteSale = (numero)=>{
+  if(!confirm("¿Borrar venta #" + numero + "?")) return;
+  const sales = getArr(LS.sales).filter(x=>x.numero!==numero);
+  setArr(LS.sales, sales);
+  renderSales();
+  toast("Venta borrada");
+};
+
+document.getElementById("printVenta").onclick = ()=>printBox("ventaQrText","ventaQrImg");
+  /* =========================
+   INVENTARIO
+========================= */
+const invScanBtn = document.getElementById("invScanBtn");
+const invCodeSearch = document.getElementById("invCodeSearch");
+const invSearchInfo = document.getElementById("invSearchInfo");
+const invSearchText = document.getElementById("invSearchText");
+const invList = document.getElementById("invList");
+
+const invFormBox = document.getElementById("invFormBox");
+const invFormTitle = document.getElementById("invFormTitle");
+const p_code=document.getElementById("p_code");
+const p_name=document.getElementById("p_name");
+const p_cat=document.getElementById("p_cat");
+const p_subcat=document.getElementById("p_subcat");
+const p_price=document.getElementById("p_price");
+const p_stock=document.getElementById("p_stock");
+const p_cost=document.getElementById("p_cost");
+let editingCode = null;
+
+function isAdmin(){
+  return localStorage.getItem(LS.adminSession)==="1";
+}
+function applyAdminVisibility(){
+  // costo solo visible si admin
+  p_cost.style.display = isAdmin() ? "" : "none";
+  p_cost.placeholder = isAdmin() ? "Costo ($) - solo admin" : "";
+}
+
+function clearInvSearchInfo(){
+  invSearchInfo.innerHTML = "";
+}
+
+invScanBtn.onclick = ()=>openScannerToFunction((code)=>{
+  invCodeSearch.value = code;
+  invFindOrCreateByCode(code);
 });
 
-document.getElementById("clearSearch").onclick = ()=>{
-  globalSearch.value = "";
-  showHome();
+invCodeSearch.addEventListener("keydown",(e)=>{
+  if(e.key==="Enter"){
+    invFindOrCreateByCode(invCodeSearch.value.trim());
+  }
+});
+
+document.getElementById("invNewBtn").onclick = ()=>{
+  openProductForm(null);
 };
 
-function globalSearchAll(q){
-  const f = q.toLowerCase();
-  const orders = getArr(LS.orders).filter(o=>orderMatches(o,f));
-  const sales  = getArr(LS.sales).filter(s=>saleMatches(s,f));
-  return {orders, sales};
-}
+invSearchText.addEventListener("input", renderProducts);
 
-function renderResults(res, q){
-  showResults();
-  const list = document.getElementById("resultsList");
-  list.innerHTML = "";
+document.getElementById("invCancelBtn").onclick = ()=>{
+  invFormBox.classList.add("hidden");
+  editingCode = null;
+  toast("Cancelado");
+};
 
-  const h = document.createElement("div");
-  h.className="card";
-  h.innerHTML = `<div class="title">Búsqueda: "${escapeHtml(q)}"</div>
-                 <div class="kv">Órdenes: ${res.orders.length} • Ventas: ${res.sales.length}</div>`;
-  list.appendChild(h);
+document.getElementById("invSaveBtn").onclick = ()=>{
+  const code = p_code.value.trim();
+  if(!code){ alert("El código es obligatorio."); return; }
+  if(!p_name.value.trim()){ alert("Nombre/Descripción es obligatorio."); return; }
 
-  if(res.orders.length){
-    const block = document.createElement("div");
-    block.className="card";
-    block.innerHTML = `<div class="title">Órdenes</div>`;
-    res.orders.forEach(o=>{
-      const item = document.createElement("div");
-      item.className="kv";
-      item.innerHTML = `<div>🧾 Orden #${o.numero} — ${escapeHtml(o.cliente)} — ${escapeHtml(o.marca)} ${escapeHtml(o.modelo)}</div>`;
-      item.style.marginTop="6px";
-      block.appendChild(item);
-    });
-    list.appendChild(block);
+  const products = getArr(LS.products);
+  const existsIdx = products.findIndex(x=>String(x.code)===String(code));
+
+  const product = {
+    code,
+    name: p_name.value.trim(),
+    cat: p_cat.value.trim(),
+    subcat: p_subcat.value.trim(),
+    price: p_price.value.trim(),
+    stock: p_stock.value.trim()
+  };
+
+  // costo solo admin
+  if(isAdmin()){
+    product.cost = p_cost.value.trim();
+  } else {
+    // si ya existía y tenía cost, lo preservamos
+    if(existsIdx>=0 && products[existsIdx].cost) product.cost = products[existsIdx].cost;
   }
 
-  if(res.sales.length){
-    const block = document.createElement("div");
-    block.className="card";
-    block.innerHTML = `<div class="title">Ventas</div>`;
-    res.sales.forEach(s=>{
-      const item = document.createElement("div");
-      item.className="kv";
-      const imei = s.imei1 ? ` — IMEI: ${escapeHtml(s.imei1)}` : "";
-      item.innerHTML = `<div>💳 Venta #${s.numero} — ${escapeHtml(s.cliente)} — ${escapeHtml(s.descripcion)}${imei}</div>`;
-      item.style.marginTop="6px";
-      block.appendChild(item);
-    });
-    list.appendChild(block);
-  }
-
-  if(!res.orders.length && !res.sales.length){
-    const empty = document.createElement("div");
-    empty.className="card";
-    empty.innerHTML = `<div class="kv">No hay coincidencias.</div>`;
-    list.appendChild(empty);
-  }
-}
-
-function orderMatches(o, f){
-  const blob = [
-    o.numero, o.cliente, o.cedula, o.telefono, o.correo,
-    o.marca, o.modelo, o.falla
-  ].join(" ").toLowerCase();
-  return blob.includes(f);
-}
-function saleMatches(s, f){
-  const blob = [
-    s.numero, s.cliente, s.cedula, s.telefono, s.tipo,
-    s.descripcion, s.total, s.pago, s.marca, s.modelo, s.imei1, s.imei2
-  ].join(" ").toLowerCase();
-  return blob.includes(f);
-}
-
-/** ==========================
-    QR GENERATION (pure JS SVG)
-    (genera QR en SVG sin librerías)
-========================== */
-function showQR(kind, obj){
-  // kind: "orden" o "venta"
-  const text = kind==="orden"
-    ? `ORDEN#${obj.numero} | ${obj.cliente} | ${obj.marca} ${obj.modelo} | ${obj.cedula} | ${obj.telefono}`
-    : `VENTA#${obj.numero} | ${obj.cliente} | ${obj.descripcion} | ${obj.total} | ${obj.pago} | IMEI1:${obj.imei1||""} IMEI2:${obj.imei2||""}`;
-
-  const svg = makeSimpleQR(text);
-  if(kind==="orden"){
-    document.getElementById("ordenQrBox").classList.remove("hidden");
-    document.getElementById("ordenQrText").textContent = "QR Orden #"+obj.numero;
-    document.getElementById("ordenQrImg").innerHTML = svg;
-  }else{
-    document.getElementById("ventaQrBox").classList.remove("hidden");
-    document.getElementById("ventaQrText").textContent = "QR Venta #"+obj.numero;
-    document.getElementById("ventaQrImg").innerHTML = svg;
-  }
-}
-
-function makeSimpleQR(data){
-  // Nota: no es un QR industrial perfecto, pero sirve como QR escaneable en la mayoría de cámaras.
-  // Genera un patrón pseudo-QR determinístico y lo envuelve en "quiet zone".
-  const size = 29; // matriz
-  const quiet = 4;
-  const m = Array.from({length:size}, ()=>Array(size).fill(0));
-
-  // Finder-like patterns (3 corners)
-  function finder(x,y){
-    for(let r=0;r<7;r++){
-      for(let c=0;c<7;c++){
-        const xx=x+c, yy=y+r;
-        const on = (r===0||r===6||c===0||c===6) || (r>=2&&r<=4&&c>=2&&c<=4);
-        if(xx>=0&&xx<size&&yy>=0&&yy<size) m[yy][xx]=on?1:0;
-      }
+  if(editingCode && String(editingCode)!==String(code)){
+    // si cambia código, validar que no exista
+    if(existsIdx>=0){
+      alert("Ese código ya existe. No puedes duplicarlo.");
+      return;
     }
-  }
-  finder(0,0);
-  finder(size-7,0);
-  finder(0,size-7);
-
-  // timing patterns
-  for(let i=8;i<size-8;i++){
-    m[6][i]= i%2?1:0;
-    m[i][6]= i%2?1:0;
-  }
-
-  // payload bits from hash
-  const bits = hashBits(data, 800);
-
-  // fill remaining cells (simple scan)
-  let bi=0;
-  for(let y=0;y<size;y++){
-    for(let x=0;x<size;x++){
-      // skip reserved zones (finder + timing)
-      const reserved =
-        (x<7 && y<7) ||
-        (x>=size-7 && y<7) ||
-        (x<7 && y>=size-7) ||
-        (x===6 || y===6);
-      if(reserved) continue;
-      m[y][x] = bits[bi++ % bits.length] ? 1 : 0;
+    // borrar el viejo
+    const filtered = products.filter(x=>String(x.code)!==String(editingCode));
+    filtered.push(product);
+    filtered.sort((a,b)=>String(a.code).localeCompare(String(b.code)));
+    setArr(LS.products, filtered);
+  } else {
+    if(existsIdx>=0){
+      products[existsIdx] = {...products[existsIdx], ...product};
+      setArr(LS.products, products);
+    } else {
+      products.push(product);
+      products.sort((a,b)=>String(a.code).localeCompare(String(b.code)));
+      setArr(LS.products, products);
     }
   }
 
-  // render SVG
-  const px = 6;
-  const w = (size+quiet*2)*px;
-  let rects = "";
-  for(let y=0;y<size;y++){
-    for(let x=0;x<size;x++){
-      if(m[y][x]){
-        rects += `<rect x="${(x+quiet)*px}" y="${(y+quiet)*px}" width="${px}" height="${px}" fill="#000"/>`;
-      }
-    }
+  invFormBox.classList.add("hidden");
+  editingCode = null;
+  renderProducts();
+  toast("Producto guardado");
+};
+
+function invFindOrCreateByCode(code){
+  if(!code){ alert("Escribe o escanea un código."); return; }
+  const products = getArr(LS.products);
+  const p = products.find(x=>String(x.code)===String(code));
+
+  if(p){
+    invSearchInfo.innerHTML = `
+      Producto encontrado ✅<br/>
+      <b>${esc(p.code)}</b> — ${esc(p.name)}<br/>
+      Stock: <b>${esc(p.stock||"0")}</b> • Precio: <b>${esc(p.price||"")}</b>
+    `;
+    openProductForm(p.code);
+  } else {
+    invSearchInfo.innerHTML = `No existe el producto con código <b>${esc(code)}</b>. Se abrirá para crearlo ✅`;
+    openProductForm(code);
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${w}" viewBox="0 0 ${w} ${w}">
-    <rect x="0" y="0" width="${w}" height="${w}" fill="#fff"/>
-    ${rects}
-  </svg>`;
-}
-function hashBits(str, n){
-  // simple FNV-1a-ish + xorshift to bits
-  let h = 2166136261 >>> 0;
-  for(let i=0;i<str.length;i++){
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619) >>> 0;
-  }
-  let x = h || 123456789;
-  const bits = [];
-  for(let i=0;i<n;i++){
-    // xorshift32
-    x ^= x << 13; x >>>= 0;
-    x ^= x >>> 17; x >>>= 0;
-    x ^= x << 5;  x >>>= 0;
-    bits.push((x & 1)===1);
-  }
-  return bits;
 }
 
-/** ==========================
-    PRINT
-========================== */
-document.getElementById("printOrden").onclick = ()=>printCurrent("orden");
-document.getElementById("printVenta").onclick = ()=>printCurrent("venta");
+function openProductForm(codeOrNull){
+  applyAdminVisibility();
+  const products = getArr(LS.products);
+  let p = null;
 
-function printCurrent(kind){
-  const w = window.open("", "_blank");
-  const isOrden = kind==="orden";
-  const qrHtml = isOrden ? document.getElementById("ordenQrImg").innerHTML : document.getElementById("ventaQrImg").innerHTML;
-  const title = isOrden ? document.getElementById("ordenQrText").textContent : document.getElementById("ventaQrText").textContent;
+  if(codeOrNull && typeof codeOrNull === "string"){
+    p = products.find(x=>String(x.code)===String(codeOrNull)) || null;
+  } else if(codeOrNull && typeof codeOrNull === "object"){
+    p = codeOrNull;
+  }
 
-  w.document.write(`
-    <html><head><title>${escapeHtml(title)}</title>
-      <style>
-        body{font-family: Arial, sans-serif; padding:18px;}
-        h2{margin:0 0 10px;}
-        .box{border:1px solid #ddd; padding:12px; border-radius:10px; max-width:420px;}
-        .qr{max-width:240px;}
-        .sig{margin-top:10px;}
-        img{max-width:100%;}
-      </style>
-    </head><body>
-      <div class="box">
-        <h2>${escapeHtml(title)}</h2>
-        <div class="qr">${qrHtml}</div>
+  invFormBox.classList.remove("hidden");
+
+  if(p){
+    invFormTitle.textContent = "Editar producto";
+    editingCode = p.code;
+    p_code.value = p.code || "";
+    p_name.value = p.name || "";
+    p_cat.value = p.cat || "";
+    p_subcat.value = p.subcat || "";
+    p_price.value = p.price || "";
+    p_stock.value = p.stock || "";
+    p_cost.value = isAdmin() ? (p.cost || "") : "";
+  } else {
+    invFormTitle.textContent = "Nuevo producto";
+    editingCode = null;
+    p_code.value = codeOrNull || "";
+    p_name.value = "";
+    p_cat.value = "";
+    p_subcat.value = "";
+    p_price.value = "";
+    p_stock.value = "";
+    p_cost.value = "";
+  }
+
+  p_name.focus();
+}
+
+function renderProducts(){
+  const q = (invSearchText.value||"").trim().toLowerCase();
+  const products = getArr(LS.products);
+  const filtered = q ? products.filter(p=>JSON.stringify(p).toLowerCase().includes(q)) : products;
+
+  if(!filtered.length){
+    invList.innerHTML = "<div>No hay productos.</div>";
+    return;
+  }
+
+  invList.innerHTML = filtered.map(p=>{
+    const costHtml = isAdmin() && p.cost ? `<div>Costo: <span class="muted">${esc(p.cost)}</span></div>` : ``;
+    return `
+      <div class="card" style="margin-bottom:10px">
+        <div class="title">${esc(p.name)}</div>
+        <div class="kv">
+          <div>Código: <span class="muted">${esc(p.code)}</span></div>
+          <div>Categoría: <span class="muted">${esc(p.cat||"")}</span> • Sub: <span class="muted">${esc(p.subcat||"")}</span></div>
+          <div>Precio: <span class="muted">${esc(p.price||"")}</span> • Stock: <span class="muted">${esc(p.stock||"0")}</span></div>
+          ${costHtml}
+        </div>
+        <div class="actionsRow">
+          <button class="btn small" onclick="productQR('${esc(p.code).replaceAll("'","")}')">🔳 QR</button>
+          <button class="btn small secondary" onclick="editProduct('${esc(p.code).replaceAll("'","")}')">✏️ Editar</button>
+          <button class="btn small danger" onclick="deleteProduct('${esc(p.code).replaceAll("'","")}')">🗑️ Borrar</button>
+        </div>
       </div>
-    </body></html>
-  `);
-  w.document.close();
-  w.focus();
-  w.print();
+    `;
+  }).join("");
 }
 
-/** ==========================
-    EXPORT CSV
-========================== */
+window.editProduct = (code)=>{
+  const p = getArr(LS.products).find(x=>String(x.code)===String(code));
+  if(!p) return;
+  openProductForm(p.code);
+};
+
+window.deleteProduct = (code)=>{
+  if(!isAdmin()){
+    alert("Solo admin puede borrar productos.");
+    return;
+  }
+  if(!confirm("¿Borrar producto " + code + "?")) return;
+  const products = getArr(LS.products).filter(x=>String(x.code)!==String(code));
+  setArr(LS.products, products);
+  renderProducts();
+  toast("Producto borrado");
+};
+
+window.productQR = (code)=>{
+  const p = getArr(LS.products).find(x=>String(x.code)===String(code));
+  if(!p) return;
+  // usamos el mismo modal de orden/venta? aquí lo más simple: mostrar en invSearchInfo
+  invSearchInfo.innerHTML = `QR del producto <b>${esc(p.code)}</b> — ${esc(p.name)}<br/><div id="tmpInvQR" style="margin-top:10px; background:#fff; padding:8px; border-radius:12px; width:220px;"></div>`;
+  setTimeout(()=>renderQR("tmpInvQR", String(p.code)), 50);
+};
+
+/* =========================
+   ADMIN
+========================= */
+document.getElementById("pinEnter").onclick = ()=>{
+  const v = document.getElementById("pinInput").value.trim();
+  const real = localStorage.getItem(LS.pin) || "1234";
+  if(v === real){
+    localStorage.setItem(LS.adminSession, "1");
+    document.getElementById("adminTools").classList.remove("hidden");
+    toast("Admin activado");
+  } else {
+    alert("PIN incorrecto.");
+  }
+};
+
+document.getElementById("changePinBtn").onclick = ()=>{
+  const cur = prompt("PIN actual:");
+  const real = localStorage.getItem(LS.pin) || "1234";
+  if(cur !== real){ alert("PIN incorrecto."); return; }
+  const np = prompt("Nuevo PIN (mínimo 4 dígitos):");
+  if(!np || np.trim().length < 4){ alert("PIN inválido."); return; }
+  localStorage.setItem(LS.pin, np.trim());
+  toast("PIN cambiado");
+};
+
+document.getElementById("wipeAllBtn").onclick = ()=>{
+  if(!isAdmin()){ alert("Solo admin."); return; }
+  if(!confirm("⚠️ Esto borra TODO (órdenes, ventas, inventario). ¿Seguro?")) return;
+  if(!confirm("Última confirmación: ¿borrar TODO?")) return;
+  localStorage.removeItem(LS.orders);
+  localStorage.removeItem(LS.sales);
+  localStorage.removeItem(LS.products);
+  localStorage.removeItem(LS.brands);
+  localStorage.setItem(LS.orderCounter, "2100");
+  localStorage.setItem(LS.saleCounter, "315");
+  toast("Todo borrado");
+  renderOrders(); renderSales(); renderProducts();
+  refreshOrderLabel(); refreshSaleLabel();
+};
+
+document.getElementById("backupBtn2").onclick = ()=>backupJSON();
+document.getElementById("exportInvCsv2").onclick = ()=>exportInvCSV();
+document.getElementById("exportOrdenCsv2").onclick = ()=>exportOrdersCSV();
+document.getElementById("exportVentaCsv2").onclick = ()=>exportSalesCSV();
+
+/* =========================
+   BACKUP + EXPORT
+========================= */
 function download(filename, content, mime="text/plain"){
   const blob = new Blob([content], {type:mime});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
+  a.href = url; a.download = filename;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -1379,188 +1461,67 @@ function download(filename, content, mime="text/plain"){
 }
 
 function toCSV(rows){
-  const esc = (v)=> `"${String(v??"").replace(/"/g,'""')}"`;
-  return rows.map(r=>r.map(esc).join(",")).join("\n");
+  const escv = (v)=> `"${String(v??"").replace(/"/g,'""')}"`;
+  return rows.map(r=>r.map(escv).join(",")).join("\n");
 }
+
+function backupJSON(){
+  const payload = {
+    version: 2,
+    exportedISO: nowISO(),
+    counters: { order: nextOrder(), sale: nextSale() },
+    orders: getArr(LS.orders),
+    sales: getArr(LS.sales),
+    products: getArr(LS.products),
+    brands: getArr(LS.brands)
+  };
+  download(`backup_TE_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(payload,null,2), "application/json");
+  toast("Backup descargado");
+}
+document.getElementById("backupBtn").onclick = backupJSON;
 
 function exportOrdersCSV(){
   const orders = getArr(LS.orders);
-  const header = ["numero","cliente","cedula","telefono","correo","marca","modelo","falla","fecha"];
-  const rows = [header];
+  const rows = [["numero","fecha","cliente","cedula","tel","correo","marca","modelo","falla"]];
   orders.forEach(o=>{
-    rows.push([o.numero,o.cliente,o.cedula,o.telefono,o.correo,o.marca,o.modelo,o.falla,formatDate(o.fechaISO)]);
+    rows.push([o.numero, fmtDate(o.fechaISO), o.cliente, o.cedula, o.tel, o.correo, o.marca, o.modelo, o.falla]);
   });
   download(`ordenes_${new Date().toISOString().slice(0,10)}.csv`, toCSV(rows), "text/csv");
   toast("CSV órdenes listo");
 }
 function exportSalesCSV(){
   const sales = getArr(LS.sales);
-  const header = ["numero","cliente","cedula","telefono","tipo","marca","modelo","imei1","imei2","descripcion","total","pago","fecha"];
-  const rows = [header];
+  const rows = [["numero","fecha","cliente","cedula","tel","tipo","marca","modelo","imei1","imei2","descripcion","total","pago"]];
   sales.forEach(s=>{
-    rows.push([s.numero,s.cliente,s.cedula,s.telefono,s.tipo,s.marca,s.modelo,s.imei1,s.imei2,s.descripcion,s.total,s.pago,formatDate(s.fechaISO)]);
+    rows.push([s.numero, fmtDate(s.fechaISO), s.cliente, s.cedula, s.tel, s.tipo, s.marca, s.modelo, s.imei1, s.imei2, s.descripcion, s.total, s.pago]);
   });
   download(`ventas_${new Date().toISOString().slice(0,10)}.csv`, toCSV(rows), "text/csv");
   toast("CSV ventas listo");
 }
+function exportInvCSV(){
+  const products = getArr(LS.products);
+  const rows = [["code","name","cat","subcat","price","stock","cost(admin)"]];
+  products.forEach(p=>{
+    rows.push([p.code,p.name,p.cat,p.subcat,p.price,p.stock,p.cost||""]);
+  });
+  download(`inventario_${new Date().toISOString().slice(0,10)}.csv`, toCSV(rows), "text/csv");
+  toast("CSV inventario listo");
+}
 
 document.getElementById("exportOrdenCsv").onclick = exportOrdersCSV;
 document.getElementById("exportVentaCsv").onclick = exportSalesCSV;
-document.getElementById("exportOrdenCsv2").onclick = exportOrdersCSV;
-document.getElementById("exportVentaCsv2").onclick = exportSalesCSV;
+document.getElementById("exportInvCsv").onclick = exportInvCSV;
 
-/** ==========================
-    BACKUP / IMPORT
-========================== */
-function makeBackup(){
-  return {
-    version: 1,
-    createdISO: new Date().toISOString(),
-    orderCounter: getNextOrderNumber(),
-    saleCounter: getNextSaleNumber(),
-    orders: getArr(LS.orders),
-    sales: getArr(LS.sales),
-    learnedBrands: getArr(LS.brands)
-  };
-}
-function backupJSON(){
-  const b = makeBackup();
-  download(`backup_TE_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(b, null, 2), "application/json");
-  toast("Backup descargado");
-}
-document.getElementById("backupBtn").onclick = backupJSON;
-document.getElementById("backupBtn2").onclick = backupJSON;
-
-const importFile = document.getElementById("importFile");
-
-function triggerImport(){
-  importFile.value = "";
-  importFile.click();
-}
-document.getElementById("importBtn").onclick = triggerImport;
-document.getElementById("importBtn2").onclick = triggerImport;
-
-importFile.addEventListener("change", async ()=>{
-  const file = importFile.files?.[0];
-  if(!file) return;
-  const text = await file.text();
-  let b;
-  try{ b = JSON.parse(text); }catch(e){
-    alert("Backup inválido (no es JSON).");
-    return;
-  }
-  if(!b || !Array.isArray(b.orders) || !Array.isArray(b.sales)){
-    alert("Backup inválido.");
-    return;
-  }
-
-  if(!confirm("¿Importar backup? Esto reemplaza tus datos actuales.")) return;
-
-  setArr(LS.orders, b.orders);
-  setArr(LS.sales, b.sales);
-  setArr(LS.brands, b.learnedBrands || []);
-  setCounter(LS.orderCounter, Number(b.orderCounter)||2100);
-  setCounter(LS.saleCounter, Number(b.saleCounter)||315);
-
-  buildBrandDatalist();
-  toast("Backup importado");
-  // refresh lists if panels open
-  renderOrders();
-  renderSales();
-  refreshOrderNumberLabel();
-  refreshSaleNumberLabel();
-});
-
-/** ==========================
-    ADMIN PIN
-========================== */
-function getPin(){
-  return localStorage.getItem(LS.pin) || "1234";
-}
-function setPin(pin){
-  localStorage.setItem(LS.pin, pin);
-}
-document.getElementById("pinEnter").onclick = ()=>{
-  const v = document.getElementById("pinInput").value.trim();
-  if(v === getPin()){
-    document.getElementById("adminTools").classList.remove("hidden");
-    toast("Admin OK");
-  }else{
-    alert("PIN incorrecto.");
-  }
-};
-
-document.getElementById("changePinBtn").onclick = ()=>{
-  const cur = prompt("PIN actual:");
-  if(cur !== getPin()){
-    alert("PIN incorrecto.");
-    return;
-  }
-  const np = prompt("Nuevo PIN (4-8 dígitos):");
-  if(!np || np.length<4){
-    alert("PIN inválido.");
-    return;
-  }
-  setPin(np.trim());
-  toast("PIN cambiado");
-};
-
-document.getElementById("wipeAllBtn").onclick = ()=>{
-  if(!confirm("⚠️ Esto borra TODO (órdenes y ventas). ¿Seguro?")) return;
-  if(!confirm("Última confirmación: ¿borrar TODO?")) return;
-  localStorage.removeItem(LS.orders);
-  localStorage.removeItem(LS.sales);
-  localStorage.removeItem(LS.orderCounter);
-  localStorage.removeItem(LS.saleCounter);
-  toast("Todo borrado");
-  renderOrders();
-  renderSales();
-  refreshOrderNumberLabel();
-  refreshSaleNumberLabel();
-};
-
-/** ==========================
-    SCAN SEARCH
-========================== */
-document.getElementById("scanSearch").onclick = ()=>{
-  const code = document.getElementById("scanInput").value.trim();
-  if(!code){
-    alert("Pega un código primero.");
-    return;
-  }
-  const res = globalSearchAll(code);
-  renderResults(res, code);
-};
-
-/** ==========================
-    HELPERS
-========================== */
-function formatDate(iso){
-  try{
-    const d = new Date(iso);
-    return d.toLocaleString("es-CO");
-  }catch(e){
-    return iso || "";
-  }
-}
-function escapeHtml(s){
-  return String(s??"")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-/** ==========================
-    INIT
-========================== */
+/* =========================
+   INIT
+========================= */
+showHome();
+refreshOrderLabel();
+refreshSaleLabel();
 renderOrders();
 renderSales();
-refreshOrderNumberLabel();
-refreshSaleNumberLabel();
-showHome();
-
+renderProducts();
+applyAdminVisibility();
 </script>
 </body>
 </html>
