@@ -2341,6 +2341,16 @@ bbody
       if(sess && sess.role) enterApp(sess.role);
     })();
   </script>
+  <script>
+  // Registrar Service Worker para modo offline (PWA)
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js")
+        .then(() => console.log("✅ SW listo"))
+        .catch((e) => console.log("❌ SW error", e));
+    });
+  }
+  </script>
 
 </body>
 </html>
