@@ -1021,6 +1021,51 @@ bbody
   <div id="toast"></div>
 
   <script>
+/* ====== DIAGNÓSTICO OFFLINE (muestra errores en pantalla) ====== */
+(function () {
+  function showErr(msg){
+    let box = document.getElementById("offlineErrBox");
+    if(!box){
+      box = document.createElement("div");
+      box.id = "offlineErrBox";
+      box.style.position = "fixed";
+      box.style.left = "12px";
+      box.style.right = "12px";
+      box.style.bottom = "12px";
+      box.style.zIndex = "99999";
+      box.style.background = "#000";
+      box.style.color = "#fff";
+      box.style.padding = "12px";
+      box.style.border = "2px solid #00e5ff";
+      box.style.borderRadius = "14px";
+      box.style.fontFamily = "system-ui, Arial";
+      box.style.fontSize = "14px";
+      box.style.whiteSpace = "pre-wrap";
+      box.style.boxShadow = "0 0 20px rgba(0,229,255,.35)";
+      box.textContent = "⚠️ Error detectado:\n";
+      document.addEventListener("DOMContentLoaded", ()=> document.body.appendChild(box));
+      if(document.body) document.body.appendChild(box);
+    }
+    box.textContent = "⚠️ Error detectado:\n" + msg;
+  }
+
+  window.addEventListener("error", (e) => {
+    const msg = (e && (e.message || (e.error && e.error.message))) || "Error desconocido";
+    showErr(msg);
+  });
+
+  window.addEventListener("unhandledrejection", (e) => {
+    const msg = (e && e.reason && (e.reason.message || String(e.reason))) || "Promesa rechazada";
+    showErr(msg);
+  });
+})();
+</script>
+
+<script>
+  /************************
+   * CONFIG / STORAGE
+   ************************/
+  const LS = {
     /***********************
      * CONFIG / STORAGE
      ***********************/
